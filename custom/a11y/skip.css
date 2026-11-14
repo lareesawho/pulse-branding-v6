@@ -1,0 +1,50 @@
+/* The skip link. The nav is nine stops long on every page, and a keyboard user had
+   to walk all of it before reaching the content - on 43 pages. This is the first
+   focusable thing on the page and it is invisible until it is focused, which is what
+   a skip link is: not a decoration, the exit from the chrome.
+
+   It moves with transform so the browser never lays it out in flow, and it is
+   fixed top-left because a keyboard user focuses it before any scroll. */
+.pulse-skip {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2147483000;
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(calc(-100% - 24px));
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--pulse-blue, #2163af);
+  color: #ffffff;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pulse-skip:focus,
+.pulse-skip:focus-visible {
+  transform: none;
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* #main takes focus so the skip lands the reader at the top of the content, not
+   at the anchor position with focus still in the nav. It must not then draw a ring
+   around the whole page. */
+#main:focus,
+main:focus,
+[role="main"]:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-skip {
+    transition: none;
+  }
+}

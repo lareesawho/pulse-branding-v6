@@ -1,0 +1,163 @@
+/* ============================================================================
+   SERVICE MODULE — DIGITAL EXPERIENCE
+   Concept: JOURNEY. Promise → proof → choice → action.
+   Loaded only by digital-experience.html.
+   ========================================================================= */
+
+/* 1 — hero: the interface does the talking -------------------------------- */
+.dx-hero{padding-block:clamp(88px,9vw,132px) clamp(64px,7vw,104px)}
+.dx-hero__grid{align-items:center}
+.dx-hero h1{margin-top:22px;max-width:12ch}
+.dx-hero .svc-lead{margin-top:28px;max-width:32ch}
+.dx-hero .svc-act{margin-top:32px}
+.dx-hero__devices{position:relative;padding-bottom:clamp(40px,6vw,84px)}
+.dx-hero__desk{
+  margin-left:clamp(24px,6vw,96px);
+  background:#080b12;
+  box-shadow:0 60px 90px -70px rgba(10,25,49,.75);
+  overflow:hidden;
+}
+.dx-hero__desk img{display:block;width:100%;height:auto}
+.dx-hero__phone{
+  position:absolute;left:0;bottom:0;width:clamp(120px,15%,190px);
+  background:#080b12;box-shadow:0 40px 60px -40px rgba(10,25,49,.8);
+  overflow:hidden;
+}
+.dx-hero__phone img{display:block;width:100%;height:auto}
+.dx-hero__note{margin-top:clamp(28px,3vw,44px);display:flex;gap:26px;flex-wrap:wrap}
+.dx-hero__note span{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:#7a848c}
+
+/* 2 — every visit starts here: three questions that replace one another ---- */
+.dx-q{background:var(--ink-navy);color:var(--ice)}
+.dx-q__intro{padding-block:clamp(88px,9vw,132px) 0}
+.dx-q__stack{position:relative}
+.dx-q__panel{
+  position:sticky;top:0;
+  min-height:88vh;display:flex;align-items:center;
+}
+.dx-q__inner{width:100%}
+.dx-q__mark{font-size:11.5px;letter-spacing:.14em;color:var(--pulse-cyan);font-weight:600}
+.dx-q__ask{
+  margin-top:18px;
+  font-family:var(--font-display);font-weight:500;
+  font-size:clamp(44px,7.4vw,104px);line-height:.96;letter-spacing:-.048em;
+  max-width:16ch;
+}
+.dx-q__panel--2 .dx-q__inner{padding-left:14%}
+.dx-q__panel--3 .dx-q__inner{padding-left:28%}
+.dx-q__close{padding-block:clamp(64px,8vw,120px) clamp(104px,11vw,150px)}
+.dx-q__close p{max-width:44ch;font-size:clamp(17px,1.5vw,21px);line-height:1.5;color:rgba(225,238,240,.76)}
+.dx-q__rail{
+  position:absolute;left:calc(var(--sys-shell-inset,96px) / 2);top:12%;bottom:12%;
+  width:1px;background:rgba(225,238,240,.16);
+}
+.dx-q__dot{position:absolute;left:-3px;width:7px;height:7px;background:var(--pulse-cyan);transition:top .5s var(--sys-ease)}
+.dx-q__stackwrap{position:relative}
+
+/* 3 — selected digital work: three projects, three compositions ----------- */
+.dx-w1{padding-block:clamp(104px,12vw,168px)}
+.dx-w1__head{grid-column:1/span 5}
+.dx-w1__shot{grid-column:1/span 12;margin-top:clamp(32px,4vw,56px);background:#0d1117;overflow:hidden}
+.dx-w1__shot img{display:block;width:100%;height:auto}
+.dx-w2{background:var(--ink-navy);color:var(--ice);padding-block:clamp(104px,12vw,168px)}
+.dx-w2__head{grid-column:8/span 5}
+.dx-w2__stage{grid-column:1/span 7;position:relative;display:flex;justify-content:center}
+.dx-w2__field{width:100%;background:rgba(225,238,240,.05);padding:clamp(24px,4vw,56px) 0;display:flex;justify-content:center}
+.dx-w2__phone{width:clamp(180px,42%,280px);overflow:hidden;background:#080b12}
+.dx-w2__phone img{display:block;width:100%;height:auto}
+.dx-w3{padding-block:0}
+.dx-w3__bleed{position:relative;height:min(74vh,660px);overflow:hidden;background:#080b12}
+.dx-w3__bleed img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.dx-w3__cap{
+  position:absolute;left:calc(var(--sys-shell-inset,96px) / 2);bottom:clamp(24px,3vw,44px);
+  right:calc(var(--sys-shell-inset,96px) / 2);color:var(--ice);
+}
+.dx-w3__cap .svc-h3{color:#fff}
+
+/* 4 — the journey: four decisions on one line ---------------------------- */
+.dx-path{padding-block:clamp(112px,13vw,180px)}
+.dx-path__head{grid-column:1/span 6}
+.dx-path__rail{
+  grid-column:1/span 12;position:relative;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,32px);
+  margin-top:clamp(48px,6vw,84px);padding-top:clamp(28px,3vw,44px);
+}
+.dx-path__rail:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(10,25,49,.18)}
+.dx-path__node{position:relative}
+.dx-path__node:before{content:"";position:absolute;left:0;top:calc(clamp(28px,3vw,44px) * -1 - 3px);width:7px;height:7px;background:var(--pulse-blue)}
+.dx-path__k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;font-weight:600}
+.dx-path__v{
+  margin-top:12px;font-family:var(--font-display);font-weight:500;
+  font-size:clamp(26px,2.9vw,44px);line-height:1.02;letter-spacing:-.03em;
+}
+.dx-path__d{margin-top:12px;font-size:15px;line-height:1.5;color:#4b555d;max-width:26ch}
+.dx-path__close{grid-column:1/span 8;margin-top:clamp(44px,5vw,72px)}
+
+/* 5 — the screen is only the visible layer ------------------------------- */
+.dx-layers{background:#f0f0ec;padding-block:clamp(112px,13vw,180px)}
+.dx-layers__head{grid-column:1/span 5}
+.dx-stack{grid-column:1/span 12;margin-top:clamp(40px,5vw,72px);display:flex;flex-direction:column}
+.dx-layer{
+  position:relative;background:#fff;border:1px solid rgba(10,25,49,.12);
+  padding:clamp(18px,2.2vw,30px) clamp(20px,2.6vw,38px);
+  display:grid;grid-template-columns:180px 1fr;gap:clamp(16px,2vw,32px);align-items:baseline;
+}
+.dx-layer+.dx-layer{margin-top:-1px}
+.dx-layer__k{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--ink-navy)}
+.dx-layer__v{font-family:var(--font-display);font-size:clamp(18px,1.7vw,24px);line-height:1.2;letter-spacing:-.016em}
+.dx-layer:nth-child(1){width:100%;z-index:5}
+.dx-layer:nth-child(2){width:calc(100% - 26px);z-index:4}
+.dx-layer:nth-child(3){width:calc(100% - 52px);z-index:3}
+.dx-layer:nth-child(4){width:calc(100% - 78px);z-index:2}
+.dx-layer:nth-child(5){width:calc(100% - 104px);z-index:1}
+.dx-layer:nth-child(n+2){margin-left:auto}
+.dx-layer:first-child{background:var(--ink-navy);border-color:var(--ink-navy);color:var(--ice)}
+.dx-layer:first-child .dx-layer__k{color:var(--pulse-cyan)}
+
+/* 6 — what changes when it is designed ----------------------------------- */
+.dx-ba{padding-block:clamp(104px,12vw,168px)}
+.dx-ba__head{grid-column:1/span 6}
+.dx-ba__pair{grid-column:1/span 12;margin-top:clamp(36px,4vw,64px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.4vw,40px);align-items:start;max-width:860px}
+.dx-ba__item .id-crop,.dx-ba__item .dx-shot{overflow:hidden;background:#0d1218}
+.dx-ba__item{max-width:360px}
+.dx-ba__shot img{display:block;width:100%;height:auto}
+.dx-ba__k{margin-top:16px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;font-weight:600}
+.dx-ba__v{margin-top:8px;font-size:16px;line-height:1.5;color:#3d4750;max-width:34ch}
+.dx-ba__close{grid-column:1/span 12;margin-top:clamp(44px,5vw,72px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,48px);align-items:start}
+.dx-ba__close .svc-h2 span{display:block}
+
+/* 7 — CTA on the journey line -------------------------------------------- */
+.dx-cta{padding-block:clamp(112px,13vw,180px)}
+.dx-cta__rail{grid-column:1/span 12;position:relative;padding-top:clamp(36px,4vw,56px)}
+.dx-cta__rail:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(10,25,49,.18)}
+.dx-cta__rail:after{content:"";position:absolute;left:0;top:-3px;width:7px;height:7px;background:var(--pulse-blue)}
+.dx-cta h2{grid-column:1/span 6;margin-top:clamp(28px,3vw,44px)}
+.dx-cta__side{grid-column:8/span 5;align-self:end;display:flex;flex-direction:column;gap:24px}
+
+@media (max-width:900px){
+  .dx-hero__devices{margin-top:40px;padding-bottom:64px}
+  .dx-hero__desk{margin-left:0}
+  .dx-hero__phone{width:32%;left:0;bottom:0}
+  .dx-q__panel{min-height:74vh}
+  .dx-q__rail{display:none}
+  .dx-q__panel--2 .dx-q__inner,.dx-q__panel--3 .dx-q__inner{padding-left:0}
+  .dx-q__ask{font-size:clamp(38px,11vw,56px)}
+  .dx-w1__head,.dx-w2__head,.dx-w2__stage,.dx-w3__cap{grid-column:1 / -1}
+  .dx-w2__stage{margin-top:32px}
+  .dx-w2__field{padding:20px 0}
+  .dx-path__head{grid-column:1 / -1}
+  .dx-path__rail{grid-template-columns:1fr;gap:0;padding-top:0}
+  .dx-path__rail:before{display:none}
+  .dx-path__node{padding-block:22px;border-top:1px solid rgba(10,25,49,.14)}
+  .dx-path__node:before{display:none}
+  .dx-path__close{grid-column:1 / -1}
+  .dx-layers__head,.dx-stack{grid-column:1 / -1}
+  .dx-layer{grid-template-columns:1fr;gap:8px}
+  .dx-layer:nth-child(n){width:100%}
+  .dx-ba__head{grid-column:1 / -1}
+  .dx-ba__pair{grid-template-columns:1fr}
+  .dx-ba__close{grid-template-columns:1fr;grid-column:1 / -1}
+  .dx-cta__rail{grid-column:1 / -1}
+  .dx-cta h2,.dx-cta__side{grid-column:1 / -1}
+  .dx-cta__side{margin-top:32px}
+}

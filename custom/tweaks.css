@@ -1,0 +1,34 @@
+/* ORENZA offline clone — local tweaks (not part of the original site).
+ *
+ * 1. Hides the "Made in Framer" badge (present in the original template markup).
+ * 2. Minimal base styles required by Lenis (the scroll-smoothing engine vendored at
+ *    /custom/lenis.min.js). Lenis adds `.lenis` / `.lenis-smooth` / `.lenis-scrolling`
+ *    to <html>, so `scroll-behavior` must be forced back to `auto` while it drives.
+ */
+
+/* --- 1. badge ---------------------------------------------------------------- */
+#__framer-badge-container,
+#__framer-badge-container *,
+a.__framer-badge {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* --- 2. Lenis ---------------------------------------------------------------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

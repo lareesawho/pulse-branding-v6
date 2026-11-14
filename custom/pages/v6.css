@@ -1,0 +1,479 @@
+/* ============================================================================
+   v6 page system.
+
+   The template the rebuilt pages sit in: a dark hero carrying the brand's own
+   ground, paper body, editorial sections, and the interior-sweep button. Every
+   colour is a brand-centre token or a color-mix of tokens — there is no hex in
+   this file that is not in assets/brand/palette.css.
+
+   Type: "Pulse Display" (Montserrat) for headings and numerals, "Pulse Body"
+   (Inter) for prose, both self-hosted by /custom/brand/brand.css.
+   ========================================================================== */
+
+/* the template's own body rule is near-black; the v6 page surface has to win */
+body.v6 {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Pulse Body", Inter, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.v6-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(18px, 4vw, 56px);
+}
+
+/* ---- hero: the brand ground, the title, one action ---- */
+.v6-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--deep-navy);
+  color: var(--text-on-dark);
+  padding-block: clamp(64px, 9vw, 132px) clamp(56px, 7vw, 104px);
+  min-height: min(72vh, 720px);
+  display: flex;
+  align-items: flex-end;
+}
+.v6-hero > .pg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0;
+  aspect-ratio: auto;
+  height: 100%;
+}
+.v6-hero .pg__group { opacity: .9; }
+.v6-hero__inner { width: 100%; }
+.v6-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  font-family: "Pulse Body", Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ice) 72%, transparent);
+}
+.v6-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pulse-cyan), var(--pulse-blue));
+}
+.v6-h1 {
+  margin: 0 0 24px;
+  max-width: 22ch;
+  font-family: "Pulse Display", Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: clamp(34px, 5.4vw, 74px);
+  line-height: 1.04;
+  letter-spacing: -.025em;
+  color: var(--ice);
+}
+.v6-lead {
+  margin: 0;
+  max-width: 56ch;
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--ice) 76%, transparent);
+}
+.v6-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* ---- the button: the sweep comes from /custom/brand/cta.css ---- */
+.v6-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-family: "Pulse Body", Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ice);
+  background-color: var(--ink-navy);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ice) 18%, transparent);
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease;
+}
+.v6-btn:hover { transform: translateY(-1px); }
+.v6-btn--edge {
+  background-color: transparent;
+  color: var(--ice);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ice) 34%, transparent);
+}
+.v6-btn--dark {
+  background-color: var(--ink-navy);
+  color: var(--ice);
+}
+.v6-btn--onpaper {
+  color: var(--ink);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+/* ---- sections ---- */
+.v6-sec {
+  --fg: var(--ink);
+  --fg-soft: color-mix(in srgb, var(--ink) 84%, var(--paper));
+  --kicker: var(--muted);
+  --card-bg: var(--paper);
+  --card-line: color-mix(in srgb, var(--ink) 12%, transparent);
+  padding-block: clamp(56px, 7vw, 112px);
+  color: var(--fg);
+}
+.v6-sec--paper2 { --card-bg: var(--paper); }
+.v6-sec--dark, .v6-sec--violet {
+  --fg: var(--ice);
+  --fg-soft: color-mix(in srgb, var(--ice) 84%, transparent);
+  --kicker: color-mix(in srgb, var(--ice) 62%, transparent);
+  --card-bg: color-mix(in srgb, var(--ink-navy) 70%, var(--deep-navy));
+  --card-line: color-mix(in srgb, var(--ice) 16%, transparent);
+}
+.v6-sec--tight { padding-block: clamp(36px, 4vw, 64px); }
+.v6-sec--paper2 { background: var(--paper-2); }
+.v6-sec--dark { background: var(--ink-navy); color: var(--ice); }
+.v6-sec--rule { border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+
+.v6-h2 {
+  margin: 0 0 18px;
+  max-width: 26ch;
+  font-family: "Pulse Display", Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: clamp(26px, 3.1vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--fg);
+}
+.v6-h3 {
+  margin: 0 0 10px;
+  font-family: "Pulse Display", Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  color: var(--fg);
+}
+.v6-kicker {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--kicker);
+}
+
+/* ---- prose ---- */
+.v6-prose { max-width: 66ch; }
+.v6-prose > p { margin: 0 0 1.1em; color: var(--fg-soft); }
+.v6-prose > p:last-child { margin-bottom: 0; }
+
+.v6-prose a, .v6-copy a { color: var(--pulse-blue); text-decoration: underline; text-underline-offset: 3px; }
+.v6-sec--dark .v6-prose a { color: var(--pulse-cyan); }
+.v6-prose ul, .v6-prose ol { margin: 0 0 1.1em; padding-left: 20px; }
+.v6-prose li { margin-bottom: .5em; }
+
+/* ---- split: a heading held left, the copy on the right ---- */
+.v6-split {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(24px, 5vw, 80px);
+  align-items: start;
+}
+@media (max-width: 899.98px) { .v6-split { grid-template-columns: 1fr; gap: 24px; } }
+
+/* ---- a big statement band ---- */
+.v6-statement {
+  font-family: "Pulse Display", Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: clamp(24px, 3.4vw, 46px);
+  line-height: 1.16;
+  letter-spacing: -.02em;
+  max-width: 30ch;
+  margin: 0;
+  color: var(--ice);
+}
+
+/* ---- chapters: numbered rows with hairlines ---- */
+.v6-chapters { display: grid; gap: 0; margin-top: 12px; }
+.v6-chapter {
+  display: grid;
+  grid-template-columns: 64px minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: clamp(16px, 3vw, 44px);
+  padding-block: clamp(22px, 2.6vw, 34px);
+  border-top: 1px solid var(--card-line);
+  align-items: start;
+}
+.v6-chapter:last-child { border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+.v6-chapter .num {
+  font-family: "Pulse Display", Montserrat, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  color: var(--kicker);
+  padding-top: 6px;
+}
+.v6-chapter h3 { margin: 0; }
+.v6-chapter .body > p { margin: 0 0 .8em; color: var(--fg-soft); }
+.v6-chapter .body > p:last-child { margin-bottom: 0; }
+@media (max-width: 899.98px) {
+  .v6-chapter { grid-template-columns: 1fr; gap: 8px; }
+  .v6-chapter .num { padding-top: 0; }
+}
+
+/* ---- cards ---- */
+.v6-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  margin-top: 28px;
+}
+.v6-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2vw, 28px);
+  border-radius: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-line);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), border-color .3s ease, background .3s ease;
+}
+.v6-sec--paper2 .v6-card { background: var(--paper); }
+
+.v6-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--pulse-blue) 45%, transparent);
+}
+.v6-card .label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kicker);
+}
+.v6-card h3 { margin: 0; font-size: clamp(17px, 1.5vw, 21px); color: var(--fg); }
+.v6-card p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--fg-soft); }
+.v6-card .go {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--pulse-blue);
+}
+
+/* ---- media ---- */
+.v6-media { display: grid; gap: clamp(14px, 2vw, 24px); margin-top: 28px; }
+.v6-media--two { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.v6-fig { margin: 0; }
+.v6-fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--paper-2);
+}
+.v6-fig figcaption {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- quote ---- */
+.v6-quote {
+  margin: 0;
+  padding-left: clamp(18px, 2.4vw, 32px);
+  border-left: 2px solid var(--pulse-cyan);
+  font-family: "Pulse Serif", "Noto Serif Display", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(20px, 2.1vw, 28px);
+  line-height: 1.4;
+  color: var(--fg);
+}
+
+/* ---- table ---- */
+.v6-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px; }
+.v6-table th, .v6-table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  vertical-align: top;
+}
+.v6-table th { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* ---- closing band ---- */
+.v6-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--deep-navy);
+  color: var(--ice);
+  padding-block: clamp(64px, 8vw, 120px);
+}
+.v6-cta > .pg { position: absolute; inset: 0; z-index: -1; height: 100%; aspect-ratio: auto; opacity: .55; }
+.v6-cta .v6-h2 { color: var(--ice); max-width: 24ch; }
+.v6-cta p { margin: 0 0 26px; max-width: 54ch; color: color-mix(in srgb, var(--ice) 76%, transparent); }
+
+/* ---- the case index: cards at the template's 1.32 media ratio ---- */
+.v6-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+  margin-top: 32px;
+}
+.v6-case { display: block; text-decoration: none; color: inherit; }
+.v6-case .thumb {
+  position: relative;
+  aspect-ratio: 1.32 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--ink-navy);
+}
+.v6-case .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+.v6-case:hover .thumb img { transform: scale(1.02); }
+.v6-case .meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 14px; }
+.v6-case h3 { margin: 0; font-family: "Pulse Display", Montserrat, sans-serif; font-weight: 500; font-size: 19px; letter-spacing: -.01em; }
+.v6-case .sector { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.v6-case p { margin: 6px 0 0; font-size: 14px; color: color-mix(in srgb, var(--ink) 74%, var(--paper)); }
+
+/* ---- legal pages run long: keep them readable, never a wall ---- */
+.v6-legal { max-width: 74ch; }
+.v6-legal h2 { margin-top: 2em; font-size: clamp(20px, 2vw, 26px); }
+.v6-legal p, .v6-legal li { font-size: 15px; line-height: 1.7; }
+
+/* ---- print: paper white, no ground ---- */
+@media print {
+  .v6-hero > .pg, .v6-cta > .pg { display: none; }
+  .v6-hero, .v6-cta { background: var(--paper); color: var(--ink); }
+}
+
+/* ============================================================================
+   The borrowed chrome, on the palette.
+
+   The navigation and footer components were extracted from the Framer export
+   and carry its greys inline (rgb(9,9,10) surfaces, rgb(233,234,236) text).
+   Those are not brand-centre values and the muted link colours sit at 2:1 on
+   the dark bar, so they are re-pointed here rather than edited in the capture.
+   ========================================================================== */
+
+[data-component="navigation"] nav {
+  background-color: color-mix(in srgb, var(--ink-navy) 86%, transparent) !important;
+}
+[data-component="footer"] > div,
+[data-component="footer"] .framer-g8d0he,
+[data-component="footer"] footer,
+[data-component="footer"] > div > footer {
+  background-color: var(--deep-navy) !important;
+  color: color-mix(in srgb, var(--ice) 78%, transparent) !important;
+}
+/* only the styles that measured below 4.5:1 on the dark bar — the rest of the
+   component's own text colours are left alone, including the mark and the
+   light panels, which the blanket version of this rule broke */
+[data-component="navigation"] p.framer-text,
+[data-component="navigation"] a,
+[data-component="footer"] .framer-styles-preset-5bk3p1,
+[data-component="footer"] a.framer-10b0jti,
+[data-component="footer"] a.framer-10b0jti * {
+  color: color-mix(in srgb, var(--ice) 82%, transparent) !important;
+}
+[data-component="footer"] a:hover { color: var(--ice) !important; }
+
+/* the light pills keep their ink label: the ice override above is for text on the
+   dark bar, and these sit on ice — the current tab and both call-to-action pills */
+[data-component="navigation"] a[data-framer-page-link-current="true"],
+[data-component="navigation"] a[data-framer-page-link-current="true"] p.framer-text,
+[data-component="navigation"] a[data-framer-page-link-current="true"] span.framer-text,
+[data-component="navigation"] a[name="CTA"],
+[data-component="navigation"] a[name="CTA"] p.framer-text,
+[data-component="navigation"] a[name="Light"] p.framer-text,
+[data-component="footer"] button,
+[data-component="footer"] button p.framer-text,
+[data-component="footer"] button span.framer-text {
+  color: var(--ink) !important;
+}
+
+/* the brand's violet band, and the client-marks row */
+.v6-sec--violet {
+  background: linear-gradient(115deg, var(--pulse-violet) 0%, var(--ink-navy) 62%, var(--deep-navy) 100%);
+}
+.v6-marks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));   /* nine marks: 3 · 5 · 9 */
+  align-items: center;
+  justify-items: center;
+  gap: clamp(22px, 3vw, 40px) clamp(18px, 2.4vw, 32px);
+}
+@media (min-width: 700px) { .v6-marks { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .v6-marks { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+.v6-marks img {
+  height: clamp(16px, 1.6vw, 26px);
+  width: auto;
+  max-width: 132px;
+  object-fit: contain;
+  /* the marks are dark artwork: on paper they read as ink, not as glow */
+  filter: brightness(0) saturate(0);
+  opacity: .55;
+}
+
+/* the footer's column labels sit at 3.88:1 in the component's own grey, and the
+   component paints them through --framer-text-color, so both are set here */
+[data-component="footer"] p.framer-text.framer-styles-preset-14li8g8,
+[data-component="footer"] .framer-styles-preset-14li8g8 {
+  --framer-text-color: color-mix(in srgb, var(--ice) 82%, transparent);
+  color: color-mix(in srgb, var(--ice) 82%, transparent) !important;
+}
+
+/* the nav's mark is an SVG wordmark: its link carries no surface of its own */
+[data-component="navigation"] a:has(> svg) {
+  background-color: transparent !important;
+  color: var(--ice) !important;
+}
+[data-component="navigation"] a:has(> svg) p.framer-text,
+[data-component="navigation"] a:has(> svg) span.framer-text {
+  color: var(--ice) !important;
+}
+
+/* ============================================================================
+   The phone bar. The desktop navigation component has no phone variant in the
+   capture, so below 900 px it is replaced by this bar — for every page that
+   links this stylesheet, case pages included.
+   ========================================================================== */
+.mbar { display: none; }
+@media (max-width: 899.98px) {
+  [data-component="navigation"] { display: none; }
+  .mbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    background: var(--ink-navy);
+    color: var(--ice);
+  }
+  .mbar img { height: 15px; width: auto; display: block; }
+  .mbar .l { display: flex; gap: 14px; font-size: 13px; }
+  .mbar .l a { color: color-mix(in srgb, var(--ice) 78%, transparent); text-decoration: none; }
+  .mbar .l a.on { color: var(--ice); }
+  .mbar .cta {
+    font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    background: var(--ice); color: var(--ink);
+    border-radius: 999px; padding: 9px 13px; text-decoration: none;
+  }
+}

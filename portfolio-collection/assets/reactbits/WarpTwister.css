@@ -1,0 +1,46 @@
+/* WarpTwister island — React Bits Pro component (paid), used inside Lareesa's private project
+   at her direction. Scoped under .rb-island so it never leaks into the page.
+
+   Placement rule from REACT_BITS_MAP.md: one dominant motion idea per viewport. This field
+   replaces the ChromaWaves band on the pages that had one, or occupies a single second band on
+   the pages that had none, so it never competes with the hero's GlowingRidges. Markup:
+   <section class="section dark has-warp"> + the island.
+
+   The shader is a raymarched twisted quadric that writes its own alpha per pixel, so the band
+   keeps whatever background it already had — no opaque plate to hide. It is centred, so the
+   mask only has to soften the vertical edges of very tall bands. */
+
+.section.has-warp{position:relative;isolation:isolate}
+
+.section.has-warp .shell{position:relative;z-index:1}
+
+.rb-island--warp{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.rb-island--warp .rb-warp-twister{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+
+.rb-island--warp canvas{display:block;width:100%;height:100%}
+
+.rb-island--warp{
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 12%,#000 88%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,#000 12%,#000 88%,transparent 100%);
+}
+
+/* the twister is already a soft volumetric haze in violet; on white bands it needs less */
+.section:not(.dark):not(.stone).has-warp .rb-island--warp{opacity:.7}
+.stone.has-warp .rb-island--warp{opacity:.6}
+
+/* proposal-scope hosts this field behind its left column instead of a section band */
+.scope-left.has-warp{position:relative;isolation:isolate}
+.scope-left.has-warp > *:not(.rb-island){position:relative;z-index:1}
+.scope-left.has-warp > .rb-island--warp{position:absolute;inset:0;z-index:0}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island renders a single static frame in this mode; keep it faint */
+  .rb-island--warp{opacity:.85}
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "project": "robotist",
+    "file": "assets/live/robotist/logo.svg",
+    "source": "https://www.robotist.com.au/images/logo.svg",
+    "retrievedAt": "2026-09-06T18:22:47.162Z",
+    "contentType": "image/svg+xml",
+    "bytes": 436,
+    "sha256": "18402a314769cb53ebdaabcb88e60d623b668f602c55b88eb8c6f2301066eb7f"
+  },
+  {
+    "project": "neolabcare",
+    "file": "assets/live/neolabcare/logo.svg",
+    "source": "https://www.neolabcare.com/assets/logo-large-gold.svg",
+    "retrievedAt": "2026-09-06T18:22:49.405Z",
+    "contentType": "image/svg+xml",
+    "bytes": 5874,
+    "sha256": "8ee15f61f06520cbf33ac053ed1f9ba19136213eae1abd23c791d5283f948371"
+  },
+  {
+    "project": "wekwikgene",
+    "file": "assets/live/wekwikgene/logo.svg",
+    "source": "https://wekwikgene.wllsb.edu.cn/build/assets/wekwikgene-westlake-logo-D0L71N6a.svg",
+    "retrievedAt": "2026-09-06T18:22:51.645Z",
+    "contentType": "image/svg+xml",
+    "bytes": 10401,
+    "sha256": "5f6fae8eee36fe707157ea0e64d0cd9ab19449029a057650c57b6d2770a7f9b6"
+  },
+  {
+    "project": "vodkiss",
+    "file": "assets/live/vodkiss/logo.png",
+    "source": "https://cdn.prod.website-files.com/673498ac936e891beb4336db/674b205346b150788628f2c5_66c984eae04685acefdabacc_66c4f543fa05503649d4e56b_Vodkiss%252520Logo%252520English%252520Full.png",
+    "retrievedAt": "2026-09-06T18:22:53.663Z",
+    "contentType": "image/png",
+    "bytes": 12792,
+    "sha256": "3de2880ffb3fcf9285bd7b8322e8b268e0126cb586e70bded7fc575d399e9a32"
+  },
+  {
+    "project": "pulse",
+    "file": "assets/live/pulse/logo.png",
+    "source": "https://cdn.prod.website-files.com/673498ac936e891beb4335fd/6734ad81f36c652826590217_Pulse%20Brandinig%20Logo_Asset%201.png",
+    "retrievedAt": "2026-09-06T18:22:54.034Z",
+    "contentType": "image/png",
+    "bytes": 6031,
+    "sha256": "cb60d573f1428082b9774f2d5190bd59c94f5912f38e7b4e12e5d4b905e1387f"
+  }
+]

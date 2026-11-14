@@ -1,0 +1,85 @@
+{
+ "chain": [
+  "framer-WCw6x framer-JYHaL framer-7AIgD framer-73jpA framer-g79zb framer-8CIrr framer-1ymqnlh",
+  "framer-eeNqN framer-73jpA framer-GKcS5 framer-WyXrJ framer-m9PHp framer-QTnT7 framer-g79zb framer-72rtr7"
+ ],
+ "components": [
+  {
+   "name": "Navigation",
+   "slug": "navigation",
+   "bytes": 21466,
+   "rules": 144,
+   "colours": 18
+  },
+  {
+   "name": "Hero",
+   "slug": "hero",
+   "bytes": 11056,
+   "rules": 104,
+   "colours": 5
+  },
+  {
+   "name": "Marquee",
+   "slug": "marquee",
+   "bytes": 4795,
+   "rules": 76,
+   "colours": 2
+  },
+  {
+   "name": "Intro",
+   "slug": "intro",
+   "bytes": 4346,
+   "rules": 105,
+   "colours": 4
+  },
+  {
+   "name": "Selected Work",
+   "slug": "selected-work",
+   "bytes": 42612,
+   "rules": 124,
+   "colours": 4
+  },
+  {
+   "name": "Services",
+   "slug": "services",
+   "bytes": 26663,
+   "rules": 125,
+   "colours": 6
+  },
+  {
+   "name": "About Preview",
+   "slug": "about-preview",
+   "bytes": 10968,
+   "rules": 112,
+   "colours": 5
+  },
+  {
+   "name": "Process",
+   "slug": "process",
+   "bytes": 16915,
+   "rules": 116,
+   "colours": 4
+  },
+  {
+   "name": "Testimonials",
+   "slug": "testimonials",
+   "bytes": 18161,
+   "rules": 116,
+   "colours": 4
+  },
+  {
+   "name": "Clients",
+   "slug": "clients",
+   "bytes": 13398,
+   "rules": 97,
+   "colours": 4
+  },
+  {
+   "name": "Footer",
+   "slug": "footer",
+   "bytes": 54824,
+   "rules": 164,
+   "colours": 8
+  }
+ ]
+}

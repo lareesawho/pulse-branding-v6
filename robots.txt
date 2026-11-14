@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /portfolio-collection/
+Disallow: /case-build/
+Disallow: /components/
+Disallow: /gradient/
+Disallow: /versions/
+Disallow: /_before/
+
+Sitemap: https://pulse-branding.com/sitemap.xml

@@ -1,0 +1,200 @@
+/* ============================================================================
+   THE ACCENT SYSTEM — colour lives in elements, never in a wash.
+
+   Lareesa's rule: a screen carries 10-15 % colour at most, and the rest stays
+   black and white. So colour is spent on things she can point at — the marker
+   dot, the eyebrow, the line under it, the second headline, the outline pill,
+   the focus ring — and nowhere else. Measured per screen by
+   tools/pages/audit-color.py; nothing here is applied by eye.
+
+   Every value is a brand-centre token or a color-mix of two. No hex.
+   ========================================================================== */
+
+:root {
+  --accent: var(--pulse-cyan);
+  --accent-soft: color-mix(in srgb, var(--pulse-cyan) 62%, var(--ice));
+  --accent-line: color-mix(in srgb, var(--pulse-cyan) 70%, transparent);
+}
+
+/* 1. the marker: the 8 px dot in front of every eyebrow label */
+[data-framer-name="Dot"] {
+  background-color: var(--accent) !important;
+}
+
+/* 2. the eyebrow label: small caps, the page's name */
+[data-framer-name="Tag"] p,
+[data-framer-name="Tag"] .framer-text {
+  color: var(--accent) !important;
+}
+
+/* 2b. the same label on a light card. Cyan measures 7:1 on the near-black ground
+   and 2.4:1 on paper, so the label switches to pulse blue there (~5.6:1).
+   accent-contrast.js marks the eyebrows standing on a light surface; CSS cannot
+   ask an ancestor what colour it is (lesson 77). */
+[data-framer-name="Tag"][data-pulse-on-light] p,
+[data-framer-name="Tag"][data-pulse-on-light] .framer-text {
+  color: var(--pulse-blue) !important;
+}
+[data-framer-name="Tag"][data-pulse-on-light] [data-framer-name="Dot"] {
+  background-color: var(--pulse-blue) !important;
+}
+[data-framer-name="Tag"][data-pulse-on-light]::after {
+  background: var(--pulse-blue);
+}
+
+/* 3. the kicker: a 56 px hairline under the eyebrow, editorial, not a border */
+[data-framer-name="Tag"] {
+  position: relative;
+}
+[data-framer-name="Tag"]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 64px;
+  height: 1px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+/* 3b. the hairline under the navigation: the page opens on the accent */
+/* absolutely positioned: a hairline may never add to the nav's 90 px */
+/* it rides with the bar — nav-hairline.js copies the bar's own travel onto
+   --pulse-nav-lift as the bar slides out, so the line leaves with it. */
+nav,
+[data-framer-name="Navigation"] {
+  position: relative;
+}
+nav::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--pulse-cyan) 45%, transparent);
+  transform: translateY(var(--pulse-nav-lift, 0px));
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* 4. the headline's last word — the template draws the closing line muted grey,
+   which measured 2.4:1 on its own hero. As the accent it reads, it fixes that
+   contrast, and every page gets the same move: one word carries the colour. */
+[data-framer-name="Headline"] h1 > span:last-of-type,
+[data-framer-name="Page Title"] h1 > span:last-of-type,
+[data-framer-name="Article Title"] h1 > span:last-of-type {
+  color: var(--accent-soft) !important;
+}
+
+/* 4b. the hairline above the header's bottom row, on the inner pages */
+[data-framer-name="Header Bottom"] {
+  position: relative;
+}
+[data-framer-name="Header Bottom"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--pulse-cyan) 40%, transparent);
+  pointer-events: none;
+}
+
+/* 5. the outline pill: a cyan hairline in place of the ice one, label lifted to
+   the accent, and the same sweep the filled pills already carry */
+[data-framer-name="Outline"] {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pulse-cyan) 62%, transparent) !important;
+}
+[data-framer-name="Outline"] p,
+[data-framer-name="Outline"] .framer-text {
+  /* the label stays the template's ice: over the hero's bright streak the
+     accent-soft mix measured 2.5:1, and the ring already carries the colour */
+  color: var(--ice) !important;
+}
+[data-framer-name="Outline"]:hover,
+[data-framer-name="Outline"]:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(var(--pulse-cyan-rgb), .95),
+              0 8px 26px rgba(var(--pulse-cyan-rgb), .18) !important;
+  background-color: color-mix(in srgb, var(--pulse-cyan) 12%, transparent) !important;
+}
+
+/* 6. the dot inside the nav's call to action keeps the button light, the mark
+   carries the colour */
+a[name="CTA"] [data-framer-name="Dot"] {
+  background-color: var(--pulse-blue) !important;
+}
+
+/* 7. anything with a hairline border in the sections below the hero */
+[data-framer-name="Card"]:hover,
+[data-framer-name="Service Card"]:hover,
+[data-framer-name="Article Card"]:hover {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pulse-cyan) 55%, transparent) !important;
+}
+
+/* 8. links: the accent arrives on interaction, never as body colour */
+a:not([name]):hover,
+a:not([name]):focus-visible {
+  color: var(--accent-soft);
+}
+
+/* 9. focus and selection carry the same colour, so the keyboard sees it too */
+:focus-visible {
+  outline: 2px solid var(--pulse-cyan);
+  outline-offset: 3px;
+}
+::selection {
+  background: color-mix(in srgb, var(--pulse-cyan) 32%, transparent);
+  color: var(--ice);
+}
+
+/* 10. the footer's hairline, above the wordmark */
+footer {
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--pulse-cyan) 34%, transparent);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-framer-name="Outline"] {
+    transition: box-shadow .35s ease, background-color .35s ease;
+  }
+}
+
+  /* --- the ghost wordmark in the footer ---------------------------------------
+   The template draws it at 100 % of the card, so the P and the E ride the card's
+   edges and the baseline sits on the bottom border. Scale .85 about the bottom
+   centre gives a 122 px gutter each side; the translate gives it a foot. The
+   padding rules earlier in this section never applied (Framer re-writes the
+   wrapper's box), so the lift is the whole fix. */
+[data-framer-name="Wordmark"] {
+  transform: translateY(-52px) scale(.85) !important;
+  transform-origin: bottom center !important;
+}
+
+@media (max-width: 768px) {
+  [data-framer-name="Wordmark"] {
+    transform: translateY(-96px) scale(.85) !important;
+  }
+}
+
+footer,
+[data-framer-name="Footer"] {
+  padding-bottom: 40px !important;
+}
+
+@media (max-width: 768px) {
+  footer,
+  [data-framer-name="Footer"] {
+    padding-bottom: 40px !important;
+  }
+}

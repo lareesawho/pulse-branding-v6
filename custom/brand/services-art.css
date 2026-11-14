@@ -1,0 +1,14 @@
+/* ============================================================================
+   Service artwork.
+
+   The sources are cropped to the desktop frame's own 1.5. The phone frame is
+   1.7, so a centre crop took 10 % off the top of each artefact and cut through
+   the work itself — the headline of the GramLingo screen, the top of the brand
+   book. Lifting the focus to 30 % keeps the artefact whole where the frame is
+   shorter, and changes nothing where the ratio already matches.
+   ========================================================================== */
+
+[data-framer-name="Service Block"] [data-framer-name="Image"] img,
+[data-framer-name="Panels"] [data-framer-name^="Panel"] img {
+  object-position: 50% 30% !important;   /* the template sets this inline */
+}

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse &mdash; Components v2 (source-faithful)</title>
+<style>
+  @font-face{font-family:"Pulse Display";src:url("/custom/brand/fonts/montserrat-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  @font-face{font-family:"Pulse Body";src:url("/custom/brand/fonts/inter-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  :root{
+    --ink:#09090a;--line:rgba(214,234,240,.12);--line-soft:rgba(214,234,240,.07);
+    --ice:#d6eaf0;--ice-dim:rgba(214,234,240,.55);--paper:#e9eaec;
+    --blue:#2163af;--aqua:#2ea8ae;--violet:#291c53;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--ink);color:var(--ice);font-family:"Pulse Body",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 40px}
+  header.top{padding:30px 0 26px;border-bottom:1px solid var(--line-soft)}
+  .brand{display:flex;justify-content:space-between;align-items:center}
+  .mark{font:500 20px/1 "Pulse Display",sans-serif;letter-spacing:.16em}
+  .meta{font:500 10px/1 "Pulse Body",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ice-dim)}
+  h1{margin:32px 0 10px;font:500 clamp(32px,4.2vw,54px)/1.03 "Pulse Display",sans-serif;letter-spacing:-.035em}
+  .lead{margin:0;max-width:660px;font-size:14.5px;line-height:1.65;color:var(--ice-dim)}
+  section{padding:54px 0 60px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:30px}
+  .sec-head h2{margin:0;font:500 12.5px/1 "Pulse Body";letter-spacing:.2em;text-transform:uppercase}
+  .sec-head p{margin:0;font-size:12.5px;color:rgba(214,234,240,.42)}
+
+  /* ============================================================ LIQUID NAV */
+  .navstage{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0b0c0e}
+  .navstage .bar{position:relative;display:flex;align-items:center;justify-content:space-between;padding:16px 26px;background:rgba(0,29,42,.5)}
+  .navstage .bar .mark{font-size:15px;letter-spacing:.16em}
+  .navstage .foot{padding:10px 26px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;font-size:10.5px;color:rgba(214,234,240,.38)}
+  .navstage .foot b{font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ice);font-size:10px}
+
+  .liquid-nav{position:relative;width:520px;height:52px;isolation:isolate}
+  .liquid-nav .goo{position:absolute;inset:0;filter:url(#liquid-filter);pointer-events:none}
+  .liquid-nav .blob{position:absolute;top:0;left:0;border-radius:999px;background:var(--ice);will-change:transform,width,height}
+  .liquid-nav .blob.active{height:36px;opacity:.92;transition:left .7s cubic-bezier(.34,1.24,.64,1),width .7s cubic-bezier(.34,1.24,.64,1),transform .7s cubic-bezier(.34,1.24,.64,1)}
+  .liquid-nav .blob.trail{height:34px;width:34px;opacity:.9;filter:blur(.2px)}
+  .liquid-nav .goo.settling .blob.active{animation:squish .46s cubic-bezier(.34,1.24,.64,1)}
+  @keyframes squish{0%{transform:translate(-50%,-50%) scale(1)}35%{transform:translate(-50%,-50%) scale(1.18,.78)}70%{transform:translate(-50%,-50%) scale(.94,1.06)}100%{transform:translate(-50%,-50%) scale(1)}}
+  .liquid-nav nav{position:relative;z-index:2;display:flex;height:100%;align-items:center}
+  .liquid-nav a{position:relative;z-index:3;flex:1;display:flex;align-items:center;justify-content:center;height:100%;
+    font:500 11.5px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.06em;color:#f4fbfd;text-decoration:none;
+    mix-blend-mode:difference;transition:transform .5s cubic-bezier(.34,1.2,.64,1)}
+  .liquid-nav a.is-active{color:var(--ice)}
+  .liquid-nav a.near{transform:translateY(-1px)}
+  .liquid-nav a:hover{color:var(--ice)}
+  .liquid-nav a.is-active:hover{color:var(--ice)}
+
+  /* ================================================================ BUTTONS */
+  .stage-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .cell{background:#0b0c0e;padding:30px 28px 26px;display:flex;flex-direction:column;gap:22px;min-height:190px}
+  .cell h3{margin:0;font:500 11px/1.2 "Pulse Body";letter-spacing:.16em;text-transform:uppercase;color:var(--ice)}
+  .cell .spec{margin:6px 0 0;font-size:10.5px;line-height:1.6;color:rgba(214,234,240,.4);font-variant-numeric:tabular-nums}
+  .cell .stage{flex:1;display:flex;align-items:center}
+
+  .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;height:46px;padding:0 24px;
+    border-radius:10px;border:1px solid transparent;isolation:isolate;cursor:pointer;text-decoration:none;overflow:hidden;
+    font:600 11.5px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#f2fafc;white-space:nowrap}
+
+  /* 1 · Aceternity Moving Border — 3000 ms per lap, 80px radial blob on an SVG rect path */
+  .mb{position:relative;padding:3px;border-radius:12px;overflow:hidden;background:rgba(214,234,240,.05)}
+  .mb::after{content:"";position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;background:conic-gradient(from var(--mb-ang,0deg), transparent 0deg, transparent 300deg, rgba(46,168,174,.55) 328deg, rgba(214,234,240,.75) 336deg, transparent 350deg);filter:blur(9px);opacity:.9}
+  .mb svg.path{position:absolute;inset:0;width:100%;height:100%}
+  .mb .spark{position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;background:conic-gradient(from var(--mb-ang,0deg), transparent 0deg, rgba(46,168,174,.12) 250deg, #2ea8ae 322deg, #eafcff 336deg, rgba(46,168,174,.25) 346deg, transparent 360deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:3px;filter:saturate(1.15)}
+  .mb .face{position:relative;z-index:2;background:#0b0f12;display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 24px;border-radius:9px;
+    background:#0d1114;border:1px solid rgba(214,234,240,.14);font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#eef7f9}
+
+  /* 2 · Magic UI Shimmer — --speed 3s slide alternate + 15s conic spin */
+  .sh{border-radius:10px;background:#0b0f12;border:1px solid rgba(214,234,240,.12);overflow:hidden;display:inline-flex;width:auto}
+  .sh .spark-wrap{position:absolute;inset:-2px;border-radius:inherit;overflow:hidden;opacity:.9}
+  .sh .spark{position:absolute;inset:-100%;background:conic-gradient(from 225deg,transparent 0deg,rgba(46,168,174,.95) 90deg,transparent 90deg);
+    animation:sh-slide 3s ease-in-out infinite alternate, sh-spin 15s linear infinite}
+  .sh .face{position:relative;z-index:2;margin:1px;border-radius:9px;background:#0b0f12;display:flex;align-items:center;gap:9px;padding:0 24px;height:44px;
+    font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#eef7f9}
+  @keyframes sh-slide{from{transform:translate(-30%,0)}to{transform:translate(30%,0)}}
+  @keyframes sh-spin{from{rotate:0deg}to{rotate:360deg}}
+
+  /* 3 · React Bits Border Glow — 500 ms edge, 1500+2250 ms sweep, 1500 ms exit */
+  .bg{background:rgba(9,9,10,.6);border:1px solid rgba(214,234,240,.16);border-radius:10px;
+    --edge:0;--angle:45deg;--spread:25}
+  .bg::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;
+    background:conic-gradient(from var(--angle), rgba(46,168,174,calc(var(--edge)/100)) 0deg, rgba(33,99,175,calc(var(--edge)/140)) calc(var(--spread)*1deg), transparent calc(var(--spread)*3deg));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .bg .face{position:relative;z-index:2;display:flex;align-items:center;gap:9px;height:44px;padding:0 24px}
+  .bg::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:conic-gradient(from var(--angle), rgba(46,168,174,calc(var(--edge)/120)) 0deg, rgba(33,99,175,calc(var(--edge)/200)) calc(var(--spread)*1deg), transparent calc(var(--spread)*3.4deg));filter:blur(10px)}
+
+  /* 4 · Magic UI Shiny — spring k20 c15 m2, --x 100% → −100%, repeatDelay 1s */
+  .sy{background:radial-gradient(circle at 50% 0%,rgba(46,168,174,.14) 0%,transparent 60%);border:1px solid rgba(214,234,240,.16);border-radius:10px}
+  .sy .face{position:relative;z-index:2;display:flex;align-items:center;gap:9px;height:44px;padding:0 24px}
+  .sy .txt{background:linear-gradient(-75deg, #eaf6f9 calc(var(--x,100%) + 18%), rgba(234,246,249,.15) calc(var(--x,100%) + 26%), #eaf6f9 calc(var(--x,100%) + 100%));
+    -webkit-background-clip:text;background-clip:text;color:transparent;font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase}
+
+  table.params{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+  table.params th,table.params td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  table.params th{font:500 10px/1.3 "Pulse Body";letter-spacing:.14em;text-transform:uppercase;color:rgba(214,234,240,.45)}
+  table.params td:first-child{color:var(--ice)}
+  table.params code{font-size:11px;color:rgba(214,234,240,.72);background:rgba(214,234,240,.06);padding:1px 5px;border-radius:4px}
+  footer{padding:40px 0 64px;font-size:11.5px;color:rgba(214,234,240,.32)}
+  @media(max-width:900px){.stage-row{grid-template-columns:1fr}.liquid-nav{width:100%}.wrap{padding:0 22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark">PULSE</div><div class="meta">Components &middot; source-faithful</div></div>
+    <h1>Same motion as the originals.<br><span style="color:rgba(214,234,240,.4)">Same pacing.</span></h1>
+    <p class="lead">Every timing below is copied from the library&rsquo;s own source, not re-timed by eye: Moving Border&rsquo;s 3000&nbsp;ms lap, Shimmer&rsquo;s 3&nbsp;s slide and 15&nbsp;s spin, Border Glow&rsquo;s 500/1500/2250&nbsp;ms sweep, Shiny&rsquo;s spring k&nbsp;20 &middot; c&nbsp;15 &middot; m&nbsp;2, and the liquid dock&rsquo;s SVG goo filter with real turbulence displacement.</p>
+  </header>
+
+  <section>
+    <div class="sec-head"><h2>01 &mdash; Liquid nav</h2><p>SVG goo filter &middot; turbulence ripples &middot; magnet falloff &middot; bob</p></div>
+    <div class="navstage">
+      <div class="bar">
+        <div class="mark">PULSE</div>
+        <div class="liquid-nav" id="liquidNav">
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <defs>
+              <filter id="liquid-filter" x="-20%" y="-80%" width="140%" height="260%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+                <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="7" result="noise">
+                  <animate attributeName="seed" from="0" to="100" dur="8s" repeatCount="indefinite"/>
+                </feTurbulence>
+                <feDisplacementMap in="goo" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+          </svg>
+          <div class="goo"><div class="blob trail" id="trail"></div><div class="blob active" id="activeBlob"></div></div>
+          <nav id="liquidLinks"></nav>
+        </div>
+        <a class="btn" href="#" style="height:38px;padding:0 18px;font-size:10.5px;background:linear-gradient(105deg,#2163af,#2ea8ae 60%,#291c53);box-shadow:inset 0 1px 0 rgba(255,255,255,.24)">Start a project</a>
+      </div>
+      <div class="foot"><b>Liquid dock</b><span>blur 10 &middot; threshold 18/−7 &middot; ripple scale 6 &middot; speed .03 &middot; magnet 150px/0.6 &middot; bob 1.0</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>02 &mdash; Buttons, original pacing</h2><p>Hover each one; the timings are the libraries&rsquo; defaults</p></div>
+    <div class="stage-row">
+      <div class="cell">
+        <div><h3>Moving Border</h3><p class="spec">Aceternity &middot; duration 3000 ms &middot; blob 80 px radial &middot; rect path &middot; radius calc</p></div>
+        <div class="stage">
+          <a class="btn mb" id="mbBtn" href="#">
+            <svg class="path" preserveAspectRatio="none"><rect x=".5" y=".5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="9" ry="9" fill="none"/></svg>
+            <div class="spark"></div><div class="face"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>Start a project</div>
+          </a>
+        </div>
+      </div>
+      <div class="cell">
+        <div><h3>Shimmer</h3><p class="spec">Magic UI &middot; --speed 3 s alternate &middot; spin 15 s &middot; spread 90&deg; &middot; cut 0.05 em</p></div>
+        <div class="stage"><a class="btn sh" href="#"><div class="spark-wrap"><div class="spark"></div></div><div class="face"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>Free AI audit</div></a></div>
+      </div>
+      <div class="cell">
+        <div><h3>Border Glow</h3><p class="spec">React Bits &middot; 500 ms edge &middot; 1500 ms sweep &middot; 2250 ms settle &middot; 1500 ms exit</p></div>
+        <div class="stage"><a class="btn bg" id="bgBtn" href="#"><div class="face"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>View our work</div></a></div>
+      </div>
+      <div class="cell">
+        <div><h3>Shiny</h3><p class="spec">Magic UI &middot; spring k 20 &middot; c 15 &middot; m 2 &middot; repeatDelay 1 s &middot; scale k 200 c 5 m 0.5</p></div>
+        <div class="stage"><a class="btn sy" id="syBtn" href="#"><div class="face"><span class="txt">Contact the studio</span></div></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>03 &mdash; Parameter ledger</h2><p>Source value &rarr; what this page runs</p></div>
+    <table class="params">
+      <tr><th>Component</th><th>Source setting</th><th>This page</th></tr>
+      <tr><td>Moving Border</td><td><code>duration = 3000</code> ms, blob <code>h-20 w-20</code> + <code>radial-gradient(#0ea5e9 40%, transparent 60%)</code>, <code>opacity .8</code>, <code>rx/ry 30%</code></td><td>3000 ms per lap, 80 px blob, same radial falloff, opacity .8, path length from <code>getTotalLength()</code></td></tr>
+      <tr><td>Shimmer</td><td><code>shimmerDuration = "3s"</code>, <code>--spread: 90deg</code>, <code>--cut: 0.05em</code>, spin keyframes 15 s (0&deg;/90&deg;/270&deg;/360&deg;)</td><td>identical: 3 s alternate slide + 15 s conic spin, 90&deg; spread</td></tr>
+      <tr><td>Border Glow</td><td><code>500</code> ms edge proximity, <code>1500</code> ms easeInCubic sweep, <code>delay 1500 duration 2250</code> easeOutCubic, exit <code>delay 2500 duration 1500</code></td><td>same four-phase sequence on <code>--edge</code> / <code>--angle</code></td></tr>
+      <tr><td>Shiny</td><td>spring <code>stiffness 20 damping 15 mass 2</code>, <code>repeatDelay 1</code>, <code>--x 100% &rarr; &minus;100%</code>, scale spring <code>200 / 5 / 0.5</code></td><td>same spring integration in rAF; same mask stops (−75deg, +20/+30/+100%)</td></tr>
+      <tr><td>Liquid dock</td><td><code>blur 10</code>, threshold matrix <code>0 0 0 18 -7</code>, <code>ripple-scale 8</code>, <code>ripple-speed .03</code>, <code>magnet-radius 150</code>, <code>magnet-strength .6</code>, <code>bob 1.0</code></td><td>same filter chain (blur &rarr; threshold &rarr; turbulence &rarr; displacement), magnet 150/.6, bob on labels</td></tr>
+    </table>
+  </section>
+
+  <footer>Sources pulled from: <code>ui.aceternity.com/registry/moving-border.json</code>, <code>magicui.design/r/shimmer-button.json</code>, <code>magicui.design/r/shiny-button.json</code>, <code>DavidHDev/react-bits BorderGlow.jsx</code>, <code>avanelsas/baredom x-liquid-dock.md</code>.</footer>
+</div>
+
+<script>
+(function(){
+  /* ---------------------------------------------------- liquid nav (real goo) */
+  var nav = document.getElementById('liquidNav');
+  var linksEl = document.getElementById('liquidLinks');
+  var labels = ['Home','About','Services','Work','Insights','Contact'];
+  var activeIndex = 2;
+  var items = [];
+  labels.forEach(function(label, i){
+    var a = document.createElement('a');
+    a.href = '#'; a.textContent = label;
+    if (i === activeIndex) a.classList.add('is-active');
+    a.addEventListener('click', function(e){ e.preventDefault(); activeIndex = i; paint(); var g = document.querySelector('.goo'); g.classList.remove('settling'); void g.offsetWidth; g.classList.add('settling'); });
+    linksEl.appendChild(a); items.push(a);
+  });
+
+  var activeBlob = document.getElementById('activeBlob');
+  var trail = document.getElementById('trail');
+
+  function paint(stretchTarget){
+    items.forEach(function(a, i){ a.classList.toggle('is-active', i === activeIndex); });
+    var nr = nav.getBoundingClientRect();
+    var r = items[activeIndex].getBoundingClientRect();
+    var baseX = r.left - nr.left + r.width/2;
+    var width = r.width * 0.86;
+    var yOff = 0;
+    if (typeof stretchTarget === 'number' && stretchTarget !== activeIndex) {
+      var tr = items[stretchTarget].getBoundingClientRect();
+      var targetX = tr.left - nr.left + tr.width/2;
+      // pull 42% of the way toward the hovered item and widen into a bridge
+      baseX = baseX + (targetX - baseX) * 0.26;
+      width = Math.min(width * 1.38, Math.max(width, Math.abs(targetX - (r.left - nr.left + r.width/2)) * 0.55));
+      yOff = Math.sin(performance.now() / 260) * 1.2;
+    }
+    activeBlob.style.left = baseX + 'px';
+    activeBlob.style.width = Math.round(width) + 'px';
+    activeBlob.style.transform = 'translate(-50%,-50%) translateY(' + yOff + 'px) scale(1,1)';
+  }
+
+  // magnet + trail: the cursor drags a small blob; both live inside the goo filter,
+  // so proximity makes them merge like liquid (this is the dock's actual mechanism)
+  var tx = 0, ty = 26, cx = 0, cy = 26, vx = 0, magnet = 150, strength = 0.6;
+  var hoverIndex = -1, nearest = 0, goo = document.querySelector('.goo');
+  nav.addEventListener('pointerenter', function(){ trail.style.opacity = '1'; });
+  nav.addEventListener('pointerleave', function(){
+    trail.style.opacity = '0'; hoverIndex = -1; paint();
+  });
+  nav.addEventListener('pointermove', function(e){
+    var nr = nav.getBoundingClientRect();
+    tx = e.clientX - nr.left; ty = e.clientY - nr.top;
+    // magnet: nearest item inside magnet-radius leans toward the pointer
+    var best = -1, bestAbs = 1e9;
+    items.forEach(function(a, i){
+      var r = a.getBoundingClientRect();
+      var cxi = r.left - nr.left + r.width/2;
+      if (Math.abs(tx - cxi) < bestAbs) { bestAbs = Math.abs(tx - cxi); best = i; }
+    });
+    hoverIndex = bestAbs < magnet ? best : -1;
+    nearest = hoverIndex;
+    items.forEach(function(a, i){
+      var r = a.getBoundingClientRect();
+      var cxi = r.left - nr.left + r.width/2;
+      var d = tx - cxi;
+      a.classList.toggle('near', i === hoverIndex);
+      a.style.transform = i === hoverIndex
+        ? 'translate(' + (d * 0.035 * strength) + 'px,' + ((ty - 26) * 0.03 * strength) + 'px)'
+        : '';
+    });
+    if (hoverIndex >= 0) paint(hoverIndex);
+  });
+  (function loop(){
+    // viscous, slightly springy follow for the trailing blob (liquid, not linear)
+    vx = (tx - cx) * 0.22 + vx * 0.72;
+    cx += vx;
+    var targetY = 26;
+    cy += (targetY - cy) * 0.18;
+    var wob = Math.sin(performance.now() / 520) * 1.2;
+    trail.style.transform = 'translate(-50%,-50%) translate(' + cx + 'px,' + (26 + wob) + 'px)';
+    requestAnimationFrame(loop);
+  })();
+
+  function place(){ paint(); }
+  place();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  window.addEventListener('resize', place);
+
+  /* --------------------------------------- Aceternity moving border (3000ms) */
+  var mb = document.getElementById('mbBtn');
+  var mbStart = performance.now(), MB_DURATION = 3000;
+  (function mbLoop(now){
+    var deg = (((now - mbStart) % MB_DURATION) / MB_DURATION) * 360;
+    mb.style.setProperty('--mb-ang', deg.toFixed(2) + 'deg');
+    requestAnimationFrame(mbLoop);
+  })(mbStart);
+
+  /* --------------------------------- React Bits border glow (500/1500/2250) */
+  var bg = document.getElementById('bgBtn');
+  function easeOutCubic(x){ return 1 - Math.pow(1-x,3); }
+  function easeInCubic(x){ return x*x*x; }
+  function animateValue(o){
+    var start = o.start||0, end = o.end==null?100:o.end, dur = o.duration||1000, delay = o.delay||0;
+    var t0 = performance.now() + delay;
+    (function tick(){
+      var t = Math.max(0, Math.min(1, (performance.now()-t0)/dur));
+      var v = start + (end-start)*(o.ease||easeOutCubic)(t);
+      if (o.onUpdate) o.onUpdate(v);
+      if (t < 1) requestAnimationFrame(tick); else if (o.onEnd) o.onEnd();
+    })();
+  }
+  bg.addEventListener('pointerenter', function(){
+    animateValue({ duration:500, onUpdate:function(v){ bg.style.setProperty('--edge', v); } });
+    animateValue({ ease:easeInCubic, duration:1500, end:50, onUpdate:function(v){ bg.style.setProperty('--angle', (v*3.6)+'deg'); } });
+    animateValue({ ease:easeOutCubic, delay:1500, duration:2250, start:50, end:100, onUpdate:function(v){ bg.style.setProperty('--angle', (v*3.6)+'deg'); } });
+  });
+  bg.addEventListener('pointerleave', function(){
+    animateValue({ ease:easeInCubic, delay:2500, duration:1500, start:100, end:0, onUpdate:function(v){ bg.style.setProperty('--edge', v); } });
+  });
+
+  /* ------------------------------- Magic UI shiny (spring k20 c15 m2 + 1s gap) */
+  var sy = document.getElementById('syBtn');
+  var x = 100, v = 0, k = 20, c = 15, m = 2, rest = 0, phase = 'run', last = performance.now();
+  (function spring(now){
+    var dt = Math.min(0.032, (now - last)/1000); last = now;
+    if (phase === 'run') {
+      var a = (-k * (x - (-100)) - c * v) / m;
+      v += a * dt; x += v * dt;
+      if (x < -100) { x = -100; v = 0; phase = 'rest'; rest = now + 1000; }
+      sy.querySelector('.txt').style.setProperty('--x', x + '%');
+    } else if (now > rest) {
+      x = 100; v = 0; phase = 'run';
+    }
+    requestAnimationFrame(spring);
+  })(last);
+})();
+</script>
+</body>
+</html>

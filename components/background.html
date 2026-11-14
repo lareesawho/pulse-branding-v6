@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse background — exact Webflow copy</title>
+<link rel="stylesheet" href="background.css">
+<style>
+  html,body{height:100%}
+  body{margin:0;background:#02060c;color:#e9eef1;font:15px/1.6 Inter,system-ui,sans-serif}
+  /* the only foreground thing on this page: a label, so the background can be judged */
+  .label{
+    position:fixed; left:32px; bottom:28px; z-index:2;
+    font:500 11px/1.4 ui-monospace,monospace; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(233,238,241,.55);
+  }
+  .label b{display:block;font-weight:500;color:#e9eef1;letter-spacing:.02em;text-transform:none;font-size:13px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- the Webflow background block, markup unchanged -->
+<div class="background">
+  <div class="section-ultra-gradients">
+    <div class="ultra-gradient-wrapper">
+      <div class="main-shapes-wrapper">
+        <div class="shape-3"></div>
+        <div class="shape-2"></div>
+        <div class="shape-1"></div>
+      </div>
+      <div class="blending-group-wrapper">
+        <div class="shape-8"></div>
+        <div class="shape-9"></div>
+        <div class="shape-4"></div>
+        <div class="shape-5"></div>
+        <div class="shape-7"></div>
+        <div class="shape-6"></div>
+      </div>
+      <div class="background-noise"></div>
+    </div>
+  </div>
+</div>
+
+<p class="label">Pulse Branding · background
+  <b>Nine shapes, two blend groups, nine motion actions</b>
+</p>
+
+<script src="background.js"></script>
+</body>
+</html>

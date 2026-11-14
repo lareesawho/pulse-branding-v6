@@ -1,0 +1,22 @@
+/* ============================================================================
+   /services/ai-consulting/ — one block, template chrome.
+
+   The page is /services/ with five of its six service blocks hidden; the sixth
+   is the AI block that services-ai.js clones from the template's own markup.
+   ========================================================================== */
+
+[data-page="ai-consulting"] [data-framer-name="Service Blocks"] > *:not(.pulse-ai-block) {
+  display: none !important;
+}
+
+/* one block on the page: it does not need the index gap between siblings */
+[data-page="ai-consulting"] [data-framer-name="Service Blocks"] > .pulse-ai-block {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+}
+
+/* the block's own heading sits under a page title already */
+[data-page="ai-consulting"] .pulse-ai-block [data-framer-name="Left"] h2 {
+  max-width: 18ch;
+}

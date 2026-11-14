@@ -1,0 +1,115 @@
+/* ============================================================================
+   THE call to action — the interior sweep, applied to the site's own buttons.
+
+   A soft light travels inside the pill, left → right, rising through the
+   middle, clipped by the pill's own box. No border light, no travelling wedge,
+   no straight edge: the glow field is 190% × 300% of the pill and fades to
+   nothing at 78% of its own radius, so the frame can never cut it.
+
+   Two states, because a glow that only exists on hover reads as nothing
+   happening:
+     at rest  the slow pass, 6 s
+     hover    the same pass at 2.8 s, brighter, with a hairline of brand light
+              on the rim
+
+   Colour is palette only: light pills take pulse cyan → pulse blue, which reads
+   on ice; dark pills take ice → pulse cyan.
+
+   MECHANISM — two decisions, both paid for:
+   1. The sweep is a background layer on the button itself, not a generated
+      pseudo-element. A background layer paints above the element's own
+      background-color and below its content by definition: no stacking context,
+      no z-index, no isolation, nothing to get wrong.
+   2. The selectors are real, not :where(). Framer's own class rule owns these
+      pills' background longhands, and :where() carries zero specificity — with
+      it, computed background-image stays `none` and the sweep never renders,
+      even with !important. A class-level selector plus !important is what
+      actually wins here, and :not(#pulse-cta) is the specificity weight that
+      gets above Framer's own pill rule without depending on its generated
+      class names — which change on every export.
+   ========================================================================== */
+
+@property --cta-x { syntax: '<percentage>'; inherits: false; initial-value: 248%; }
+@property --cta-y { syntax: '<percentage>'; inherits: false; initial-value: -45%; }
+
+/* The filled pills on the template's own pages carry the same sweep: the nav's
+   call to action, and the page's own two — `View All Work` (ice, like the nav)
+   and `View Our Work` (black, the dark variant). Outline pills are left flat:
+   they have no fill to travel inside, and a background layer on them would fill
+   the shape they are defined by. */
+:is(a[name="CTA"], a[name="Light"], a[name="Dark"], a[name="View All Work"], a[name="View Our Work"], .mbar .cta):not(#pulse-cta) {
+  --cta-glow: radial-gradient(closest-side,
+      rgba(var(--pulse-cyan-rgb), .62) 0%,
+      rgba(var(--pulse-blue-rgb), .34) 44%,
+      rgba(var(--pulse-blue-rgb), 0) 78%);
+  /* the resting position is the mid-pass: a pill whose animation is not
+     advancing still shows the glow, instead of an empty surface */
+  --cta-x: 0%;
+  --cta-y: 33%;
+
+  background-image: var(--cta-glow) !important;
+  background-repeat: no-repeat !important;
+  background-size: 190% 300% !important;
+  /* the motion lives in --cta-x / --cta-y, not in background-position: an
+     animation of background-position outranks an !important declaration of it,
+     and Framer's pill rule needs the important flag beaten. Feeding the
+     position from animated registered properties keeps both. */
+  background-position: var(--cta-x) var(--cta-y) !important;
+  animation: cta-sweep 6s linear infinite;
+}
+
+/* dark pills: light on a dark surface instead of cyan on ice */
+a[name="Dark"]:not(#pulse-cta),
+a[name="View Our Work"]:not(#pulse-cta) {
+  --cta-glow: radial-gradient(closest-side,
+      rgba(var(--ice-rgb), .90) 0%,
+      rgba(var(--pulse-cyan-rgb), .58) 44%,
+      rgba(var(--pulse-cyan-rgb), 0) 78%);
+  animation: cta-sweep 6s linear infinite;
+}
+
+/* the path, in background-position percentages. The field is 190% wide, so the
+   free space is −90% of the pill: X% maps to −0.9 × X% of horizontal travel
+   and Y% to −2 × Y% of vertical travel. 248% → 0% → −248% carries the glow from
+   just off the left edge, through the centre, to just off the right;
+   −45% → 33% → −45% lifts it as it crosses. */
+@keyframes cta-sweep {
+  0%   { --cta-x: 248%;  --cta-y: -45%; }
+  50%  { --cta-x: 0%;    --cta-y: 33%; }
+  100% { --cta-x: -248%; --cta-y: -45%; }
+}
+
+/* hover and keyboard focus: the same pass, quicker, brighter, rimmed */
+:is(a[name="CTA"], a[name="Light"], a[name="Dark"], a[name="View All Work"], a[name="View Our Work"], .mbar .cta):not(#pulse-cta):hover,
+:is(a[name="CTA"], a[name="Light"], a[name="Dark"], a[name="View All Work"], a[name="View Our Work"], .mbar .cta):not(#pulse-cta):focus-visible {
+  animation-duration: 2.8s;
+  animation-timing-function: cubic-bezier(.42, 0, .58, 1);
+  box-shadow: 0 0 0 1px rgba(var(--pulse-cyan-rgb), .38), 0 8px 26px rgba(var(--pulse-cyan-rgb), .18);
+}
+
+:is(a[name="CTA"], a[name="Light"]):not(#pulse-cta):hover,
+:is(a[name="CTA"], a[name="Light"]):not(#pulse-cta):focus-visible {
+  --cta-glow: radial-gradient(closest-side,
+      rgba(var(--pulse-cyan-rgb), .86) 0%,
+      rgba(var(--pulse-blue-rgb), .48) 46%,
+      rgba(var(--pulse-blue-rgb), 0) 78%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* every selector that starts a sweep above must appear here. The first version
+     forgot "View All Work" and "View Our Work", so two glows kept sweeping on a
+     page that had asked the system for less motion. */
+  :is(a[name="CTA"], a[name="Light"], a[name="Dark"], a[name="View All Work"], a[name="View Our Work"], .mbar .cta):not(#pulse-cta) {
+    animation: none !important;
+    --cta-x: 0%;
+    --cta-y: 33%;
+  }
+}
+/* The case-study exhibit toggles body.paused and pauses its own animations in
+   motion.js. The button says "Pause all motion", so the cascade has to agree:
+   without this, the CTA sweep kept moving on a page that reported itself paused. */
+body.paused *,
+body.paused *::before,
+body.paused *::after {
+  animation-play-state: paused !important;
+}

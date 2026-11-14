@@ -1,0 +1,194 @@
+/* AI-02 — the five-step guided scoping journey on /proposal-scope.html.
+   Everything here is scoped to .scope-* on this one page, so no other page moves. */
+
+/* hidden must win over the flex/grid displays below */
+.scope-step .scope-email[hidden],
+.scope-step .scope-listening[hidden],
+.scope-step .scope-other[hidden],
+.scope-step .scope-result-actions[hidden],
+.scope-step .scope-status[hidden]{display:none}
+
+/* notes under each control */
+.scope-note{margin-top:8px;font-size:12px;line-height:1.6;max-width:60ch}
+.scope-note.is-ok{color:var(--aqua)}
+
+/* voice */
+.scope-voice-row{align-items:center}
+.scope-voice-state{font-size:12.5px;line-height:1.6;max-width:48ch}
+.scope-listening{margin-top:var(--sp-3)}
+.scope-listening .rb-island{display:block;width:100%}
+.scope-listening__inner{padding:var(--sp-3) var(--sp-4);text-align:left}
+.scope-listening__inner p{margin-top:6px}
+
+/* multi-select */
+.scope-checks{margin-top:var(--sp-4);border-top:1px solid var(--line)}
+.scope-check{display:flex;align-items:flex-start;gap:12px;min-height:44px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:15px;line-height:1.5}
+.scope-check input{flex:0 0 auto;width:18px;height:18px;margin:3px 0 0;accent-color:var(--navy)}
+.scope-check span{display:block}
+.scope-other{margin-top:var(--sp-3)}
+.scope-other .field{max-width:420px}
+
+/* summary + result surfaces (GlassSurface) */
+.scope-surface{margin-top:var(--sp-4)}
+/* the glass draws on its own box; the children sit inside it */
+.scope-surface .rb-children{position:relative;z-index:1;width:100%}
+.scope-surface__inner{padding:var(--sp-4)}
+.scope-review-row{display:grid;grid-template-columns:1fr auto;gap:2px var(--sp-3);align-items:baseline;padding:var(--sp-3) 0;border-top:1px solid var(--line)}
+.scope-review-row:first-child{border-top:0;padding-top:0}
+.scope-review-row:last-child{padding-bottom:0}
+.scope-review-row .eyebrow{grid-column:1/-1}
+.scope-review-row p{margin:0;white-space:pre-wrap}
+.scope-review-row .link{justify-self:end;display:inline-flex;align-items:center;min-height:44px}
+
+/* generated recommendation */
+.scope-result .scope-lead{margin-top:var(--sp-3);font-size:19px;line-height:1.5;color:var(--ink)}
+.scope-result .scope-section{margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+.scope-result h4{font-size:12px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;color:var(--muted)}
+.scope-result ul,.scope-result ol{margin:8px 0 0 18px}
+.scope-result li{margin:3px 0}
+.scope-fit{margin-top:8px}
+.scope-fit b{display:inline-block;padding:5px 12px;border:1px solid var(--line);border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.scope-ws{margin-top:var(--sp-3)}
+.scope-ws:first-child{margin-top:8px}
+.scope-ws strong{display:block;color:var(--ink);font-weight:500}
+.scope-empty{color:var(--muted)}
+
+/* result actions + email */
+.scope-result-actions{flex-wrap:wrap;align-items:center;gap:var(--sp-2)}
+.scope-email{margin-top:var(--sp-4)}
+.scope-email-note{margin-top:8px;font-size:12.5px;line-height:1.6}
+
+/* B1 — the shared header is a transparent-to-navy gradient over the page ground. On this
+   route the ground under ~80% of the header band is the light workshop pane, so the nav
+   labels and the primary button read near-white on near-white at scroll 0 and in the
+   result/email states. The header owns an opaque surface here at every scroll position.
+   pulse-system.css is not linked on this route, so --deep-navy-rgb does not resolve; the
+   contract's deep-navy (#001D2A) and ice (#E1EEF0) values are used literally. */
+body[data-pulse-mode="scoping"] .nav,
+body[data-pulse-mode="scoping"] .nav.scrolled{
+  background:rgba(0,29,42,.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(225,238,240,.16);
+  box-shadow:0 1px 0 rgba(4,12,22,.35)
+}
+body[data-pulse-mode="scoping"] .nav-end .glow{
+  background:rgba(225,238,240,.07);
+  border-color:rgba(225,238,240,.34)
+}
+
+@media (max-width:760px){
+  .scope-check{font-size:14px}
+  .scope-surface__inner{padding:var(--sp-3)}
+  .scope-review-row{grid-template-columns:1fr}
+  .scope-review-row .link{justify-self:start}
+}
+
+/* ---------------------------------------------------------------- A02 — layout
+   The guided journey reads as one workspace: the numbered step rail on the
+   left, the step itself on a raised card on the right. Both columns live
+   inside the existing .scope-right pane, so the page keeps the site's dark
+   intro over the light workshop. No JS hook, data attribute or class name
+   the runtime reads is renamed here. */
+@media(min-width:861px){
+  .scope-right{padding:clamp(28px,3.4vw,60px)}
+  .scope-left{justify-content:center;gap:var(--sp-5)}
+}
+.scope-panel{
+  --scope-card-pad:clamp(20px,2.8vw,42px);
+  width:100%;max-width:1080px;margin:auto;
+  display:grid;grid-template-columns:minmax(0,232px) minmax(0,1fr);
+  gap:clamp(26px,3.4vw,56px);align-items:start
+}
+.scope-stage{
+  position:relative;min-width:0;background:#fff;
+  border:1px solid var(--line);border-top:3px solid var(--navy);
+  border-radius:18px;
+  box-shadow:0 1px 2px rgba(10,25,49,.05),0 30px 64px -48px rgba(10,25,49,.5);
+  padding:var(--scope-card-pad)
+}
+@media(max-width:860px){
+  .scope-panel{grid-template-columns:1fr;gap:var(--sp-4)}
+}
+
+/* a phone cannot carry the rail and the card side by side: the rail stacks above
+   the card at its 32px component size so the question stays near the fold. */
+@media(max-width:860px){
+  .scope-rail.rb-island--stepper .rb-edit-step{min-height:48px;grid-template-columns:32px minmax(0,1fr)}
+  .scope-rail.rb-island--stepper .rb-edit-step__num{width:32px;height:32px;font-size:10.5px}
+  .scope-rail.rb-island--stepper .step-connector{width:32px;height:12px}
+}
+
+/* the rail — the site's own numbered-circle language (.process-stop__number) run
+   as a vertical timeline: marker, label, connector and one clear state per step. */
+.scope-rail{position:sticky;top:clamp(88px,12vh,132px);align-self:start;padding-top:calc(var(--scope-card-pad) - 8px)}
+@media(max-width:860px){.scope-rail{position:static;top:auto;padding-top:0}}
+.scope-rail.rb-island--stepper .step-indicator-row{
+  display:flex;flex-direction:column;align-items:stretch;gap:0;
+  border-top:0;margin:0;padding:0
+}
+.scope-rail.rb-island--stepper .rb-edit-step{
+  position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);
+  align-items:center;gap:0 16px;width:100%;min-width:0;min-height:56px;
+  padding:0;text-align:left;background:none;border:0;
+  font:600 13.5px/1.3 var(--font-display,Montserrat,system-ui,sans-serif)
+}
+.scope-rail.rb-island--stepper .rb-edit-step__num{
+  display:grid;place-items:center;width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(10,25,49,.22);background:#fff;color:var(--muted);
+  font:600 11px/1 var(--font-display,Montserrat,system-ui,sans-serif);
+  letter-spacing:.06em;opacity:1;
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease
+}
+.scope-rail.rb-island--stepper .rb-edit-step__label{
+  font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--muted);
+  border-bottom:0;padding-bottom:0;transition:color .3s ease
+}
+.scope-rail.rb-island--stepper .rb-edit-step--active .rb-edit-step__num{background:var(--navy);border-color:var(--navy);color:var(--ice)}
+.scope-rail.rb-island--stepper .rb-edit-step--active .rb-edit-step__label{color:var(--navy)}
+.scope-rail.rb-island--stepper .rb-edit-step--complete .rb-edit-step__num{background:var(--ice);border-color:var(--navy);color:var(--navy)}
+.scope-rail.rb-island--stepper .rb-edit-step--complete .rb-edit-step__label{color:var(--navy)}
+.scope-rail.rb-island--stepper .rb-edit-step--active::before{display:none}
+.scope-rail.rb-island--stepper .rb-edit-step:hover .rb-edit-step__label{color:var(--navy);border-bottom-color:transparent}
+.scope-rail.rb-island--stepper .rb-edit-step:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:8px}
+.scope-rail.rb-island--stepper .step-connector{display:block;flex:0 0 auto;width:44px;height:16px;margin:0}
+.scope-rail.rb-island--stepper .step-connector-inner{width:1px;height:100%;margin:0 auto;background-color:rgba(10,25,49,.18);transition:background-color .4s ease}
+.scope-rail.rb-island--stepper .rb-step-connector-inner--complete{width:1px;height:100%;background-color:var(--blue)}
+
+/* the content area — one heading level, one body rhythm, full-width controls */
+.scope-step>.h2{margin-top:6px;font-size:clamp(23px,2.2vw,31px);line-height:1.15;letter-spacing:-.01em}
+.scope-step>.copy{max-width:64ch}
+.scope-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin-top:var(--sp-4)}
+.scope-step .field,.scope-email .field{
+  max-width:100%;background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;min-height:48px;
+  font:400 16px/1.6 var(--font-body,Inter,system-ui,sans-serif);color:var(--ink)
+}
+.scope-step textarea.field{max-width:640px;min-height:132px;resize:vertical}
+.scope-step .scope-other .field{max-width:420px}
+.scope-step .field:focus{outline:2px solid var(--blue);outline-offset:2px}
+
+/* step 5 — the recommendation is a finished result panel, not raw output */
+.scope-step [data-scope-surface]{border:1px solid var(--line);border-radius:18px;background:rgba(10,25,49,.015)}
+.scope-step [data-scope-surface]:empty{border:0;background:none}
+.scope-step .scope-surface__inner{padding:clamp(18px,2.2vw,30px)}
+.scope-result>.eyebrow{display:none} /* exact duplicate of the step heading above it */
+.scope-result .scope-fit b{background:var(--navy);border-color:var(--navy);color:var(--ice);font-weight:600}
+.scope-result .scope-section:first-of-type{margin-top:var(--sp-3)}
+.scope-result .scope-ws{padding-top:10px}
+.scope-result .scope-empty{font-style:italic}
+.scope-result-actions{padding-top:var(--sp-4);border-top:1px solid var(--line)}
+.scope-email{
+  margin-top:var(--sp-4);padding:clamp(18px,2.2vw,26px);
+  border:1px solid var(--line);border-radius:18px;background:var(--paper)
+}
+.scope-email .field{margin-top:8px;max-width:440px}
+.scope-email .btn{margin-top:var(--sp-3)}
+
+/* pulse-system.css is not linked on this route, so the alias tokens that styles.css
+   inherits from it never resolved here: var(--navy) computed to its initial value, which
+   left every .btn-dark surface transparent and the rail's active marker invisible.
+   The contract values are re-declared on this route only. */
+body[data-pulse-mode="scoping"]{--navy:#0a1931;--blue:#2163af;--aqua:#2ea8ae;--navy-2:#001d2a}
+.scope-step .field::placeholder{color:var(--muted);opacity:.8}
+/* a gated Continue must not read as an enabled primary button */
+.scope-step .btn:disabled{opacity:.42;cursor:not-allowed}

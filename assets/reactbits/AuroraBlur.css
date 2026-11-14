@@ -1,0 +1,39 @@
+/* AuroraBlur island — React Bits Pro component (paid), used inside Lareesa's private project
+   at her direction. Scoped under .rb-island so it never leaks into the page.
+
+   Placement rule from REACT_BITS_MAP.md: one dominant motion idea per viewport. This field
+   replaces the ChromaWaves band on the pages that had one, or sits in a single second band on
+   the pages that had none, so it never competes with the hero's GlowingRidges. Markup:
+   <section class="section dark has-aurora"> + the island. Layer colors and intensities come
+   from data-rb-props (pulled to the brand palette); this file sets the layer's presence. */
+
+.section.has-aurora{position:relative;isolation:isolate}
+
+.section.has-aurora .shell{position:relative;z-index:1}
+
+.rb-island--aurora{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.rb-island--aurora .rb-aurora-blur{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+
+.rb-island--aurora canvas{display:block;width:100%;height:100%}
+
+/* the aurora reads as light in the room: strong at the top, dissolving before the copy */
+.rb-island--aurora{
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 10%,#000 74%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,#000 10%,#000 74%,transparent 100%);
+}
+
+/* on white bands the same shader becomes a pale wash, so hold it further back */
+.section:not(.dark):not(.stone).has-aurora .rb-island--aurora{opacity:.55}
+.stone.has-aurora .rb-island--aurora{opacity:.45}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island renders a single static frame in this mode; keep it faint */
+  .rb-island--aurora{opacity:.8}
+}

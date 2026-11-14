@@ -1,0 +1,233 @@
+/* Print: the page on paper.
+ *
+ * A browser prints text colours but not background colours or background images (unless
+ * the reader turns that on), so a dark site prints white text on white paper: the first
+ * measurement of /about/ under print media found body colour rgb(0,0,0) over
+ * background rgb(9,9,10) and no print rule anywhere in the stylesheets. This sheet is
+ * the resting state for paper, the same way the <noscript> block is the resting state
+ * for a browser without a runtime.
+ *
+ * Rules of taste: content only (no chrome, no decoration, no video, no fixed layers),
+ * dark type on white paper, the accent becomes the brand's blue because cyan is 2.38:1
+ * on white, display type is capped so a headline is a headline and not a page, and a
+ * printed link keeps its destination when it leaves the site.
+ */
+
+@page {
+  margin: 16mm 14mm;
+}
+
+html,
+body {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+body,
+body * {
+  color: #111111 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* The accent is a surface colour; on paper it is the brand blue (4.94:1 on white). */
+[data-framer-name="Tag"],
+[data-framer-name="Tag"] *,
+[data-framer-name="Dot"] {
+  color: #2163af !important;
+}
+
+[data-framer-name="Dot"] {
+  background-color: #2163af !important;
+}
+
+/* Chrome and decoration do not go on paper. */
+[data-framer-name="Navigation"],
+[data-framer-name="Drawer"],
+[data-framer-name="Menu Button"],
+[data-framer-name="Ticker"],
+[data-framer-name="Marquee"],
+[data-framer-name="Liquid Background"],
+[data-framer-name="Backdrop"],
+[data-framer-name="Spinner"],
+[data-framer-name="Controls"],
+[data-framer-name="Arrows"],
+[data-framer-name="Progress"],
+[data-framer-name="Hero Card"] video,
+nav.chapter-nav,
+#index-dialog,
+#__framer-badge-container,
+.mbar,
+.pulse-skip,
+.pulse-form-status,
+form button,
+[data-framer-name="Subscribe"],
+video,
+iframe {
+  display: none !important;
+}
+
+/* Background images are ink; the photographs below stay as <img> elements. */
+[style*="background-image"] {
+  background-image: none !important;
+}
+
+/* A CTA label is painted by a class rule of its own (white on the dark pill); the
+ * blanket `body *` rule loses to that specificity, so name the labels directly. */
+a[data-framer-name="Light"],
+a[data-framer-name="Light"] *,
+a[data-framer-name="Outline"],
+a[data-framer-name="Outline"] *,
+[data-framer-name="Label"],
+[data-framer-name="Label"] *,
+[data-framer-name="Label Copy"],
+[data-framer-name="Label Copy"] * {
+  color: #111111 !important;
+  -webkit-text-fill-color: #111111 !important;
+}
+
+/* Fixed and sticky layers land on top of text on paper. Position can come from a
+ * class rule (a sticky step rail), not only an inline style, so both shapes are set. */
+[style*="position:fixed"],
+[style*="position: fixed"],
+[style*="position:sticky"],
+[style*="position: sticky"],
+[data-framer-name^="Step "],
+section[data-framer-name="Process"] [class*="container"] {
+  position: static !important;
+}
+
+/* A display headline is set for a screen; on A4 it is capped and kept whole. */
+h1,
+h1 *,
+[data-framer-name="Page Title"] * {
+  font-size: 30pt !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.01em !important;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  break-after: avoid-page;
+  break-inside: avoid;
+}
+
+/* Sections that carry a thought stay together; sections that are a grid may break. */
+[data-framer-name="Service Block"],
+[data-framer-name="Card"],
+[data-framer-name="Team Card"],
+[data-framer-name="Stat"],
+[data-framer-name="Quote"],
+figure,
+img,
+svg {
+  break-inside: avoid;
+}
+
+img,
+svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Huge hero boxes become content-height boxes on paper. */
+[data-framer-name="Hero"],
+[data-framer-name="Page Header"],
+[data-framer-name="Header Card"] {
+  min-height: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* A link that leaves the site keeps its destination in the margin. */
+a[href^="http"]:not([href*="pulse-branding.com"])::after {
+  content: " (" attr(href) ")";
+  font-size: 8pt !important;
+  color: #555555 !important;
+  word-break: break-all;
+}
+
+/* A social link already names its destination; the address beside it is noise, and the
+ * four of them in a row wrap past the margin on A4. */
+a[href*="instagram.com"]::after,
+a[href*="behance.net"]::after,
+a[href*="dribbble.com"]::after,
+a[href*="linkedin.com"]::after {
+  content: "" !important;
+}
+
+/* The last word on ink.
+ *
+ * nav.css paints the hero CTA labels white with !important (a white label on a dark pill
+ * is right on a screen). A component's own !important at class level beats every
+ * type-level selector, so `body *` and the named label rules above lose to it. An id in
+ * the selector is the one thing that outranks it reliably - and no element in this site
+ * carries the id below, it only exists to raise specificity. The accent follows it, so
+ * the brand blue survives the escalation. */
+body *:not(#pulse-print-none) {
+  color: #111111 !important;
+  background: transparent !important;
+  background-image: none !important;
+  -webkit-text-fill-color: #111111 !important;
+}
+
+/* A dot is a screen mark; on paper the link text carries itself. */
+[data-framer-name="Dot"],
+[data-framer-name="Dots"],
+a svg {
+  display: none !important;
+}
+
+/* A pill is a control. Paper has no buttons, and a soft glow is ink that says nothing:
+ * the CTA rows leave the page, the inline text links (underlined) stay. */
+[data-framer-name="Hero CTAs"],
+[data-framer-name="Nav CTAs"],
+[data-framer-name="CTAs"],
+[data-framer-name="View Our Work"],
+[data-framer-name="Start a Project"],
+[data-framer-name="Start a project"],
+[data-framer-name="Explore Services"] {
+  display: none !important;
+}
+
+/* What looks like a link in the text keeps its underline and nothing else. */
+a[data-framer-name="Light"],
+a[data-framer-name="Outline"] {
+  border: 0 !important;
+  outline: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* A photograph is worth a third of a page, not a page. */
+img {
+  max-height: 88mm !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain;
+}
+
+body [data-framer-name="Tag"]:not(#pulse-print-none),
+body [data-framer-name="Tag"] *:not(#pulse-print-none),
+body [data-framer-name="Dot"]:not(#pulse-print-none) {
+  color: #2163af !important;
+  -webkit-text-fill-color: #2163af !important;
+}
+
+body a[href^="http"]:not([href*="pulse-branding.com"])::after {
+  color: #555555 !important;
+}
+
+/* The newsletter input is a live control; paper cannot submit it. */
+form input,
+form select,
+form textarea {
+  border: 1px solid #bbbbbb !important;
+}

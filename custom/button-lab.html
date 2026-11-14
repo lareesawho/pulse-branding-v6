@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse — Button Lab</title>
+<link rel="preconnect" href="/">
+<style>
+  @font-face{font-family:"Pulse Display";src:url("/custom/brand/fonts/montserrat-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  @font-face{font-family:"Pulse Body";src:url("/custom/brand/fonts/inter-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  :root{
+    --ink:#09090a; --raised:#111113; --line:#24262a;
+    --ice:#d6eaf0; --ice-dim:rgba(214,234,240,.62);
+    --blue:#2163af; --aqua:#2ea8ae; --violet:#291c53;
+    --grad:linear-gradient(100deg,#2163af 0%,#2ea8ae 52%,#291c53 100%);
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--ice);font-family:"Pulse Body",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  header{padding:28px 32px 20px;border-bottom:1px solid var(--line)}
+  h1{margin:0 0 6px;font:500 20px/1.2 "Pulse Display",sans-serif;letter-spacing:-.01em}
+  p.sub{margin:0;font-size:13px;color:var(--ice-dim);max-width:820px;line-height:1.55}
+  h2{margin:0 0 2px;font:500 13px "Pulse Body";letter-spacing:.16em;text-transform:uppercase;color:var(--ice-dim)}
+  .hint{margin:0 0 18px;font-size:12px;color:rgba(214,234,240,.42)}
+  section{padding:26px 32px;border-bottom:1px solid var(--line)}
+  .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+  .cell{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:18px 16px;border:1px solid var(--line);border-radius:10px;background:#0c0d0f}
+  .stage{height:64px;display:flex;align-items:center}
+  .meta{font-size:11px;line-height:1.5;color:rgba(214,234,240,.5)}
+  .meta b{display:block;color:var(--ice);font-weight:600;letter-spacing:.04em}
+
+  /* ---------------- shared button geometry = the template's pill ---------------- */
+  .btn{
+    position:relative;display:inline-flex;align-items:center;gap:8px;
+    height:42px;padding:0 18px;border-radius:9px;border:1px solid transparent;
+    font:600 12px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+    cursor:pointer;text-decoration:none;white-space:nowrap;isolation:isolate;
+    transition:transform .5s var(--ease), color .4s var(--ease), border-color .4s var(--ease), background-color .4s var(--ease);
+    -webkit-font-smoothing:antialiased;
+  }
+  .btn .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto;transition:transform .5s var(--ease)}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+
+  /* A1 — gradient fill, background position shifts on hover */
+  .a1{color:var(--ice);background-image:var(--grad);background-size:220% 100%;background-position:0% 50%;overflow:hidden}
+  .a1:hover{background-position:100% 50%}
+  .a1::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);pointer-events:none}
+
+  /* A2 — gradient fill + skewed light band sweeps on hover */
+  .a2{color:var(--ice);background-image:var(--grad);overflow:hidden}
+  .a2::after{content:"";position:absolute;top:-40%;bottom:-40%;width:42%;left:-60%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+    transform:skewX(-18deg);transition:left .75s var(--ease);pointer-events:none;mix-blend-mode:screen}
+  .a2:hover::after{left:130%}
+
+  /* A3 — conic gradient rotating inside the pill */
+  .a3{color:var(--ice);overflow:hidden;background:#0f2a3a}
+  .a3::before{content:"";position:absolute;inset:-120%;z-index:-1;
+    background:conic-gradient(from 0deg,#2163af,#2ea8ae,#291c53,#2163af);
+    animation:spin 9s linear infinite;transition:filter .5s var(--ease);filter:saturate(.85)}
+  .a3:hover::before{filter:saturate(1.25)}
+  .a3::after{content:"";position:absolute;inset:1px;border-radius:8px;background:rgba(9,9,10,.35);z-index:-1;pointer-events:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* A4 — "shader" fill (CSS approximation of the Three.js face) */
+  .a4{color:var(--ice);overflow:hidden;background:
+      radial-gradient(120% 160% at 18% 10%,rgba(46,168,174,.9),transparent 55%),
+      radial-gradient(110% 150% at 78% 24%,rgba(33,99,175,.95),transparent 58%),
+      radial-gradient(130% 170% at 88% 90%,rgba(41,28,83,.95),transparent 60%),
+      #0a1931;
+    background-size:160% 160%,170% 170%,180% 180%,auto;
+    animation:drift 12s ease-in-out infinite alternate}
+  .a4:hover{animation-duration:4.5s}
+  @keyframes drift{from{background-position:0% 0%,100% 0%,100% 100%}to{background-position:18% 22%,80% 18%,86% 78%}}
+
+  /* A5 — solid fill + diagonal gloss on hover */
+  .a5{color:#04121b;background:var(--ice);overflow:hidden;border-color:transparent}
+  .a5::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.85) 50%,transparent 80%);
+    transition:left .8s var(--ease);pointer-events:none;mix-blend-mode:overlay}
+  .a5:hover::after{left:140%}
+
+  /* B1 — border glow follows the pointer (JS sets --mx/--my) */
+  .b1{color:var(--ice);background:rgba(9,9,10,.6);border-color:rgba(214,234,240,.18)}
+  .b1::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:radial-gradient(140px 140px at var(--mx,50%) var(--my,50%),rgba(46,168,174,.95),rgba(33,99,175,.55) 40%,transparent 72%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s var(--ease)}
+  .b1:hover::before{opacity:1}
+
+  /* B2 — moving border: conic light travelling round the ring */
+  .b2{color:var(--ice);background:#0b1013;border-color:rgba(214,234,240,.12)}
+  .b2::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:conic-gradient(from var(--ang,0deg),transparent 0 62%,rgba(46,168,174,.15) 72%,#2ea8ae 88%,#d6eaf0 94%,transparent 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;animation:ang 3.4s linear infinite}
+  .b2:hover::before{animation-duration:1.4s}
+  @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+  @keyframes ang{to{--ang:360deg}}
+
+  /* B3 — border beam: a short comet running the edge */
+  .b3{color:var(--ice);background:#0b1013;border-color:rgba(214,234,240,.12)}
+  .b3::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:conic-gradient(from var(--ang,0deg),transparent 0 84%,#2ea8ae 90%,#d6eaf0 93%,transparent 97%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:.55;animation:ang 4.6s linear infinite}
+  .b3:hover::before{opacity:1;animation-duration:2s}
+
+  /* B4 — border trace: an SVG outline draws itself on hover */
+  .b4{color:var(--ice);background:rgba(9,9,10,.4);border-color:rgba(214,234,240,.14);overflow:visible}
+  .b4 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .b4 rect{fill:none;stroke:var(--aqua);stroke-width:1;vector-effect:non-scaling-stroke;
+    stroke-dasharray:var(--len,220) var(--len,220);stroke-dashoffset:var(--len,220);
+    transition:stroke-dashoffset .85s var(--ease)}
+  .b4:hover rect{stroke-dashoffset:0}
+
+  /* B5 — animated gradient border ring + soft outer glow */
+  .b5{color:var(--ice);background:#0b1013;border-color:transparent}
+  .b5::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:conic-gradient(from var(--ang,0deg),#2163af,#2ea8ae,#291c53,#2163af);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;animation:ang 6s linear infinite}
+  .b5::after{content:"";position:absolute;inset:-6px;border-radius:14px;pointer-events:none;z-index:-1;
+    background:conic-gradient(from var(--ang,0deg),#2163af,#2ea8ae,#291c53,#2163af);filter:blur(14px);opacity:0;transition:opacity .4s var(--ease)}
+  .b5:hover::after{opacity:.55}
+
+  /* context strips */
+  .ctx{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;padding:26px 32px 40px}
+  .hero-mock{position:relative;border-radius:12px;overflow:hidden;padding:26px 24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;
+    background:
+      radial-gradient(60% 70% at 18% 12%,rgba(46,168,174,.30),transparent 60%),
+      radial-gradient(55% 65% at 72% 28%,rgba(33,99,175,.34),transparent 62%),
+      radial-gradient(70% 80% at 88% 76%,rgba(41,28,83,.55),transparent 70%),#0a1931;border:1px solid rgba(214,234,240,.08)}
+  .hero-mock .eyebrow{font:500 10px "Pulse Body";letter-spacing:.16em;text-transform:uppercase;color:var(--ice-dim)}
+  .hero-mock h3{margin:8px 0 0;font:500 30px/1.05 "Pulse Display",sans-serif;letter-spacing:-.03em}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .paper{background:#e9eaec;color:#0a0b0d;border-radius:12px;padding:26px 24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+  .paper h3{margin:0 0 14px;font:500 26px/1.1 "Pulse Display",sans-serif;letter-spacing:-.03em}
+  .paper .btn{color:#0a0b0d}
+  .paper .a5{background:#111113;color:var(--ice)}
+  .legend{font-size:11px;color:rgba(214,234,240,.38);padding:0 32px 40px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pulse — Button Lab</h1>
+  <p class="sub">Ten directions, rebuilt at the template's pill geometry (42px, 9px radius, 12px uppercase Inter) with the Pulse gradient <code>#2163af â†’ #2ea8ae â†’ #291c53</code> and ice <code>#d6eaf0</code>. Hover everything — the whole point is the pointer state.</p>
+</header>
+
+<section>
+  <h2>A · Animated solid / gradient fill</h2>
+  <p class="hint">A1 gradient shift · A2 shimmer sweep · A3 rotating conic · A4 shader-ish drift · A5 solid + gloss</p>
+  <div class="grid">
+    <div class="cell"><div class="stage"><a class="btn a1" id="btn-a1" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="meta"><b>A1 · Gradient Button</b>shadcn.io · CSS only</div></div>
+    <div class="cell"><div class="stage"><a class="btn a2" id="btn-a2" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="meta"><b>A2 · Shimmer Button</b>Magic UI · CSS port</div></div>
+    <div class="cell"><div class="stage"><a class="btn a3" id="btn-a3" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="meta"><b>A3 · Conic Gradient</b>21st.dev · CSS port</div></div>
+    <div class="cell"><div class="stage"><a class="btn a4" id="btn-a4" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="meta"><b>A4 · Shader Face</b>ThreeUI · CSS approximation</div></div>
+    <div class="cell"><div class="stage"><a class="btn a5" id="btn-a5" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="meta"><b>A5 · Shine Button</b>shadcn.io · CSS only</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>B · Edge / border animation on hover</h2>
+  <p class="hint">B1 pointer glow · B2 moving border · B3 border beam · B4 border trace · B5 gradient ring + glow</p>
+  <div class="grid">
+    <div class="cell"><div class="stage"><a class="btn b1" id="btn-b1" href="#"><span class="dot"></span>Free AI audit</a></div>
+      <div class="meta"><b>B1 · Border Glow</b>React Bits · already in the VI</div></div>
+    <div class="cell"><div class="stage"><a class="btn b2" id="btn-b2" href="#"><span class="dot"></span>Free AI audit</a></div>
+      <div class="meta"><b>B2 · Moving Border</b>Aceternity UI · CSS port</div></div>
+    <div class="cell"><div class="stage"><a class="btn b3" id="btn-b3" href="#"><span class="dot"></span>Free AI audit</a></div>
+      <div class="meta"><b>B3 · Border Beam</b>Magic UI · CSS port</div></div>
+    <div class="cell"><div class="stage"><a class="btn b4" id="btn-b4" href="#"><svg><rect x=".5" y=".5" rx="8.5" width="calc(100% - 1px)" height="calc(100% - 1px)"></rect></svg><span class="dot"></span>Free AI audit</a></div>
+      <div class="meta"><b>B4 · Border Trace</b>shadcn.io · CSS + SVG</div></div>
+    <div class="cell"><div class="stage"><a class="btn b5" id="btn-b5" href="#"><span class="dot"></span>Free AI audit</a></div>
+      <div class="meta"><b>B5 · Animated Gradient Border</b>21st.dev · CSS port</div></div>
+  </div>
+</section>
+
+<div class="ctx">
+  <div class="hero-mock">
+    <div>
+      <div class="eyebrow">In context — hero</div>
+      <h3>Creative thinking.<br><span style="color:rgba(214,234,240,.45)">Digital craft.</span></h3>
+    </div>
+    <div class="row">
+      <a class="btn a1" href="#"><span class="dot"></span>View our work</a>
+      <a class="btn b1" href="#"><span class="dot"></span>Start a project</a>
+    </div>
+  </div>
+  <div class="paper">
+    <h3>In context — paper</h3>
+    <div class="row">
+      <a class="btn a5" href="#"><span class="dot"></span>View our work</a>
+      <a class="btn b4" href="#" style="border-color:rgba(10,11,13,.2)"><span class="dot"></span>Start a project</a>
+    </div>
+  </div>
+</div>
+<p class="legend">Generated at <code>site/custom/button-lab.html</code>. Geometry, type and radius match the template; the gradient and ice are the Pulse VI. B4 uses an inline SVG outline so the trace can draw.</p>
+
+<script>
+  // B1: pointer position drives the edge glow
+  document.querySelectorAll('.b1').forEach(function (btn) {
+    btn.addEventListener('pointermove', function (e) {
+      var r = btn.getBoundingClientRect();
+      btn.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      btn.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+  // B4: measure the path length so the trace starts hidden
+  document.querySelectorAll('.b4').forEach(function (btn) {
+    var rect = btn.querySelector('rect');
+    if (!rect) return;
+    var len = 2 * (btn.offsetWidth + btn.offsetHeight);
+    btn.style.setProperty('--len', len);
+    rect.setAttribute('stroke-dasharray', len);
+    rect.setAttribute('stroke-dashoffset', len);
+  });
+</script>
+</body>
+</html>

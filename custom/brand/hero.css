@@ -1,0 +1,74 @@
+/* ============================================================================
+   The ground, behind the hero — the site layer.
+
+   The shapes, their geometry, their colour and their motion are NOT written
+   here. They live once, in `/components/background.css` (the Webflow block,
+   copied exactly, palette-only) and `/components/background.js` (its three
+   interactions). This file only re-frames that block for the site:
+
+     1. a fixed full-page backdrop becomes a layer that fills one hero panel,
+        clipped by the panel's own radius;
+     2. the hero's own canvas — the template's monochrome motion — sits on top
+        of it in `screen`, so its light streaks read as light falling on the
+        ground instead of covering it;
+     3. nothing else on the page moves.
+
+   No colour is declared in this file. Every value comes from
+   `/components/background.css` or from `palette.css` tokens.
+   ========================================================================== */
+
+/* the hero panel the ground is mounted into: one stacking context, so the
+   canvas blends with the ground and never with the page behind both */
+.pgx-hero {
+  isolation: isolate;
+  /* the panel's flat near-black fill is what hid the ground; the ground is the
+     surface now */
+  background-color: transparent !important;
+}
+
+.pgx-ground {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  isolation: isolate;
+  pointer-events: none;
+  /* the budget: at most 10-15 % of a screen carries colour. One bloom at the
+     hero's right shoulder; everything outside it is the template's own black
+     and white. Measured by tools/pages/audit-color.py, not by eye. */
+  -webkit-mask-image: radial-gradient(ellipse 29% 38% at 85% 26%,
+      #000 0%, #000 30%, rgba(0, 0, 0, .5) 60%, transparent 84%);
+  mask-image: radial-gradient(ellipse 29% 38% at 85% 26%,
+      #000 0%, #000 30%, rgba(0, 0, 0, .5) 60%, transparent 84%);
+}
+
+.pgx-ground .background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  z-index: auto;
+}
+
+.pgx-ground .section-ultra-gradients {
+  position: absolute;
+  inset: 0;
+  z-index: auto;
+  height: 100%;
+  min-height: 0;
+}
+
+/* the hero canvas keeps the template's own look: opaque and monochrome. The
+   ground is a highlight on top of it — one bloom, not a wash. */
+.pgx-canvas {
+  z-index: 1;
+}
+
+/* the wrapper's 1vw font-size drives the em-based shape geometry in
+   background.css, and 1vw is the Webflow behaviour — keep it, and only guard
+   the very small screens where 40em would overflow the panel's height */
+@media (max-width: 479.98px) {
+  .pgx-ground .ultra-gradient-wrapper { font-size: 2.4vw; }
+}

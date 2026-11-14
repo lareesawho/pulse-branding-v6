@@ -1,0 +1,22 @@
+/* React Bits · PixelCard (free / MIT set) — ported to plain CSS for this static site.
+   Original component behaviour kept: the card is a centred container, the pixel canvas
+   dissolves the cover on hover, and the project name + one line sit under it.
+   Cover images are centred (object-position:center) — no per-case offsets.            */
+.pixel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,1.6vw,28px)}
+/* Card frame = the recordings' own size (clips are 1440x900 = 16:10), so a card is
+   exactly one screen of the project. Poster still under, clip over, shimmer on top. */
+.pixel-card{position:relative;aspect-ratio:1440/900;overflow:hidden;display:block;text-decoration:none;color:inherit;
+  border-radius:18px;border:1px solid rgba(255,255,255,.10);background:#0d1729;isolation:isolate;cursor:pointer}
+.pixel-screen{position:absolute;inset:0}
+.pixel-poster,.pixel-clip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.pixel-clip{opacity:0;z-index:2;pointer-events:none;transition:opacity 550ms ease}
+.pixel-clip.on{opacity:1}
+@media (prefers-reduced-motion: reduce){.pixel-clip{transition:none}}
+.pixel-card canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:block}
+/* scrim stays strong enough for light covers (GramLingo's beige hero washed the copy out) */
+.pixel-copy{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:22px 24px 24px;
+  background:linear-gradient(180deg,rgba(6,17,31,0),rgba(6,17,31,.78) 32%,rgba(6,17,31,.97) 100%)}
+.pixel-copy h3,.pixel-copy p{text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.pixel-copy h3{margin:0;font-size:clamp(20px,1.6vw,26px);line-height:1.15;color:#fff}
+.pixel-copy p{margin:8px 0 0;font-size:clamp(13px,1vw,15px);line-height:1.5;opacity:.82;max-width:38ch;color:#e1eef0}
+@media (max-width:900px){.pixel-grid{grid-template-columns:1fr}}

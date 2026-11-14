@@ -1,0 +1,37 @@
+/* Sixth discipline: AI Consulting — injected after hydration (services page block 06 + home row/panel 06).
+   The clone reuses the template's own Service Block component markup, so spacing, type and motion
+   match the five original disciplines exactly. */
+
+/* cloned block must not stay at the reveal state the template stamped inline */
+[data-framer-name="Service Block"].pulse-ai-block {
+  opacity: 1 !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* home: the cloned row behaves like the others, the cloned panel replaces the React-driven panel */
+[data-framer-name="Panels"] > .pulse-ai-panel {
+  opacity: 0 !important;
+  transition: opacity .3s cubic-bezier(.22, 1, .36, 1);
+}
+html.pulse-ai-hover [data-framer-name="Panels"] > * { opacity: 0 !important; }
+html.pulse-ai-hover [data-framer-name="Panels"] > .pulse-ai-panel { opacity: 1 !important; }
+
+/* cloned row: lift it to the template's active colour, and dim the five React rows while it is active
+   (those are the exact colours the template computes when a row is hovered) */
+[data-framer-name="Names"] > .pulse-ai-row [data-framer-name="Name"] p,
+[data-framer-name="Names"] > .pulse-ai-row [data-framer-name="No"] p {
+  transition: color .28s ease;
+}
+[data-framer-name="Names"] > .pulse-ai-row:hover [data-framer-name="Name"] p,
+[data-framer-name="Names"] > .pulse-ai-row:hover [data-framer-name="No"] p,
+html.pulse-ai-hover [data-framer-name="Names"] > .pulse-ai-row [data-framer-name="Name"] p,
+html.pulse-ai-hover [data-framer-name="Names"] > .pulse-ai-row [data-framer-name="No"] p {
+  color: #d6eaf0 !important;
+}
+html.pulse-ai-hover [data-framer-name="Names"] > a:not(.pulse-ai-row) [data-framer-name="Name"] p {
+  color: rgb(58, 60, 66) !important;
+}
+html.pulse-ai-hover [data-framer-name="Names"] > a:not(.pulse-ai-row) [data-framer-name="No"] p {
+  color: rgb(116, 119, 127) !important;
+}

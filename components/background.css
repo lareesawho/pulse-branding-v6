@@ -1,0 +1,111 @@
+/* Pulse Branding — the Webflow background, copied exactly.
+   Source: https://www.pulse-branding.com (site 673498ac936e891beb4335fd),
+   stylesheet pulse-branding.webflow.shared.969b85f24.css. Class names, sizes
+   (em, driven by the wrapper's font-size: 1vw) and breakpoints are the originals. */
+
+.background{
+  z-index:-1;
+  background-image:linear-gradient(color-mix(in srgb, var(--ink-navy, #0a1931) 50%, transparent),color-mix(in srgb, var(--ink-navy, #0a1931) 50%, transparent)),linear-gradient(45deg,color-mix(in srgb, var(--pulse-cyan, #2ea8ae) 80%, var(--ice, #e1eef0) 20%),#2163af 25%,#291c53 50%);
+  justify-content:flex-start; align-items:flex-end;
+  width:100vw; height:100%; margin-top:-2px;
+  display:flex; position:fixed; inset:0; overflow:hidden;
+}
+.section-ultra-gradients{
+  z-index:-500;
+  justify-content:center; align-items:center;
+  height:100vh; min-height:45em;
+  display:flex; position:fixed; inset:0%; overflow:hidden;
+}
+.ultra-gradient-wrapper{
+  background-color:var(--deep-navy, #001d2a);
+  justify-content:center; align-items:flex-start;
+  width:100%; height:100%; font-size:1vw;
+  position:absolute; inset:0%; overflow:hidden;
+}
+.main-shapes-wrapper{ filter:blur(120px); }
+.blending-group-wrapper{ z-index:1; filter:blur(120px); mix-blend-mode:overlay; }
+.background-noise{
+  z-index:0; opacity:.3;
+  background-image:url("../assets/img/noise.png");
+  background-size:auto;
+  width:100%; height:100%; position:absolute; inset:0%;
+}
+
+.background .shape-1{
+  background-color:#2163af; border-radius:999em;
+  width:40em; height:40em;
+  margin-top:-15em; margin-left:auto; margin-right:-15em;
+  position:absolute; bottom:auto; left:auto; right:0%;
+}
+.background .shape-2{
+  background-color:color-mix(in srgb, var(--pulse-blue, #2163af) 70%, var(--pulse-cyan, #2ea8ae) 30%); border-radius:8em;
+  width:60em; height:40em;
+  margin-left:auto; margin-right:auto;
+  position:absolute; top:-20.9em; left:-73.8em; right:0;
+}
+.background .shape-3{
+  background-color:#291c53; border-radius:999em;
+  width:53em; height:100em;
+  position:absolute; top:-19.8em; left:-26em; right:0;
+  transform:rotate(-28deg);
+}
+.background .shape-4{
+  background-color:color-mix(in srgb, var(--pulse-cyan, #2ea8ae) 65%, var(--pulse-blue, #2163af) 35%); border-radius:999em;
+  width:65em; height:40em;
+  margin-left:auto;
+  position:absolute; top:-11.3em; left:0;
+  transform:rotate(40deg);
+}
+.background .shape-5{
+  background-color:color-mix(in srgb, var(--pulse-cyan, #2ea8ae) 80%, var(--ice, #e1eef0) 20%); border-radius:999em;
+  width:30em; height:30em;
+  margin-left:auto; margin-right:auto;
+  position:absolute; top:-21.7em; left:0; right:0;
+}
+.background .shape-6{
+  background-color:color-mix(in srgb, var(--ink, #111c29) 80%, var(--pulse-violet, #291c53) 20%); border-radius:999em;
+  width:66em; height:60em;
+  margin-left:auto;
+  position:absolute; top:-11.6em; right:-25em;
+  transform:rotate(60deg);
+}
+.background .shape-7{
+  background-color:color-mix(in srgb, var(--pulse-cyan, #2ea8ae) 45%, var(--ice, #e1eef0) 55%); border-radius:999em;
+  width:20em; height:13em;
+  margin-left:auto; margin-right:auto;
+  position:absolute; top:-4.1em; left:0; right:-23.9em;
+  transform:rotate(40deg);
+}
+.background .shape-8{
+  background-color:color-mix(in srgb, var(--pulse-blue, #2163af) 40%, var(--ink, #111c29) 60%); border-radius:999em;
+  width:47em; height:119em;
+  margin-left:auto; margin-right:auto;
+  position:absolute; top:-17.1em; left:26.7em; right:0;
+  transform:rotate(29deg);
+}
+.background .shape-9{
+  background-color:color-mix(in srgb, var(--pulse-violet, #291c53) 75%, var(--ink-navy, #0a1931) 25%); border-radius:999em;
+  width:30em; height:119em;
+  position:absolute; top:-5.3em; right:1.2em;
+  transform:rotate(39deg);
+}
+
+/* The three animated shapes carry their resting rotation as the `rotate`
+   property, not inside `transform`, so the motion can drive it directly. */
+.background .shape-3{ transform:none; rotate:-28deg; }
+
+@media screen and (max-width:991px){
+  .background .shape-3{ width:44em; height:57em; position:absolute; inset:23.2em -9.5em 0 auto; }
+  .blending-group-wrapper{ margin-left:-4em; }
+  .background .shape-4{ top:22em; }
+  .ultra-gradient-wrapper{ font-size:1.3vh; }
+}
+@media screen and (max-width:767px){
+  .main-shapes-wrapper{ filter:blur(80px); }
+  .background .shape-3{ width:30em; height:100em; }
+  .background{ background-position:50%; }
+  .blending-group-wrapper{ filter:blur(80px); }
+}
+@media screen and (max-width:479px){
+  .background .shape-4{ top:30.7em; }
+}
