@@ -16,35 +16,35 @@
   },
   {
     "file": "assets/new/gramlingo/celebrate-gramlin.webp",
-    "source": "https://gramlingo.online/celebrate-gramlin.webp",
+    "source": "/mirror/gramlingo.online/celebrate-gramlin.webp",
     "kind": "original asset",
     "bytes": 25552,
     "sha256": "adc4aa42692d4789c9b317bdd7cb4f8f9d87c4905464624bbd68efff8763c42d"
   },
   {
     "file": "assets/new/gramlingo/cover-advanced.webp",
-    "source": "https://gramlingo.online/cover-advanced.webp",
+    "source": "/mirror/gramlingo.online/cover-advanced.webp",
     "kind": "original asset",
     "bytes": 25112,
     "sha256": "a8713cc3461bf417402559e177b8ad14c15ec4540786b14eb604929e3a3c3dfd"
   },
   {
     "file": "assets/new/gramlingo/cover-clauses.webp",
-    "source": "https://gramlingo.online/cover-clauses.webp",
+    "source": "/mirror/gramlingo.online/cover-clauses.webp",
     "kind": "original asset",
     "bytes": 55058,
     "sha256": "21f37eff99afb7928fa493e6c07db4350bf3beeac085249147b5d491fc92c81c"
   },
   {
     "file": "assets/new/gramlingo/cover-prepositions.webp",
-    "source": "https://gramlingo.online/cover-prepositions.webp",
+    "source": "/mirror/gramlingo.online/cover-prepositions.webp",
     "kind": "original asset",
     "bytes": 45378,
     "sha256": "c0c4daf11b8052de074b4c0304856069a04824ddf7a9329d7b20efbee739b46f"
   },
   {
     "file": "assets/new/gramlingo/cover-tenses.webp",
-    "source": "https://gramlingo.online/cover-tenses.webp",
+    "source": "/mirror/gramlingo.online/cover-tenses.webp",
     "kind": "original asset",
     "bytes": 34406,
     "sha256": "c4751d05b8015e7b896190dda3bbc0fb8e62b8e64bcc7e79a308606164d147a8"
@@ -58,7 +58,7 @@
   },
   {
     "file": "assets/new/gramlingo/gramlingo-logo.webp",
-    "source": "https://gramlingo.online/gramlingo-logo.webp",
+    "source": "/mirror/gramlingo.online/gramlingo-logo.webp",
     "kind": "original asset",
     "bytes": 22776,
     "sha256": "488f17f9f3321ea7955c97bb9ced5462d05e22e07b89ee6e3044f51dd76a02c7"
@@ -95,14 +95,14 @@
   },
   {
     "file": "assets/new/gramlingo/study-gramlin.webp",
-    "source": "https://gramlingo.online/study-gramlin.webp",
+    "source": "/mirror/gramlingo.online/study-gramlin.webp",
     "kind": "original asset",
     "bytes": 21566,
     "sha256": "3af222a67c897425edff625846a32d73240e717ce3649a088bd7dda87c584e2a"
   },
   {
     "file": "assets/new/gramlingo/think-gramlin.webp",
-    "source": "https://gramlingo.online/think-gramlin.webp",
+    "source": "/mirror/gramlingo.online/think-gramlin.webp",
     "kind": "original asset",
     "bytes": 21762,
     "sha256": "0e6399c0bd6a683cb3c403eeaa81fb27797e46671cf0d240fdb31c84bbbfa91f"

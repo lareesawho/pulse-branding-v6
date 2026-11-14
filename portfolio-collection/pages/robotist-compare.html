@@ -1,6 +1,6 @@
-<html lang="en"><head><base href="https://www.robotist.com.au/">
-<link href="/favicon.svg" rel="icon">
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+<html lang="en"><head>
+<link href="/mirror/www.robotist.com.au/favicon.svg" rel="icon">
+<link href="/mirror/www.robotist.com.au/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="yes" name="apple-mobile-web-app-capable">
@@ -21,7 +21,7 @@
 <meta content="https://www.robotist.com.au/compare.html" property="og:url">
 <meta content="Compare Robots — Robotist | Australia's Robotics Platform" property="og:title">
 <meta content="Compare 24 commercial robots side by side across humanoid, quadruped, cleaning, industrial, and companion categories." property="og:description">
-<meta content="https://www.robotist.com.au/robotist-og.jpg" property="og:image">
+<meta content="/mirror/www.robotist.com.au/robotist-og.webp" property="og:image">
 <meta content="2819" property="og:image:width">
 <meta content="1344" property="og:image:height">
 <meta content="Side-by-side robot comparison — Robotist Australia" property="og:image:alt">
@@ -31,7 +31,7 @@
 <meta content="summary_large_image" name="twitter:card">
 <meta content="Compare Robots — Robotist | Australia's Robotics Platform" name="twitter:title">
 <meta content="Compare 24 commercial robots side by side across humanoid, quadruped, cleaning, industrial, and companion categories." name="twitter:description">
-<meta content="https://www.robotist.com.au/robotist-og.jpg" name="twitter:image">
+<meta content="/mirror/www.robotist.com.au/robotist-og.webp" name="twitter:image">
 <meta content="Side-by-side robot comparison — Robotist Australia" name="twitter:image:alt">
 <style>
 /* ═══════════════════════════════════════════════
@@ -811,7 +811,7 @@ body::after {
 }
 </style>
 
-<link href="/grn/assets/cart.css" rel="stylesheet"><style id="rbf-workflow-css">.rbf-status{display:none;align-items:flex-start;gap:10px;width:100%;padding:14px 16px;font-family:var(--font-body,system-ui,sans-serif);font-size:14px;font-weight:300;line-height:1.6;text-align:left;border:1px solid transparent;margin:2px 0 0;}
+<link href="/mirror/www.robotist.com.au/grn/assets/cart.css" rel="stylesheet"><style id="rbf-workflow-css">.rbf-status{display:none;align-items:flex-start;gap:10px;width:100%;padding:14px 16px;font-family:var(--font-body,system-ui,sans-serif);font-size:14px;font-weight:300;line-height:1.6;text-align:left;border:1px solid transparent;margin:2px 0 0;}
 .rbf-status.is-visible{display:flex;}
 .rbf-status.rbf-success{color:#B7F0D3;background:rgba(62,207,142,0.10);border-color:rgba(62,207,142,0.35);}
 .rbf-status.rbf-error{color:#FFC7C9;background:rgba(229,72,77,0.10);border-color:rgba(229,72,77,0.35);}
@@ -823,13 +823,13 @@ body::after {
 @keyframes rbf-spin{to{transform:rotate(360deg);}}
 .btn-primary[disabled]{opacity:0.7;cursor:not-allowed;transform:none !important;}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent,#4AA8C8);outline-offset:2px;}
-@media (prefers-reduced-motion: reduce){.btn-primary,.rbf-spinner{animation-duration:1.4s !important;transition:none !important;}}</style><style>html{scroll-behavior:auto!important;scrollbar-width:none}body{overflow-x:hidden!important}*{animation:none!important;transition:none!important}button,input,select,textarea,a{pointer-events:none!important}.capture-hero img{width:100%;display:block}.capture-hero{padding:0!important;margin:0!important;min-height:0!important}.spline-fixed{display:none!important}.chat-widget,.inquiry-cart-fab,#cookie-banner{display:none!important}body:has(.capture-hero) nav.nav{display:none!important}section[style*="opacity: 0"]{opacity:1!important}</style><link rel="stylesheet" href="../../assets/annotate.css?v=20261004e"></head>
+@media (prefers-reduced-motion: reduce){.btn-primary,.rbf-spinner{animation-duration:1.4s !important;transition:none !important;}}</style><style>html{scroll-behavior:auto!important;scrollbar-width:none}body{overflow-x:hidden!important}*{animation:none!important;transition:none!important}button,input,select,textarea,a{pointer-events:none!important}.capture-hero img{width:100%;display:block}.capture-hero{padding:0!important;margin:0!important;min-height:0!important}.spline-fixed{display:none!important}.chat-widget,.inquiry-cart-fab,#cookie-banner{display:none!important}body:has(.capture-hero) nav.nav{display:none!important}section[style*="opacity: 0"]{opacity:1!important}</style><link rel="stylesheet" href="/assets/annotate.css?v=20261004e"></head>
 <body>
 <!-- ══════════════════════════════════════════════
      NAVIGATION
      ══════════════════════════════════════════════ -->
 <nav class="nav" id="mainNav">
-<a class="nav-logo" data-dead-href="index.html" aria-disabled="true"><img alt="Robotist" src="images/logo.svg" style="height:clamp(24px, 3.5vw, 36px);width:auto;"></a>
+<a class="nav-logo" data-dead-href="index.html" aria-disabled="true"><img alt="Robotist" src="/mirror/www.robotist.com.au/images/logo.svg" style="height:clamp(24px, 3.5vw, 36px);width:auto;"></a>
 <ul class="nav-links">
 <li><a href="/#catalogue">Catalogue</a></li>
 <li><a href="/#why">Why Robotist</a></li>
@@ -1192,4 +1192,4 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  const ready=()=>parent.postMessage({type:'portfolio-ready'},location.origin);
  ready();addEventListener('load',ready,{once:true});
  addEventListener('message',e=>{if(e.source!==parent||e.origin!==location.origin||e.data?.type!=='portfolio-playback')return;let p=e.data.progress;const ease=t=>t*t*(3-2*t);let q=p<.17?0:p<.42?.45*ease((p-.17)/.25):p<.6?.45:.45+.55*ease(Math.min(1,(p-.6)/.27));const max=Math.min(document.documentElement.scrollHeight-innerHeight,innerHeight*3.5);scrollTo(0,Math.max(0,max)*q);document.querySelectorAll('video').forEach(v=>{v.muted=true;if(e.data.active&&v.getBoundingClientRect().top<innerHeight&&v.getBoundingClientRect().bottom>0)v.play().catch(()=>{});else v.pause()});document.body.dataset.playbackProgress=q.toFixed(3)});
-})();</script><script src="../../assets/annotate.js?v=20261004e" defer></script></body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
+})();</script><script src="/assets/annotate.js?v=20261004e" defer></script></body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
