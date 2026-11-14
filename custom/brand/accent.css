@@ -57,25 +57,14 @@
   pointer-events: none;
 }
 
-/* 3b. the hairline under the navigation: the page opens on the accent */
-/* absolutely positioned: a hairline may never add to the nav's 90 px */
-/* it rides with the bar — nav-hairline.js copies the bar's own travel onto
-   --pulse-nav-lift as the bar slides out, so the line leaves with it. */
+/* 3b. no hairline under the navigation. It used to draw a cyan line at the nav's
+   foot, which is exactly the top border of whatever box was scrolling beneath it
+   — a blue line riding across every hero, every card. Lareesa asked for those
+   hairlines to go (2026-11-14), so the pseudo-element is gone and the bar keeps
+   its glass shadow alone. The lift variable stays defined for nav-lift.js. */
 nav,
 [data-framer-name="Navigation"] {
   position: relative;
-}
-nav::after {
-  content: '';
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 0;
-  height: 1px;
-  background: color-mix(in srgb, var(--pulse-cyan) 45%, transparent);
-  transform: translateY(var(--pulse-nav-lift, 0px));
-  will-change: transform;
-  pointer-events: none;
 }
 
 /* 4. the headline's last word — the template draws the closing line muted grey,
@@ -87,19 +76,17 @@ nav::after {
   color: var(--accent-soft) !important;
 }
 
-/* 4b. the hairline above the header's bottom row, on the inner pages */
-[data-framer-name="Header Bottom"] {
-  position: relative;
+/* 4b. no hairline above the header's bottom row, and none on the hero's either.
+   Both boxes drew a 1 px line across their top edge — ours in cyan, the
+   template's in pale ice. Lareesa asked for all of them gone (2026-11-14):
+   a box now meets the page with its own ground, not with a blue rule. */
+[data-framer-name="Header Bottom"]::before,
+[data-framer-name="Hero Bottom"]::before {
+  content: none;
 }
-[data-framer-name="Header Bottom"]::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1px;
-  background: color-mix(in srgb, var(--pulse-cyan) 40%, transparent);
-  pointer-events: none;
+[data-framer-name="Header Bottom"]::after,
+[data-framer-name="Hero Bottom"]::after {
+  border-top-width: 0 !important;
 }
 
 /* 5. the outline pill: a cyan hairline in place of the ice one, label lifted to
@@ -149,19 +136,23 @@ a:not([name]):focus-visible {
   color: var(--ice);
 }
 
-/* 10. the footer's hairline, above the wordmark */
-footer {
-  position: relative;
+/* 10. no hairline above the footer's wordmark: same rule as the boxes above
+   (Lareesa, 2026-11-14). The wordmark's own lift still applies. */
+
+/* 11. every button is a pill. The template mixed 9 px (form buttons, small
+   pills), 30 px (the hero's filled pill) and square corners (the case CTAs);
+   Lareesa asked for one shape on 2026-11-14. Radius only — padding and height
+   stay, so the labels do not move. The filled pills draw their glow in a child
+   layer, which inherits the curve or it would peek out of the corners. */
+[data-framer-name="Outline"],
+[data-framer-name="Light"],
+[data-framer-name="Dark"],
+button.framer-uqhdg {
+  border-radius: 999px !important;
 }
-footer::before {
-  content: '';
-  position: absolute;
-  left: 32px;
-  right: 32px;
-  top: 0;
-  height: 1px;
-  background: color-mix(in srgb, var(--pulse-cyan) 34%, transparent);
-  pointer-events: none;
+[data-framer-name="Light"] > *,
+[data-framer-name="Dark"] > * {
+  border-radius: inherit !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
