@@ -7,17 +7,19 @@
      · the document has parsed (DOMContentLoaded),
      · the fonts that the first screen needs have loaded,
      · every image inside the first screen has decoded,
-     · and the browser's own `load` event has fired, or 2.5 s have passed since
+     · and the browser's own `load` event has fired, or 1.4 s have passed since
        DOMContentLoaded (a video or a print sheet can hold `load` for a long time
        without anything on screen changing; the visual checks already cover it).
 
    Then it keeps the MIN beat so the mark does not flash, and fades out over
-   650 ms. MAX is a failsafe, not a schedule: it only fires if something above
-   never settles.
+   450 ms. MIN is deliberately short: a visitor who sees a 1.4 s held screen on
+   a connection that was ready in 400 ms reads that as the site being slow.
+   MAX is a failsafe, not a schedule: it only fires if something above never
+   settles.
 
    Options (data attributes on the script tag):
      data-text="Pulse"      loader word
-     data-min="1400"        minimum time on screen (ms)
+     data-min="800"         minimum time on screen (ms)
      data-max="12000"       failsafe ceiling (ms)
 
    Behaviour flags: ?nopreload=1 (no loader), ?loader=hold (visible, no finish).
@@ -31,9 +33,9 @@
   var script = document.currentScript;
   var opt = function (name, dflt) { return script ? (script.getAttribute(name) || dflt) : dflt; };
   var TEXT = opt('data-text', 'Pulse');
-  var MIN = parseInt(opt('data-min', '1400'), 10);
+  var MIN = parseInt(opt('data-min', '800'), 10);
   var MAX = parseInt(opt('data-max', '12000'), 10);
-  var LOAD_GRACE = 2500; // how long after DCL a held `load` event may delay us
+  var LOAD_GRACE = 1400; // how long after DCL a held `load` event may delay us
 
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (/[?&]nopreload=1/.test(location.search)) return;
@@ -87,7 +89,7 @@
       if (el && el.parentNode) el.parentNode.removeChild(el);
       root.classList.remove('pl-lock');
       document.dispatchEvent(new CustomEvent('pulse-loader:done'));
-    }, 650);
+    }, 450);
   }
 
   /* The first screen, not the whole document: an image 4 screens down is not
