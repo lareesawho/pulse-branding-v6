@@ -6,6 +6,15 @@
      · nothing moves if the video fails, the poster frame is the still;
      · a phone on a metered connection downloads nothing until it scrolls here;
      · reduced-motion visitors keep the still and never fetch a frame.
+
+   Two different things live behind the same still:
+
+   · the home page's About preview plays the studio reel clipped to the box;
+   · the about page's studio image is the brand film — "Pulse Branding Show
+     Reel 2022", the one on the old published site. That film is hosted on
+     Vimeo (referer-locked: it cannot be downloaded). It is shown as its title
+     frame with a play control, and the player is only loaded when asked for:
+     a 60-second film must not sit in the critical path of a page.
    ========================================================================== */
 (function () {
   'use strict';
@@ -25,15 +34,24 @@
   var POSTER = '/assets/video/showreel-poster.jpg';
   var POSTER_PORTRAIT = '/assets/video/showreel-poster-vertical.jpg';
 
-  /* the stills that stand in for the reel: the About block, and the studio and
-     media blocks on the about page */
+  /* the brand film, from the old published site (Vimeo 800267808) */
+  var BRAND = {
+    id: '800267808',
+    hash: '3635d126cf',
+    poster: '/assets/video/brand-reel-poster.jpg',
+    url: 'https://vimeo.com/800267808/3635d126cf',
+    player: 'https://player.vimeo.com/video/800267808?h=3635d126cf&autoplay=1&title=0&byline=0&portrait=0&dnt=1'
+  };
+
+  /* the stills that stand in for the reel: the About block on the home page,
+     and the studio block on the about page (where the brand film goes) */
   var HOSTS = [
-    '[data-framer-name="About Preview"] [data-framer-name="About Image"]',   /* home */
-    '[data-framer-name="Studio Image"]'                                      /* about */
+    { sel: '[data-framer-name="About Preview"] [data-framer-name="About Image"]' },
+    { sel: '[data-framer-name="Studio Image"]', brand: true }
   ];
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!window.HTMLVideoElement) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function source(box) {
     if (box && box.height > box.width * 0.8) return PORTRAIT;
@@ -52,7 +70,7 @@
     return (img.getAttribute('alt') || '') + '|' + Math.round(box.width / 10) + 'x' + Math.round(box.height / 10);
   }
 
-  function dress(img) {
+  function reel(img) {
     var host = img.parentElement;
     if (!host || host.dataset.reel === 'on') return null;
     var box = img.getBoundingClientRect();
@@ -90,18 +108,81 @@
     return video;
   }
 
+  /* The brand film: a title frame that becomes the player when clicked. The
+     player is a third-party iframe, so it is never in the page until the
+     visitor asks for it. */
+  function brand(img) {
+    var host = img.parentElement;
+    if (!host || host.dataset.brandReel === 'on') return null;
+    var box = img.getBoundingClientRect();
+    if (box.width < 240 || box.height < 160) return null;
+
+    host.dataset.brandReel = 'on';
+    host.classList.add('pb-brand-host');
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+
+    var button = document.createElement('a');
+    button.className = 'pb-brand';
+    button.href = BRAND.url;
+    button.target = '_blank';
+    button.rel = 'noopener';
+    button.setAttribute('aria-label', 'Play the Pulse Branding show reel, 60 seconds');
+
+    var poster = document.createElement('img');
+    poster.className = 'pb-brand-poster';
+    poster.src = BRAND.poster;
+    poster.alt = '';
+    poster.decoding = 'async';
+    button.appendChild(poster);
+
+    var scrim = document.createElement('span');
+    scrim.className = 'pb-brand-scrim';
+    button.appendChild(scrim);
+
+    var play = document.createElement('span');
+    play.className = 'pb-brand-play';
+    play.setAttribute('aria-hidden', 'true');
+    button.appendChild(play);
+
+    var label = document.createElement('span');
+    label.className = 'pb-brand-label';
+    label.textContent = 'Watch the brand film';
+    button.appendChild(label);
+
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      var frame = document.createElement('iframe');
+      frame.className = 'pb-brand-frame';
+      frame.src = BRAND.player;
+      frame.title = 'Pulse Branding Show Reel 2022';
+      frame.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      frame.setAttribute('allowfullscreen', '');
+      frame.setAttribute('frameborder', '0');
+      button.replaceWith(frame);
+    });
+
+    host.appendChild(button);
+    return button;
+  }
+
   var reels = [];
   function collect() {
-    HOSTS.forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (host) {
+    HOSTS.forEach(function (hostDef) {
+      document.querySelectorAll(hostDef.sel).forEach(function (host) {
+        if (hostDef.brand) {
+          if (host.dataset.brandReel === 'on') return;
+          var still = host.querySelector('img');
+          if (still) brand(still);
+          return;
+        }
         if (host.dataset.reel === 'on') return;
         var img = host.querySelector('img');
         if (!img) return;
-        var v = dress(img);
+        var v = reel(img);
         if (v && reels.indexOf(v) === -1) reels.push(v);
       });
     });
-    tick();
+    if (!reduce) tick();
   }
 
   function inView(v) {
@@ -113,16 +194,38 @@
 
   function tick() {
     reels.forEach(function (v) {
-      if (inView(v)) {
-        if (!v.src) v.src = v.dataset.src;
-        if (v.paused) {
-          var p = v.play();
-          if (p && p.catch) p.catch(function () {});
-        }
-      } else if (!v.paused) {
-        v.pause();
+      // near: within one screen of the slot (the observer is the cheap path, and
+      // inView() is the fallback for browsers or frames where it never fires).
+      // Until then nothing is downloaded: a phone at the top of the page must
+      // not pull a 3.5 MB film for a block two screens down.
+      var isNear = v.dataset.near === '1' || inView(v);
+      if (!isNear) {
+        if (!v.paused) v.pause();
+        return;
+      }
+      if (!v.src) v.src = v.dataset.src;
+      if (v.paused) {
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
       }
     });
+  }
+
+  var near = null;
+  function watchNear() {
+    if (!window.IntersectionObserver) {
+      reels.forEach(function (v) { v.dataset.near = '1'; });
+      return;
+    }
+    if (!near) {
+      near = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.dataset.near = '1';
+        });
+      }, { rootMargin: '400px 0px' });
+    }
+    reels.forEach(function (v) { near.observe(v); });
   }
 
   var ticking = false;
@@ -134,11 +237,12 @@
 
   function start() {
     collect();
+    watchNear();
     var runs = 0;
-    var timer = setInterval(function () { collect(); if (++runs >= 6) clearInterval(timer); }, 400);
+    var timer = setInterval(function () { collect(); watchNear(); if (++runs >= 6) clearInterval(timer); }, 400);
     new MutationObserver(function () {
       clearTimeout(start._d);
-      start._d = setTimeout(collect, 250);
+      start._d = setTimeout(function () { collect(); watchNear(); }, 250);
     }).observe(document.body, { childList: true, subtree: true });
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
