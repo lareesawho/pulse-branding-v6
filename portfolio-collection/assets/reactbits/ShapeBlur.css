@@ -1,0 +1,61 @@
+/* React Bits — Shape Blur island. The published component ships no CSS file (it inlines
+   width/height:100%), so this file is the island placement layer only — the same pattern
+   ChromaWaves.css uses for the waves field.
+
+   Placement rule from REACT_BITS_MAP.md: "Optional Shape Blur between major sections, but
+   never if it competes with the hero motion" and globally "one dominant motion idea per
+   viewport". On the service pages the hero already carries GlowingRidges and the
+   .has-waves band carries ChromaWaves, so Shape Blur goes on a late section that has no
+   other motion field. It never shares a viewport with either. */
+
+.section.has-shape-blur{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+
+/* content always paints above the field */
+.section.has-shape-blur .shell{
+  position:relative;
+  z-index:1;
+}
+
+.rb-island--blur{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.rb-island--blur .shape-blur{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.rb-island--blur canvas{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* the shape is a white SDF mask; keep it faint so it reads as ambient light, not a second
+   competing idea */
+.rb-island--blur{
+  opacity:.45;
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island paints exactly one static frame in this mode */
+  .rb-island--blur{
+    opacity:.3;
+  }
+}
+
+@media (max-width:768px){
+  .rb-island--blur{
+    opacity:.32;
+  }
+}

@@ -1,0 +1,5 @@
+/* /work index: the six demo cards are hidden, the real cards take their place inside the
+   template's own grid. Card design, crop and hover stay exactly the template's —
+   reveal + pointer chip are re-created in JS. */
+[data-framer-name="Work Card"].pulse-card-orig { display: none !important; }
+[data-framer-name="Work Card"].pulse-card.is-hidden { display: none !important; }

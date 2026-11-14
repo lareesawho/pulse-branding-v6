@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse — Ice Lab</title>
+<style>
+  @font-face{font-family:"Pulse Body";src:url("/custom/brand/fonts/inter-normal.woff2") format("woff2");font-weight:300 700;font-display:swap}
+  *{box-sizing:border-box}
+  body{margin:0;background:#08090a;color:#c9ced3;font-family:"Pulse Body",Inter,system-ui,sans-serif}
+  header{position:sticky;top:0;z-index:9;background:rgba(8,9,10,.92);backdrop-filter:blur(14px);border-bottom:1px solid #1c1e22;padding:14px 20px}
+  h1{margin:0 0 4px;font-size:15px;font-weight:500;letter-spacing:.01em;color:#e3e8ec}
+  p.sub{margin:0;font-size:12px;color:#7f868d}
+  .tabs{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  button{border:1px solid #26292e;background:#111316;color:#c9ced3;border-radius:7px;padding:9px 13px;font:500 11px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px}
+  button .sw{width:12px;height:12px;border-radius:2px;border:1px solid #333;display:inline-block}
+  button[aria-pressed="true"]{border-color:#e1eef0;background:#1a1d21;color:#fff}
+  .hint{font-size:11px;color:#6d747b;margin-top:8px}
+  main{padding:16px 20px 60px;max-width:1500px}
+  .opt{display:none} .opt.active{display:block}
+  .opt h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:#aeb5bc;margin:6px 0 2px}
+  .opt .note{font-size:12px;color:#767d84;margin:0 0 14px}
+  figure{margin:0 0 18px}
+  figcaption{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6d747b;margin:0 0 6px}
+  img{width:100%;display:block;border:1px solid #1b1d21;border-radius:3px}
+  .legend{font-size:11px;color:#6d747b;margin-top:26px;border-top:1px solid #1c1e22;padding-top:14px}
+</style></head>
+<body>
+<header>
+  <h1>Pulse — Ice Lab</h1>
+  <p class="sub">The clone under each “white”, same page and scroll positions. Flip the tabs; the 1:1 crop is unscaled so you can judge the tint honestly.</p>
+  <div class="tabs" id="tabs">
+    <button data-opt="ffffff" aria-pressed="false"><span class="sw" style="background:#ffffff"></span>Pure White <span style="opacity:.55">#FFFFFF</span></button><button data-opt="e1eef0" aria-pressed="false"><span class="sw" style="background:#e1eef0"></span>Pulse Ice <span style="opacity:.55">#E1EEF0</span></button><button data-opt="d6eaf0" aria-pressed="true"><span class="sw" style="background:#d6eaf0"></span>Deeper Ice <span style="opacity:.55">#D6EAF0</span></button><button data-opt="c9e2ec" aria-pressed="false"><span class="sw" style="background:#c9e2ec"></span>Blue-Leaning <span style="opacity:.55">#C9E2EC</span></button>
+  </div>
+  <div class="hint">Live site right now: <strong>#D6EAF0</strong>. To keep one, reply “keep ice #D6EAF0” and so on.</div>
+</header>
+<main>
+  <section class="opt " data-opt="ffffff">
+    <h2>Pure White — #FFFFFF</h2>
+    <p class="note">The template exactly. Hardest contrast.</p>
+    <figure><figcaption>1:1 — headline (unscaled)</figcaption><img src="/custom/ice-lab/ffffff-zoom.jpg" alt=""></figure>
+    <figure><figcaption>Hero</figcaption><img loading="lazy" src="/custom/ice-lab/ffffff-hero.jpg" alt=""></figure><figure><figcaption>Selected work</figcaption><img loading="lazy" src="/custom/ice-lab/ffffff-work.jpg" alt=""></figure><figure><figcaption>Services</figcaption><img loading="lazy" src="/custom/ice-lab/ffffff-services.jpg" alt=""></figure><figure><figcaption>Footer</figcaption><img loading="lazy" src="/custom/ice-lab/ffffff-footer.jpg" alt=""></figure>
+  </section><section class="opt " data-opt="e1eef0">
+    <h2>Pulse Ice — #E1EEF0</h2>
+    <p class="note">Brand token. Cool off-white. (previous live value)</p>
+    <figure><figcaption>1:1 — headline (unscaled)</figcaption><img src="/custom/ice-lab/e1eef0-zoom.jpg" alt=""></figure>
+    <figure><figcaption>Hero</figcaption><img loading="lazy" src="/custom/ice-lab/e1eef0-hero.jpg" alt=""></figure><figure><figcaption>Selected work</figcaption><img loading="lazy" src="/custom/ice-lab/e1eef0-work.jpg" alt=""></figure><figure><figcaption>Services</figcaption><img loading="lazy" src="/custom/ice-lab/e1eef0-services.jpg" alt=""></figure><figure><figcaption>Footer</figcaption><img loading="lazy" src="/custom/ice-lab/e1eef0-footer.jpg" alt=""></figure>
+  </section><section class="opt active" data-opt="d6eaf0">
+    <h2>Deeper Ice — #D6EAF0</h2>
+    <p class="note">Clearly cooler, still reads white. LIVE RIGHT NOW.</p>
+    <figure><figcaption>1:1 — headline (unscaled)</figcaption><img src="/custom/ice-lab/d6eaf0-zoom.jpg" alt=""></figure>
+    <figure><figcaption>Hero</figcaption><img loading="lazy" src="/custom/ice-lab/d6eaf0-hero.jpg" alt=""></figure><figure><figcaption>Selected work</figcaption><img loading="lazy" src="/custom/ice-lab/d6eaf0-work.jpg" alt=""></figure><figure><figcaption>Services</figcaption><img loading="lazy" src="/custom/ice-lab/d6eaf0-services.jpg" alt=""></figure><figure><figcaption>Footer</figcaption><img loading="lazy" src="/custom/ice-lab/d6eaf0-footer.jpg" alt=""></figure>
+  </section><section class="opt " data-opt="c9e2ec">
+    <h2>Blue-Leaning — #C9E2EC</h2>
+    <p class="note">Visibly icy blue. Biggest statement.</p>
+    <figure><figcaption>1:1 — headline (unscaled)</figcaption><img src="/custom/ice-lab/c9e2ec-zoom.jpg" alt=""></figure>
+    <figure><figcaption>Hero</figcaption><img loading="lazy" src="/custom/ice-lab/c9e2ec-hero.jpg" alt=""></figure><figure><figcaption>Selected work</figcaption><img loading="lazy" src="/custom/ice-lab/c9e2ec-work.jpg" alt=""></figure><figure><figcaption>Services</figcaption><img loading="lazy" src="/custom/ice-lab/c9e2ec-services.jpg" alt=""></figure><figure><figcaption>Footer</figcaption><img loading="lazy" src="/custom/ice-lab/c9e2ec-footer.jpg" alt=""></figure>
+  </section>
+  <p class="legend">Generated from the live clone by <code>tools/brand/ice-lab.js</code> — served by the same <code>serve.js</code>, so nothing here is a mock-up.</p>
+</main>
+<script>
+  var tabs = document.getElementById('tabs');
+  tabs.addEventListener('click', function (e) {
+    var btn = e.target.closest('button'); if (!btn) return;
+    var id = btn.getAttribute('data-opt');
+    document.querySelectorAll('#tabs button').forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+    document.querySelectorAll('.opt').forEach(function (s) { s.classList.toggle('active', s.getAttribute('data-opt') === id); });
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+  });
+  if (location.hash) { var b = document.querySelector('#tabs button[data-opt="' + location.hash.slice(1) + '"]'); if (b) b.click(); }
+</script>
+</body></html>

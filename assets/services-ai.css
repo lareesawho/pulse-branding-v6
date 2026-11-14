@@ -1,0 +1,215 @@
+/* ============================================================================
+   SERVICE MODULE — AI CONSULTING
+   Concept: SYSTEM. Context → memory → tools → permission → action → verification
+   → escalation. The page behaves like a system rather than describing one.
+   Loaded only by ai-consulting.html.
+   ========================================================================= */
+
+/* 1 — hero: the supervised-action console is the hero visual --------------- */
+/* 1 — hero: the system, operating (dark: this page opens inside the machine) */
+.ai-hero{padding-block:clamp(96px,10vw,148px) clamp(72px,8vw,116px)}
+.ai-hero__grid{align-items:center}
+.ai-hero h1{margin-top:22px;max-width:13ch}
+.ai-hero .svc-lead{margin-top:28px;max-width:34ch}
+.ai-hero .svc-act{margin-top:32px}
+.ai-console{
+  background:#050d16;border:1px solid rgba(225,238,240,.24);
+  box-shadow:0 50px 90px -60px rgba(0,0,0,.9);
+  color:#dfeaee;font-family:var(--svc-mono,ui-monospace,Menlo,monospace);
+  font-size:13.5px;line-height:1.6;
+}
+.ai-console__bar{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  border-bottom:1px solid rgba(225,238,240,.12);background:rgba(225,238,240,.03);
+}
+.ai-console__dot{width:8px;height:8px;border-radius:50%;background:var(--pulse-cyan)}
+.ai-console__title{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(225,238,240,.62)}
+.ai-console__state{margin-left:auto;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--pulse-cyan);white-space:nowrap}
+.ai-console__body{padding:clamp(20px,2.2vw,30px) clamp(18px,2vw,28px)}
+.ai-console__k{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(225,238,240,.5)}
+.ai-console__event{margin-top:10px;font-size:15px;color:#fff}
+.ai-console__row{margin-top:18px;padding-top:16px;border-top:1px solid rgba(225,238,240,.1)}
+.ai-console__acts{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.ai-console__acts span:before{content:"→ ";color:var(--pulse-cyan)}
+.ai-console__perm{
+  margin-top:22px;padding:12px 14px;border:1px solid rgba(46,168,174,.5);
+  background:rgba(46,168,174,.1);display:flex;align-items:center;gap:12px;
+}
+.ai-console__perm b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--pulse-cyan);font-weight:600}
+.ai-console__btns{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.ai-console__btn{
+  appearance:none;cursor:pointer;background:transparent;border:1px solid rgba(225,238,240,.34);
+  color:#dfeaee;font:inherit;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:12px 20px;
+}
+.ai-console__meta{
+  margin-top:16px;padding-top:14px;border-top:1px solid rgba(225,238,240,.1);
+  display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(225,238,240,.42);
+}
+.ai-console__btn--go{background:var(--pulse-cyan);border-color:var(--pulse-cyan);color:#04202a;font-weight:600}
+.ai-console__btn:hover{border-color:#fff;color:#fff}
+.ai-console__btn--go:hover{background:#fff;color:#04202a}
+.ai-console__foot{margin-top:16px;font-size:12px;color:rgba(225,238,240,.55);font-family:var(--font-body)}
+.ai-console__verdict{margin-top:14px;font-size:12.5px;font-family:var(--font-body)}
+
+/* 2 — the real problem: a cascading log ----------------------------------- */
+.ai-prob{padding-block:clamp(112px,13vw,180px)}
+.ai-prob__state{grid-column:1/span 6}
+.ai-prob__log{grid-column:8/span 5;display:flex;flex-direction:column;gap:0;align-self:end}
+.ai-log__row{
+  display:grid;grid-template-columns:26px 1fr;gap:14px;align-items:start;
+  padding-block:clamp(12px,1.4vw,18px);border-top:1px solid rgba(10,25,49,.14);
+  font-family:var(--font-mono,ui-monospace,Menlo,monospace);font-size:14px;line-height:1.5;
+}
+.ai-log__row:last-child{border-bottom:1px solid rgba(10,25,49,.14)}
+.ai-log__dot{margin-top:6px;width:7px;height:7px;background:rgba(10,25,49,.3)}
+.ai-log__row--open .ai-log__dot{background:var(--pulse-cyan)}
+.ai-log__row--open{color:var(--ink-navy)}
+.ai-log__q{font-family:var(--font-body)}
+.ai-prob__big{
+  margin-top:36px;font-family:var(--font-display);font-size:clamp(22px,2.2vw,32px);
+  line-height:1.2;letter-spacing:-.02em;max-width:30ch;
+}
+
+/* 3 — system anatomy: the defining diagram -------------------------------- */
+.ai-anat{background:var(--deep-navy);color:var(--ice);padding-block:clamp(112px,13vw,180px)}
+.ai-anat__head{grid-column:1/span 7}
+.ai-anat__head h2{max-width:22ch}
+.ai-anat__flow{
+  grid-column:1/span 12;margin-top:clamp(48px,6vw,84px);position:relative;
+}
+.ai-flow{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+  border-top:1px solid rgba(225,238,240,.28);
+}
+.ai-node{
+  position:relative;padding:clamp(20px,2.2vw,30px) clamp(10px,1.2vw,18px) clamp(22px,2.4vw,34px) 0;
+  border-right:1px solid rgba(225,238,240,.14);
+  background:transparent;cursor:default;
+}
+.ai-node:last-child{border-right:0}
+.ai-node__i{font-size:11.5px;letter-spacing:.14em;color:var(--pulse-cyan);font-weight:600}
+.ai-node__n{
+  margin-top:14px;font-family:var(--font-display);font-size:clamp(17px,1.5vw,22px);
+  line-height:1.1;letter-spacing:-.02em;
+}
+.ai-node__d{margin-top:10px;font-size:14px;line-height:1.5;color:rgba(225,238,240,.66)}
+.ai-node__more{
+  margin-top:12px;font-size:13px;line-height:1.5;color:var(--ice);
+  max-height:0;overflow:hidden;opacity:0;transition:max-height .4s var(--sys-ease),opacity .3s var(--sys-ease);
+}
+.ai-node:hover .ai-node__more,.ai-node.is-open .ai-node__more,.ai-node:focus-within .ai-node__more{
+  max-height:180px;opacity:1;
+}
+.ai-node__bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--pulse-cyan);transition:width .45s var(--sys-ease)}
+.ai-node:hover .ai-node__bar,.ai-node.is-open .ai-node__bar{width:34px}
+.ai-escalate{
+  margin-top:clamp(28px,3.4vw,48px);
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+}
+.ai-escalate__cell{grid-column:6 / span 2;border-top:1px solid rgba(46,168,174,.5);padding-top:18px;position:relative}
+.ai-escalate__cell:before{
+  content:"";position:absolute;left:0;top:-1px;width:2px;height:22px;background:var(--pulse-cyan);
+}
+.ai-escalate__k{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--pulse-cyan);font-weight:600}
+.ai-escalate__v{margin-top:12px;font-size:14.5px;line-height:1.5;color:rgba(225,238,240,.8);max-width:34ch}
+
+/* 4 — try the system ------------------------------------------------------ */
+.ai-try{padding-block:clamp(104px,12vw,168px)}
+.ai-try__head{grid-column:1/span 5}
+.ai-tabs{grid-column:1/span 12;margin-top:clamp(36px,4vw,60px);display:flex;gap:0;border-bottom:1px solid rgba(10,25,49,.16)}
+.ai-tab{
+  appearance:none;background:transparent;border:0;border-bottom:2px solid transparent;
+  font:inherit;font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;
+  color:#7a848c;padding:14px 22px;cursor:pointer;
+}
+.ai-tab[aria-selected="true"]{color:var(--ink-navy);border-bottom-color:var(--pulse-blue)}
+.ai-tab:hover{color:var(--ink-navy)}
+.ai-workspace{grid-column:1/span 12;display:grid;grid-template-columns:7fr 4fr;gap:0;border:1px solid rgba(10,25,49,.14);border-top:0}
+.ai-conv{padding:clamp(20px,2.6vw,38px);border-right:1px solid rgba(10,25,49,.14);min-height:420px}
+.ai-conv__line{display:grid;grid-template-columns:80px 1fr;gap:16px;padding-block:16px}
+.ai-conv__line+.ai-conv__line{border-top:1px solid rgba(10,25,49,.1)}
+.ai-conv__who{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;font-weight:600;padding-top:4px}
+.ai-conv__line--sys .ai-conv__who{color:var(--pulse-blue)}
+.ai-conv__say{font-size:16.5px;line-height:1.55;color:var(--ink-navy)}
+.ai-conv__line--sys .ai-conv__say{font-family:var(--font-serif);font-style:italic;font-size:18px}
+.ai-state{padding:clamp(18px,2.2vw,30px);background:#f4f4f1;font-family:var(--font-mono,Menlo,monospace);font-size:13px}
+.ai-state__k{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:#7a848c;font-weight:600;font-family:var(--font-body)}
+.ai-state__row{padding-block:14px;border-top:1px solid rgba(10,25,49,.12)}
+.ai-state__row:first-of-type{border-top:0;padding-top:0}
+.ai-state__v{margin-top:6px;color:var(--ink-navy);line-height:1.5}
+.ai-state__ok{color:#1c7a5a}
+.ai-state__hold{color:#a8531f}
+
+/* 5 — what we build: workflows, not descriptions -------------------------- */
+.ai-wf{padding-block:clamp(104px,12vw,168px)}
+.ai-wf__head{grid-column:1/span 5}
+.ai-wf__list{grid-column:1/span 12;margin-top:clamp(36px,4vw,60px)}
+.ai-wb{border-top:1px solid rgba(10,25,49,.14);padding-block:clamp(22px,2.6vw,34px);display:grid;grid-template-columns:200px 1fr;gap:clamp(16px,2.4vw,40px);align-items:start}
+.ai-wb:last-child{border-bottom:1px solid rgba(10,25,49,.14)}
+.ai-wb__k{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--ink-navy);padding-top:6px}
+.ai-chain{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--font-mono,Menlo,monospace);font-size:13.5px}
+.ai-chip{border:1px solid rgba(10,25,49,.2);padding:7px 12px;color:var(--ink-navy);background:#fff}
+.ai-chip--act{border-color:var(--pulse-blue);color:var(--pulse-blue)}
+.ai-chip--hold{border-color:#a8531f;color:#a8531f}
+.ai-arrow{color:#9aa4ab}
+
+/* 6 — built here: one ecosystem ------------------------------------------ */
+.ai-eco{background:#f0f0ec;padding-block:clamp(104px,12vw,168px)}
+.ai-eco__head{grid-column:1/span 6}
+.ai-eco__flow{grid-column:1/span 12;margin-top:clamp(40px,5vw,72px);display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:center;gap:0}
+.ai-eco__card{background:#fff;border:1px solid rgba(10,25,49,.12)}
+.ai-eco__shot{background:#0d1218;overflow:hidden}
+.ai-eco__shot img{display:block;width:100%;height:auto}
+.ai-eco__body{padding:16px 18px 20px}
+.ai-eco__k{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--pulse-cyan);font-weight:600}
+.ai-eco__v{margin-top:10px;font-size:15px;line-height:1.5;color:#3d4750}
+.ai-eco__link{text-align:center;color:#6c767e;font-size:24px;line-height:1}
+.ai-eco__legend{grid-column:1/span 12;margin-top:22px}
+
+/* 7 — AI visibility: what a person reads, what a machine extracts --------- */
+.ai-vis{padding-block:clamp(112px,13vw,180px)}
+.ai-vis__head{grid-column:1/span 6}
+.ai-vis__pair{grid-column:1/span 12;margin-top:clamp(36px,4vw,60px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,56px)}
+.ai-vis__col+.ai-vis__col{border-left:1px solid rgba(10,25,49,.14);padding-left:clamp(20px,3vw,56px)}
+.ai-vis__k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;font-weight:600}
+.ai-vis__quote{margin-top:20px;font-family:var(--font-serif);font-style:italic;font-size:clamp(20px,1.9vw,28px);line-height:1.35;color:var(--ink-navy)}
+.ai-vis__list{margin-top:22px;display:flex;flex-direction:column}
+.ai-vis__list div{display:grid;grid-template-columns:120px 1fr;gap:14px;padding-block:12px;border-top:1px solid rgba(10,25,49,.12);font-family:var(--font-mono,Menlo,monospace);font-size:13.5px}
+.ai-vis__list div:last-child{border-bottom:1px solid rgba(10,25,49,.12)}
+.ai-vis__list b{font-weight:600;color:#7a848c;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-family:var(--font-body);padding-top:3px}
+
+/* 8 — CTA ----------------------------------------------------------------- */
+.ai-cta{background:var(--ink-navy);color:var(--ice);padding-block:clamp(112px,13vw,180px)}
+.ai-cta h2{grid-column:1/span 7}
+.ai-cta__side{grid-column:9/span 4;align-self:end;display:flex;flex-direction:column;gap:24px}
+
+@media (max-width:900px){
+  .ai-hero__grid{align-items:start}
+  .ai-console{margin-top:36px;font-size:12.5px}
+  .ai-prob__state,.ai-prob__log{grid-column:1 / -1}
+  .ai-prob__log{margin-top:36px}
+  .ai-anat__head{grid-column:1 / -1}
+  .ai-flow{grid-template-columns:1fr;border-top:0}
+  .ai-node{border-right:0;border-top:1px solid rgba(225,238,240,.2);padding:18px 0}
+  .ai-node__more{max-height:none;opacity:1}
+  .ai-escalate{grid-template-columns:1fr}
+  .ai-escalate__cell{grid-column:1 / -1}
+  .ai-escalate__cell:before{height:14px}
+  .ai-try__head{grid-column:1 / -1}
+  .ai-tabs{grid-column:1 / -1;overflow-x:auto}
+  .ai-tab{padding:12px 16px;white-space:nowrap}
+  .ai-workspace{grid-column:1 / -1;grid-template-columns:1fr}
+  .ai-conv{border-right:0;border-bottom:1px solid rgba(10,25,49,.14);min-height:0}
+  .ai-wf__head,.ai-wf__list{grid-column:1 / -1}
+  .ai-wb{grid-template-columns:1fr;gap:14px}
+  .ai-eco__head,.ai-eco__flow{grid-column:1 / -1}
+  .ai-eco__flow{grid-template-columns:1fr;gap:14px}
+  .ai-eco__link{transform:rotate(90deg)}
+  .ai-vis__head,.ai-vis__pair{grid-column:1 / -1}
+  .ai-vis__pair{grid-template-columns:1fr}
+  .ai-vis__col+.ai-vis__col{border-left:0;padding-left:0;border-top:1px solid rgba(10,25,49,.14);padding-top:28px}
+  .ai-cta h2,.ai-cta__side{grid-column:1 / -1}
+  .ai-cta__side{margin-top:32px}
+}

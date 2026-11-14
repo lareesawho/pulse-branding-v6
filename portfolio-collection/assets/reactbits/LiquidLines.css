@@ -1,0 +1,40 @@
+/* LiquidLines island — React Bits Pro component (paid), used inside Lareesa's private project
+   at her direction. Scoped under .rb-island so it never leaks into the page.
+
+   Placement rule from REACT_BITS_MAP.md: one dominant motion idea per viewport. This field
+   replaces the ChromaWaves band on the pages that had one, or fills a single dark band on the
+   pages that had none, so it never competes with the hero's GlowingRidges. Markup:
+   <section class="section dark has-liquid"> + the island.
+
+   The component's fragment writes alpha 1.0 and its material is not transparent, so the canvas
+   is a full plate: the island opacity below is what makes it ambient, and backgroundColor is
+   set to the band's own navy in data-rb-props so the plate and the band read as one surface.
+   It therefore only goes on dark bands. */
+
+.section.has-liquid{position:relative;isolation:isolate}
+
+.section.has-liquid .shell{position:relative;z-index:1}
+
+.rb-island--liquid{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.5;
+}
+
+.rb-island--liquid .rb-liquid-lines{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+
+.rb-island--liquid canvas{display:block;width:100%;height:100%}
+
+/* dissolve the plate at the top and bottom so the band does not end on a straight seam */
+.rb-island--liquid{
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%);
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island renders a single static frame in this mode; keep it faint */
+  .rb-island--liquid{opacity:.4}
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The ground — pulse-branding.com, in the palette</title>
+<link rel="stylesheet" href="/custom/brand/palette.css">
+<link rel="stylesheet" href="/gradient/gradient-ground.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--deep-navy);color:var(--text-on-dark);
+       font:15px/1.6 Inter,system-ui,sans-serif}
+  header{padding:40px 32px 20px;border-bottom:1px solid var(--line-on-dark)}
+  h1{margin:0 0 8px;font:600 26px/1.15 Montserrat,Inter,sans-serif;letter-spacing:-.01em}
+  header p{margin:0;color:var(--text-on-dark-dim);max-width:80ch}
+  main{padding:28px 32px 90px;display:grid;gap:28px;max-width:1320px}
+  h2{margin:0 0 10px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em;
+     text-transform:uppercase;color:var(--text-on-dark-dim)}
+  .hero{border-radius:16px}
+  .hero .copy{position:absolute;left:clamp(20px,4vw,56px);bottom:clamp(20px,4vw,52px);
+              z-index:5;max-width:640px}
+  .hero h3{margin:0 0 10px;font:600 clamp(26px,3.2vw,46px)/1.08 Montserrat,Inter,sans-serif;letter-spacing:-.02em}
+  .hero p{margin:0;color:var(--text-on-dark-dim);font-size:16px}
+  .row{display:grid;gap:18px}
+  .row.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .row.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .band{border-radius:14px;height:190px;aspect-ratio:auto}
+  .band span{position:absolute;left:24px;bottom:18px;z-index:5;
+             font:600 14px/1.3 Montserrat,Inter,sans-serif}
+  .frame{border-radius:12px}
+  @media (max-width:900px){
+    .row.three,.row.two{grid-template-columns:1fr}
+    main{padding:20px 16px 60px} header{padding:28px 16px 16px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>The ground — pulse-branding.com, rebuilt in the palette</h1>
+  <p>Nine shapes, two blur groups at 120 px, the second in overlay, grain at 30 % over both — the live
+    hero's own geometry, sized by ratio instead of by luck. Every colour is a brand-centre value or a mix
+    of two, and there is no WebGL: this is CSS, so it cannot fail to render.</p>
+</header>
+
+<main>
+  <section>
+    <h2>16 / 9 — the hero</h2>
+    <div class="pg hero" data-ratio="16/9">
+      <div class="copy">
+        <h3>Your One-stop Solution for 0-1 Brand Building</h3>
+        <p>Brand, digital and AI consulting — from the first question to the shipped system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>1.32 / 1 — the case card, filled to its box</h2>
+    <div class="pg band" data-ratio="fill">
+      <span>Same ground, cropping with the frame</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>The three working ratios</h2>
+    <div class="row three">
+      <div>
+        <h2>1.32 / 1 — card</h2>
+        <div class="pg frame" data-ratio="1.32"></div>
+      </div>
+      <div>
+        <h2>1 / 1 — square</h2>
+        <div class="pg frame" data-ratio="1/1"></div>
+      </div>
+      <div>
+        <h2>4 / 5 — portrait</h2>
+        <div class="pg frame" data-ratio="4/5"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>On paper, and held still</h2>
+    <div class="row two">
+      <div>
+        <h2>veiled — a light section</h2>
+        <div class="pg frame" data-ratio="1.32" data-veil="true" data-opacity="0.38"></div>
+      </div>
+      <div>
+        <h2>paused — a still frame</h2>
+        <div class="pg frame" data-ratio="1.32" data-paused="true"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/gradient/gradient-ground.js" defer></script>
+</body>
+</html>

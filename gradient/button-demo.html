@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse button — the ground inside the pill</title>
+<link rel="stylesheet" href="/custom/brand/palette.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--deep-navy);color:var(--ice);font:15px/1.6 Inter,system-ui,sans-serif}
+  header{padding:40px 32px 18px;border-bottom:1px solid rgba(var(--ice-rgb),.12)}
+  h1{margin:0 0 8px;font:600 25px/1.15 Montserrat,Inter,sans-serif;letter-spacing:-.01em}
+  p{margin:0;color:var(--text-on-dark-dim);max-width:84ch}
+  main{padding:40px 32px 80px;display:grid;gap:34px}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:center}
+  .stage{flex:1 1 420px;min-width:300px;border:1px solid rgba(var(--ice-rgb),.12);border-radius:16px;padding:34px;background:var(--surface-raised)}
+  h2{margin:0 0 14px;font:600 10px/1 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--text-on-dark-dim)}
+  .note{margin:14px 0 0;color:var(--text-on-dark-dim);font-size:13px}
+
+  /* ---------- the button ---------- */
+  .pbtn{
+    --h: 52px; --r: 999px; --k: .14; --y: 0px;
+    position:relative; display:inline-flex; align-items:center; justify-content:center;
+    height:var(--h); padding:0 26px; border:0; border-radius:var(--r); overflow:hidden;
+    font:600 11px/1 Inter,sans-serif; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ice); text-decoration:none; cursor:pointer; isolation:isolate;
+    box-shadow: inset 0 0 0 1px rgba(var(--ice-rgb),.10);
+    transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease;
+  }
+  .pbtn:hover{ transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(var(--ice-rgb),.16), 0 0 0 1px rgba(var(--pulse-cyan-rgb),.32), 0 8px 28px rgba(var(--pulse-cyan-rgb),.22), 0 10px 30px rgba(0,0,0,.45); }
+  .pbtn:active{ transform: translateY(0); }
+  .pbtn > .txt{ position:relative; z-index:3; }
+
+  /* ---------- the ground, shrunk into the pill ----------
+     The same nine shapes, the same two blur groups and the same grain as the site
+     background, laid out at 1440 x 900 and scaled by --k = pill width / 1440, so
+     the composition keeps its ratio and the pill simply crops it. */
+  .pbtn .bg{ position:absolute; inset:0; overflow:hidden; border-radius:inherit; z-index:0; pointer-events:none; }
+  .aura{
+    position:absolute; top:0; left:0; width:1440px; height:900px;
+    transform-origin:0 0; transform: translateY(var(--y)) scale(var(--k));
+  }
+  .aura .wrap{ position:absolute; inset:0; background:var(--deep-navy); font-size:14.4px; overflow:hidden; }
+  .aura .group-a{ position:absolute; inset:0; filter:blur(120px); }
+  .aura .group-b{ position:absolute; inset:0; filter:blur(120px); mix-blend-mode:overlay; z-index:1; }
+  .aura .noise{ position:absolute; inset:0; z-index:2; opacity:.3; background:url("noise.png"); }
+  .aura i{ position:absolute; display:block; border-radius:999em; }
+
+  .aura .s1{ background:#2163af; width:40em; height:40em; margin-top:-15em; margin-right:-15em; right:0; }
+  .aura .s2{ background:color-mix(in srgb, var(--pulse-blue) 70%, var(--pulse-cyan)); border-radius:8em; width:60em; height:40em; margin-left:auto; margin-right:auto; top:-20.9em; left:-73.8em; right:0; }
+  .aura .s3{ background:#291c53; width:53em; height:100em; top:-19.8em; left:-26em; right:0; transform:rotate(-28deg); }
+  .aura .s4{ background:color-mix(in srgb, var(--pulse-cyan) 70%, var(--pulse-blue)); width:65em; height:40em; margin-left:auto; top:-11.3em; left:0; transform:rotate(40deg); }
+  .aura .s5{ background:var(--pulse-cyan); width:30em; height:30em; margin-left:auto; margin-right:auto; top:-21.7em; left:0; right:0; }
+  .aura .s6{ background:color-mix(in srgb, var(--ink-navy) 72%, var(--pulse-blue)); width:66em; height:60em; margin-left:auto; top:-11.6em; right:-25em; transform:rotate(60deg); }
+  .aura .s7{ background:color-mix(in srgb, var(--pulse-cyan) 45%, var(--ice)); width:20em; height:13em; margin-left:auto; margin-right:auto; top:-4.1em; left:0; right:-23.9em; transform:rotate(40deg); }
+  .aura .s8{ background:color-mix(in srgb, var(--pulse-cyan) 45%, var(--deep-navy)); width:47em; height:119em; margin-left:auto; margin-right:auto; top:-17.1em; left:26.7em; right:0; transform:rotate(29deg); }
+  .aura .s9{ background:color-mix(in srgb, var(--pulse-violet) 55%, var(--ink)); width:30em; height:119em; top:-5.3em; right:1.2em; transform:rotate(39deg); }
+
+  /* the border light: a band runs along the pill's own edge, left over the top to
+     the right. No wedge, no rotation from the centre. */
+  @property --edge { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  .pbtn .ring{
+    position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none; z-index:2;
+    background:conic-gradient(from var(--edge),
+      rgba(var(--pulse-cyan-rgb),0) 0deg,
+      rgba(var(--pulse-cyan-rgb),0) 250deg,
+      rgba(143,240,226,.95) 310deg,
+      rgba(46,168,174,.9) 340deg,
+      rgba(46,168,174,0) 360deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .2s ease;
+  }
+  .pbtn:hover .ring{ opacity:1; animation: edge-run 1.15s linear infinite; }
+  @keyframes edge-run{ from{ --edge:180deg } to{ --edge:540deg } }
+
+  /* outline: no ground, same edge light */
+  .pbtn--quiet{ box-shadow: inset 0 0 0 1px rgba(var(--ice-rgb),.18); }
+  .pbtn--quiet .bg{ display:none; }
+  .pbtn--quiet:hover{ background: rgba(var(--ice-rgb),.04); }
+
+  .pbtn--sm{ --h:44px; font-size:10px; padding:0 20px; }
+  .pbtn--lg{ --h:60px; font-size:12px; padding:0 32px; }
+
+  @media (prefers-reduced-motion: reduce){ .pbtn .ring{ animation: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pulse button — the ground inside the pill</h1>
+  <p>The fill is the site background itself — nine shapes, two blur groups, the grain — shrunk onto the pill at ratio. On hover the border lights up and breathes. Nothing travels around the edge.</p>
+</header>
+
+<main>
+  <section class="stage">
+    <h2>Primary — the ground, scaled in</h2>
+    <div class="row">
+      <a class="pbtn" href="#"><span class="bg" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span><span class="txt">Start a project</span></a>
+      <a class="pbtn pbtn--sm" href="#"><span class="bg" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span><span class="txt">Free audit</span></a>
+      <a class="pbtn pbtn--lg" href="#"><span class="bg" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span><span class="txt">Book a call</span></a>
+    </div>
+    <p class="note">Same markup as the background component, scaled by the pill's own width; the pill crops it.</p>
+  </section>
+
+  <section class="stage">
+    <h2>Outline — same edge light</h2>
+    <div class="row">
+      <a class="pbtn pbtn--quiet" href="#"><span class="ring" aria-hidden="true"></span><span class="txt">Explore the collaboration</span></a>
+      <a class="pbtn pbtn--quiet pbtn--lg" href="#"><span class="ring" aria-hidden="true"></span><span class="txt">See the work</span></a>
+    </div>
+  </section>
+
+  <section class="stage">
+    <h2>On the real ground</h2>
+    <div id="ground" style="position:relative;border-radius:14px;overflow:hidden;height:260px"></div>
+  </section>
+</main>
+
+<script>
+  // the background component, structure verbatim
+  const AURA = `
+    <div class="aura">
+      <div class="wrap">
+        <div class="group-a"><i class="s3"></i><i class="s2"></i><i class="s1"></i></div>
+        <div class="group-b"><i class="s8"></i><i class="s9"></i><i class="s4"></i><i class="s5"></i><i class="s7"></i><i class="s6"></i></div>
+        <div class="noise"></div>
+      </div>
+    </div>`;
+
+  for (const box of document.querySelectorAll('.pbtn .bg')) box.insertAdjacentHTML('afterbegin', AURA);
+  document.getElementById('ground').insertAdjacentHTML('afterbegin', AURA);
+
+  // the pill takes the ground at its own width / 1440, so the ratio never changes
+  function scale() {
+    for (const btn of document.querySelectorAll('.pbtn')) {
+      const bg = btn.querySelector('.bg');
+      if (!bg) continue;
+      btn.style.setProperty('--k', (btn.getBoundingClientRect().width / 1440).toFixed(4));
+    }
+    const ground = document.getElementById('ground');
+    if (ground) {
+      const k = ground.getBoundingClientRect().width / 1440;
+      ground.querySelector('.aura').style.transform = `scale(${k})`;
+    }
+  }
+  scale();
+  addEventListener('resize', scale);
+  document.fonts?.ready.then(scale);
+</script>
+</body>
+</html>

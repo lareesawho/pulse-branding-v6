@@ -1,0 +1,238 @@
+/* ============================================================================
+   PULSE SERVICE PAGES — CORE
+   Shared foundation for the four service pages only:
+     brand-strategy · brand-identity · digital-experience · ai-consulting
+
+   Every rule is scoped under `.svc`, so nothing here can reach the rest of the
+   site. Tokens come from assets/pulse-system.css (one fact, one home): this file
+   declares no colour of its own beyond the six-token palette and its channel
+   forms.
+
+   The four pages share this file and nothing else. Each page then loads one
+   module sheet of its own (services-strategy / -identity / -digital / -ai); no
+   two pages load the same module, which is what keeps their skeletons from
+   converging.
+
+   2026-10-07 — Lareesa: the four pages were "failed compositions": same rhythm,
+   same numbered grids, same card rows. Foundation only; the composition lives in
+   the page modules.
+   ========================================================================= */
+
+.svc{
+  --svc-max:1280px;
+  --svc-measure:660px;
+  --svc-gap:clamp(18px,2vw,28px);
+  /* Rhythm: five deliberate steps, never one universal padding-block. */
+  --ry-intimate:clamp(56px,7vw,88px);
+  --ry-normal:clamp(80px,9vw,136px);
+  --ry-chapter:clamp(112px,13vw,196px);
+  --ry-showcase:clamp(136px,16vw,248px);
+  --micro:11.5px;
+  --svc-mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  display:block;
+  background:var(--paper,#f7f7f5);
+  color:var(--ink,#0a1931);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.svc *{box-sizing:border-box}
+
+/* --- shell ---------------------------------------------------------------- */
+/* The four rebuilt pages open on a light hero. The site nav is drawn for a dark
+   one, so on these pages the bar always keeps the navy treatment it already
+   takes once scrolled: the same rule, applied from the top. */
+body.svc-page .nav{
+  background:
+    linear-gradient(to bottom,rgba(var(--ice-rgb),.07),rgba(var(--ice-rgb),0) 72%),
+    rgba(var(--ink-navy-rgb),.96);
+}
+.svc-shell{
+  width:100%;
+  max-width:var(--svc-max);
+  margin-inline:auto;
+  padding-inline:calc(var(--sys-shell-inset,96px) / 2);
+}
+.svc-bleed{width:100%}
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--svc-gap);
+  row-gap:var(--svc-gap);
+}
+.c2{grid-column:span 2}
+.c3{grid-column:span 3}
+.c4{grid-column:span 4}
+.c5{grid-column:span 5}
+.c6{grid-column:span 6}
+.c7{grid-column:span 7}
+.c8{grid-column:span 8}
+.c9{grid-column:span 9}
+.c10{grid-column:span 10}
+.c11{grid-column:span 11}
+.c12{grid-column:span 12}
+.start-2{grid-column-start:2}
+.start-3{grid-column-start:3}
+.start-6{grid-column-start:6}
+.start-7{grid-column-start:7}
+.start-8{grid-column-start:8}
+.start-9{grid-column-start:9}
+
+/* --- rhythm --------------------------------------------------------------- */
+.svc-sec{position:relative}
+.ry-intimate{padding-block:var(--ry-intimate)}
+.ry-normal{padding-block:var(--ry-normal)}
+.ry-chapter{padding-block:var(--ry-chapter)}
+.ry-showcase{padding-block:var(--ry-showcase)}
+/* asymmetric release: tighter above, generous below (or the inverse) */
+.ry-open{padding-block:var(--ry-intimate) var(--ry-chapter)}
+.ry-close{padding-block:var(--ry-chapter) var(--ry-intimate)}
+.svc-dark{background:var(--ink-navy);color:var(--ice,#e1eef0)}
+.svc-deep{background:var(--deep-navy);color:var(--ice,#e1eef0)}
+.svc-stone{background:#f0f0ec}
+
+/* --- type ----------------------------------------------------------------- */
+.svc h1,.svc h2,.svc h3,.svc p,.svc ul,.svc ol,.svc figure{margin:0}
+.svc-display,
+.svc h1{
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(48px,7vw,108px);
+  line-height:.92;
+  letter-spacing:-.05em;
+  text-wrap:balance;
+}
+.svc-statement{
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(36px,4.6vw,64px);
+  line-height:1.0;
+  letter-spacing:-.038em;
+  text-wrap:balance;
+}
+.svc h2,.svc-h2{
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(30px,3.2vw,46px);
+  line-height:1.05;
+  letter-spacing:-.028em;
+  text-wrap:balance;
+}
+.svc h3,.svc-h3{
+  font-family:var(--font-display);
+  font-weight:500;
+  font-size:clamp(21px,1.8vw,26px);
+  line-height:1.15;
+  letter-spacing:-.018em;
+}
+.svc-lead{
+  font-size:clamp(17px,1.35vw,19px);
+  line-height:1.55;
+  max-width:var(--svc-measure);
+  color:#3d4750;
+}
+.svc-body{font-size:16px;line-height:1.6;max-width:var(--svc-measure);color:#4b555d}
+.svc-dark .svc-lead,.svc-deep .svc-lead{color:rgba(225,238,240,.78)}
+.svc-dark .svc-body,.svc-deep .svc-body{color:rgba(225,238,240,.78)}
+.svc-eyebrow{
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--pulse-cyan);
+}
+.svc-label{
+  font-size:12px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:#7a848c;
+}
+.svc-dark .svc-label,.svc-deep .svc-label{color:rgba(225,238,240,.58)}
+.svc-note{font-size:13px;line-height:1.5;color:#6c767e;max-width:52ch}
+.svc-dark .svc-note,.svc-deep .svc-note{color:rgba(225,238,240,.6)}
+.svc-quote{
+  font-family:var(--font-serif);
+  font-style:italic;
+  font-size:clamp(19px,1.8vw,26px);
+  line-height:1.35;
+  letter-spacing:-.01em;
+}
+.svc-tiny{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+
+/* --- actions -------------------------------------------------------------- */
+.svc-act{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.svc-btn{
+  display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;
+  font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+  text-decoration:none;border:1px solid currentColor;background:transparent;color:inherit;
+  transition:background .35s var(--sys-ease,cubic-bezier(.16,1,.3,1)),color .35s var(--sys-ease,cubic-bezier(.16,1,.3,1));
+}
+.svc-btn--solid{background:var(--pulse-cyan);border-color:var(--pulse-cyan);color:#04202a}
+.svc-btn:hover{background:var(--ink-navy);border-color:var(--ink-navy);color:var(--ice)}
+.svc-btn--solid:hover{background:var(--ice);border-color:var(--ice);color:var(--ink-navy)}
+.svc-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:inherit;text-decoration:none;border-bottom:1px solid rgba(10,25,49,.25);padding-bottom:4px;
+}
+.svc-link:hover{border-bottom-color:currentColor}
+.svc-dark .svc-link,.svc-deep .svc-link{border-bottom-color:rgba(225,238,240,.3)}
+
+/* --- rules / dividers ----------------------------------------------------- */
+.svc-rule{height:1px;background:rgba(10,25,49,.14);border:0}
+.svc-dark .svc-rule,.svc-deep .svc-rule{background:rgba(225,238,240,.16)}
+
+/* --- media ---------------------------------------------------------------- */
+.svc-media{position:relative;overflow:hidden;background:#e8e8e4}
+.svc-media img{display:block;width:100%;height:100%;object-fit:cover}
+.svc-media--contain{background:transparent}
+.svc-media--contain img{object-fit:contain}
+.svc-cap{
+  margin-top:10px;font-size:12.5px;line-height:1.5;color:#6c767e;max-width:56ch;
+}
+.svc-dark .svc-cap,.svc-deep .svc-cap{color:rgba(225,238,240,.6)}
+.svc-cap b{font-weight:600;color:var(--ink-navy)}
+.svc-dark .svc-cap b,.svc-deep .svc-cap b{color:var(--ice)}
+
+/* --- reveal (used sparingly, one mechanism) ------------------------------- */
+.svc .rv{opacity:0;transform:translateY(10px);transition:opacity .7s var(--sys-ease,cubic-bezier(.16,1,.3,1)),transform .7s var(--sys-ease,cubic-bezier(.16,1,.3,1))}
+.svc .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.svc .rv{opacity:1;transform:none;transition:none}}
+
+/* --- device: laptop / tablet --------------------------------------------- */
+/* --- bleed ---------------------------------------------------------------- */
+.bleed-r{margin-right:calc(var(--sys-shell-inset,96px) / -2)}
+.bleed-l{margin-left:calc(var(--sys-shell-inset,96px) / -2)}
+@media (max-width:1100px){
+  .bleed-r{margin-right:calc(var(--sys-shell-inset-laptop,64px) / -2)}
+  .bleed-l{margin-left:calc(var(--sys-shell-inset-laptop,64px) / -2)}
+  .svc-shell{padding-inline:calc(var(--sys-shell-inset-laptop,64px) / 2)}
+  .svc-h2,.svc h2{font-size:clamp(30px,4.4vw,40px)}
+  .svc-statement{font-size:clamp(34px,6vw,52px)}
+}
+/* --- tablet: columns collapse to 6, then 1 -------------------------------- */
+@media (max-width:900px){
+  .svc-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .c2,.c3,.c4,.c5,.c6,.c7,.c8,.c9,.c10,.c11,.c12{grid-column:span 6}
+  .start-2,.start-3,.start-6,.start-7,.start-8,.start-9{grid-column-start:1}
+}
+@media (max-width:640px){
+  .svc-shell{padding-inline:calc(var(--sys-shell-inset-mobile,40px) / 2)}
+  .svc-grid{grid-template-columns:1fr;column-gap:0}
+  .c2,.c3,.c4,.c5,.c6,.c7,.c8,.c9,.c10,.c11,.c12{grid-column:1 / -1}
+  .svc-display,.svc h1{font-size:clamp(48px,12.5vw,58px);line-height:.94;letter-spacing:-.035em}
+  .svc-statement{font-size:clamp(36px,10vw,44px)}
+  .svc h2,.svc-h2{font-size:clamp(30px,8vw,34px)}
+  .svc-h3,.svc h3{font-size:clamp(21px,5.6vw,23px)}
+  .svc-eyebrow{font-size:11.5px;letter-spacing:.13em}
+  .svc-label{font-size:11.5px;letter-spacing:.10em}
+  .svc-note,.svc-cap{font-size:12.5px}
+  .ry-intimate{padding-block:clamp(56px,12vw,64px)}
+  .ry-normal{padding-block:clamp(80px,16vw,96px)}
+  .ry-chapter{padding-block:clamp(112px,20vw,136px)}
+  .ry-showcase{padding-block:clamp(120px,22vw,150px)}
+  .ry-open{padding-block:clamp(56px,12vw,64px) clamp(112px,20vw,136px)}
+  .ry-close{padding-block:clamp(112px,20vw,136px) clamp(56px,12vw,64px)}
+}

@@ -1,0 +1,41 @@
+/* HalftoneWave island — React Bits Pro component (paid), used inside Lareesa's private
+   project at her direction. Scoped under .rb-island so it never leaks into the page.
+
+   Placement rule from REACT_BITS_MAP.md: one dominant motion idea per viewport. This field
+   either replaces the ChromaWaves band a page already had (the navy "What we build" band) or
+   fills one deliberate second band on a page that had no field at all, so nothing competes
+   with the hero's GlowingRidges. Markup: <section class="section dark has-halftone"> + the
+   island. The component's own `opacity` prop carries the dot tint; this file keeps the layer
+   quiet overall and fades the band edges. */
+
+.section.has-halftone{position:relative;isolation:isolate}
+
+/* content always paints above the field */
+.section.has-halftone .shell{position:relative;z-index:1}
+
+.rb-island--halftone{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.rb-island--halftone .rb-halftone-wave{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+
+.rb-island--halftone canvas{display:block;width:100%;height:100%}
+
+/* soften the top and bottom edges so the field does not end on a hard line */
+.rb-island--halftone{
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 16%,#000 84%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,#000 16%,#000 84%,transparent 100%);
+}
+
+/* on the light stone bands the dots are a paper texture, not a picture */
+.stone.has-halftone .rb-island--halftone{opacity:.5}
+.section:not(.dark):not(.stone).has-halftone .rb-island--halftone{opacity:.42}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island renders a single static frame in this mode; keep it faint */
+  .rb-island--halftone{opacity:.8}
+}

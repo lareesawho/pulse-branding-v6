@@ -1,0 +1,289 @@
+/* Pulse 鈥?permanent header (option 04, refined)
+   Applied to every route. Restyles the template's own Bar / Links / CTA in place; the real
+   PULSE wordmark is used via its SVG asset (no typed wordmark). Desktop only 鈥?the template's
+   mobile header is left untouched. */
+
+/* animated rim angle (Chrome supports @property; other engines fall back to a static rim) */
+@property --pulse-rim-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 180deg;
+}
+
+@media (min-width: 720px) {
+  /* ---------------------------------------------------------------- shell */
+  [data-framer-name="Navigation"] [data-framer-name="Bar"] {
+    position: relative !important;
+    width: min(1720px, calc(100vw - 32px)) !important;
+    height: 62px !important;
+    margin: 14px auto !important;
+    padding: 0 22px !important;
+    border-radius: 999px !important;
+    background: rgba(9, 10, 12, 0.72) !important;
+    backdrop-filter: blur(18px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(214, 234, 240, 0.10),
+      inset 0 1px 0 rgba(214, 234, 240, 0.16),
+      0 24px 60px -36px rgba(0, 0, 0, 0.9) !important;
+    overflow: visible !important;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), background-color .3s ease, box-shadow .3s ease !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Bar"] > div {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* gradient hairline rim 鈥?fades in on hover */
+  [data-framer-name="Navigation"] [data-framer-name="Bar"]::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    padding: 1px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    background: conic-gradient(from var(--pulse-rim-angle, 180deg), #9fd8ea, #d6eaf0 30%, #f4fcff 50%, #2ea8ae 76%, #9fd8ea);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: opacity .45s ease;
+  }
+  /* no underglow: hover is the rim + a barely-there ice lift, nothing else */
+  [data-framer-name="Navigation"] [data-framer-name="Bar"]:hover::before {
+    opacity: .5;
+    animation: pulse-rim-rotate 7s linear infinite;
+  }
+  @keyframes pulse-rim-rotate {
+    to { --pulse-rim-angle: 540deg; }
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Bar"]:hover {
+    background: rgba(12, 14, 17, 0.80) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(214, 234, 240, 0.18),
+      inset 0 1px 0 rgba(236, 249, 253, 0.22),
+      0 24px 60px -36px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  /* breathing room between the pill edge and the mark */
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] {
+    margin-left: 14px !important;
+  }
+
+  /* ------------------------------------------------------------- real wordmark */
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center;
+    width: 112px;
+    height: 17px;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a > * { display: none !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a::after {
+    content: "";
+    position: absolute !important;
+    inset: 0;
+    width: 112px;
+    height: 17px;
+    background: url("/custom/brand/marks/pulse-mark-min-white.svg") no-repeat left center / contain;
+  }
+
+  /* ------------------------------------------------------------------ links */
+  [data-framer-name="Navigation"] [data-framer-name="Links"] {
+    background: transparent !important;
+    border-width: 0 !important;
+    --border-top-width: 0px !important;
+    --border-bottom-width: 0px !important;
+    --border-left-width: 0px !important;
+    --border-right-width: 0px !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"]::before,
+  [data-framer-name="Navigation"] [data-framer-name="Links"]::after { display: none !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] [data-framer-name="Tab"] {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] [data-framer-name="Tab"] > * {
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] a {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center;
+    height: 38px;
+    padding: 0 13px !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: rgba(214, 234, 240, 0.62) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    letter-spacing: .04em !important;
+    transition: color .28s ease, background-color .28s ease;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] a:hover {
+    color: #f1f8fb !important;
+    background: rgba(214, 234, 240, 0.06) !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] a[data-framer-page-link-current] {
+    color: #f1f8fb !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] a[data-framer-page-link-current]::after {
+    content: "";
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    bottom: 5px;
+    height: 1px;
+    background: linear-gradient(90deg, #2ea8ae, #6fb3c9);
+  }
+
+  /* -------------------------------------------------------------------- CTA */
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a {
+    height: 40px !important;
+    padding: 0 20px !important;
+    border-radius: 999px !important;
+    background: #d6eaf0 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 24px -16px rgba(214, 234, 240, 0.5) !important;
+    transition: background .3s ease, box-shadow .3s ease;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a * { color: #08090a !important; }
+  /* hover: deep icy-blue fill, white text (not black) */
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a:hover {
+    background: linear-gradient(120deg, #0e4788 0%, #2163af 42%, #2ea8ae 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 12px 28px -14px rgba(33, 99, 175, 0.85) !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a:hover * { color: #ffffff !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a:hover [data-framer-name="Dot"] {
+    background: #ffffff !important;
+  }
+
+  /* hero secondary CTA: hover keeps white text on a deep fill instead of inverting to black */
+  [data-framer-name="Hero CTAs"] > div:nth-child(2) a:hover {
+    background: rgba(9, 14, 20, 0.92) !important;
+    border-color: rgba(214, 234, 240, 0.42) !important;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(2) a:hover * { color: #ffffff !important; }
+
+  /* ------------------------------------------------ permanent eye-follow button (hero CTA 1) */
+  @media (min-width: 720px) {
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a {
+      position: relative !important;
+      background: #000 !important;
+      border: none !important;
+      border-radius: 30px !important;
+      height: 47px !important;
+      padding: 6px 104px 6px 20px !important;
+      overflow: visible !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 4px 10px -6px rgba(0,0,0,.35) !important;
+    }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a * { color: #fff !important; }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a [data-framer-name="Dot"] { display: none !important; }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a [data-framer-name="Label Roll"] {
+      white-space: nowrap !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before,
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      background: radial-gradient(circle at calc(50% + var(--ex, 0px)) calc(50% + var(--ey, 0px)), #000 0 6.5px, #fff 7px);
+    }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before { right: 57px; }
+    [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after { right: 15px; }
+  }
+}
+
+/* compact tier — tablets and narrow preview panes */
+@media (min-width: 720px) and (max-width: 899px) {
+  [data-framer-name="Navigation"] [data-framer-name="Bar"] {
+    width: calc(100vw - 32px) !important;
+    height: 56px !important;
+    padding: 0 12px !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] { margin-left: 8px !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a { width: 96px; height: 15px; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a::after { width: 96px; height: 15px; }
+  [data-framer-name="Navigation"] [data-framer-name="Links"] a {
+    font-size: 12px !important;
+    padding: 0 8px !important;
+    height: 34px !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Right"] a {
+    height: 34px !important;
+    padding: 0 14px !important;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a {
+    height: 42px !important;
+    padding: 6px 88px 6px 16px !important;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before,
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after {
+    width: 30px;
+    height: 30px;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before { right: 48px; }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after { right: 12px; }
+}
+
+/* mobile tier — the template's compact header, same material + logo */
+@media (max-width: 719px) {
+  [data-framer-name="Navigation"] [data-framer-name="Bar"] {
+    width: calc(100vw - 24px) !important;
+    height: 56px !important;
+    margin: 10px auto !important;
+    padding: 0 14px !important;
+    border-radius: 999px !important;
+    background: rgba(9, 10, 12, 0.78) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(214, 234, 240, 0.10),
+      inset 0 1px 0 rgba(214, 234, 240, 0.16),
+      0 18px 44px -30px rgba(0, 0, 0, 0.9) !important;
+  }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] { margin-left: 8px !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a { width: 92px; height: 14px; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a > * { display: none !important; }
+  [data-framer-name="Navigation"] [data-framer-name="Logo Wrap"] a::after {
+    content: "";
+    position: absolute !important;
+    inset: 0;
+    width: 92px;
+    height: 14px;
+    background: url("/custom/brand/marks/pulse-mark-min-white.svg") no-repeat left center / contain;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a {
+    height: 42px !important;
+    padding: 6px 88px 6px 16px !important;
+  }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before,
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after { width: 30px; height: 30px; }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::before { right: 48px; }
+  [data-framer-name="Hero CTAs"] > div:nth-child(1) a::after { right: 12px; }
+}
+
+/* ------------------------------------------------- hide on scroll down, show on scroll up
+   nav-scroll.js toggles .pulse-nav-hidden on <html>; the pill slides out of the top and comes
+   back as soon as the user scrolls up (or returns near the top). */
+[data-framer-name="Navigation"] [data-framer-name="Bar"] {
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1), background-color .3s ease, box-shadow .3s ease !important;
+  will-change: transform;
+}
+html.pulse-nav-hidden [data-framer-name="Navigation"] [data-framer-name="Bar"] {
+  transform: translateY(calc(-100% - 40px)) !important;
+  pointer-events: none !important;
+}
+html.pulse-nav-hidden [data-framer-name="Navigation"] [data-framer-name="Bar"]:hover::before { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-framer-name="Navigation"] [data-framer-name="Bar"] { transition: none !important; }
+}

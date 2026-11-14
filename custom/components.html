@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse &mdash;Components</title>
+<style>
+  @font-face{font-family:"Pulse Display";src:url("/custom/brand/fonts/montserrat-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  @font-face{font-family:"Pulse Body";src:url("/custom/brand/fonts/inter-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  :root{
+    --ink:#09090a; --raised:#111113; --line:rgba(214,234,240,.12); --line-soft:rgba(214,234,240,.07);
+    --ice:#d6eaf0; --ice-dim:rgba(214,234,240,.56); --paper:#e9eaec; --paper-ink:#0b0d10;
+    --blue:#2163af; --aqua:#2ea8ae; --violet:#291c53;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ink);color:var(--ice);font-family:"Pulse Body",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 40px}
+  header.top{padding:30px 0 26px;border-bottom:1px solid var(--line-soft)}
+  .brand{display:flex;align-items:center;justify-content:space-between}
+  .mark{font:500 20px/1 "Pulse Display",sans-serif;letter-spacing:.16em}
+  .meta{font:500 10px/1 "Pulse Body",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ice-dim)}
+  h1{margin:34px 0 10px;font:500 clamp(34px,4.4vw,58px)/1.02 "Pulse Display",sans-serif;letter-spacing:-.035em}
+  .lead{margin:0;max-width:640px;font-size:15px;line-height:1.6;color:var(--ice-dim)}
+
+  section{padding:56px 0 64px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:34px}
+  .sec-head h2{margin:0;font:500 13px/1 "Pulse Body",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ice)}
+  .sec-head p{margin:0;font-size:12.5px;color:rgba(214,234,240,.42)}
+
+  .showcase{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0b0c0e}
+  .hero-band{position:relative;padding:52px 44px 46px;display:flex;flex-direction:column;gap:34px;
+    background:
+      radial-gradient(60% 70% at 16% 10%,rgba(46,168,174,.16),transparent 60%),
+      radial-gradient(55% 65% at 74% 26%,rgba(33,99,175,.2),transparent 62%),
+      radial-gradient(70% 80% at 90% 82%,rgba(41,28,83,.34),transparent 70%),#0a1931}
+  .hero-band .eyebrow{font:500 10px/1 "Pulse Body";letter-spacing:.18em;text-transform:uppercase;color:var(--ice-dim)}
+  .hero-band h3{margin:12px 0 0;font:500 clamp(30px,3.4vw,46px)/1.02 "Pulse Display",sans-serif;letter-spacing:-.035em}
+  .hero-band h3 span{color:rgba(214,234,240,.42)}
+  .hero-band .actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .paper-band{background:var(--paper);color:var(--paper-ink);padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .paper-band h3{margin:0;font:500 24px/1.15 "Pulse Display",sans-serif;letter-spacing:-.02em;max-width:420px}
+  .paper-band .row{display:flex;gap:12px;flex-wrap:wrap}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft)}
+  .cell{background:#0b0c0e;padding:26px 24px 24px;display:flex;flex-direction:column;gap:18px;min-height:168px}
+  .cell .name{font:500 11px/1.1 "Pulse Body";letter-spacing:.14em;text-transform:uppercase;color:var(--ice)}
+  .cell .name small{display:block;margin-top:6px;font:400 10.5px/1.5 "Pulse Body";letter-spacing:.02em;text-transform:none;color:rgba(214,234,240,.4)}
+  .cell .stage{flex:1;display:flex;align-items:center}
+
+  /* ---------------------------------------------------------------- buttons */
+  .btn{position:relative;display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 24px;
+    border:1px solid transparent;border-radius:10px;isolation:isolate;overflow:hidden;cursor:pointer;text-decoration:none;
+    font:600 11.5px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap;
+    transition:transform .55s var(--ease),box-shadow .55s var(--ease),background-position .7s var(--ease),color .4s var(--ease),border-color .4s var(--ease)}
+  .btn .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.9;flex:0 0 auto}
+  .btn:active{transform:translateY(1px) scale(.995)}
+
+  /* primary &mdash;gradient fill + travelling border beam + bloom */
+  .btn-primary{color:#f2fafc;
+    background-image:linear-gradient(100deg,#0e4788 0%,#2163af 22%,#2ea8ae 52%,#3d63b6 74%,#291c53 100%);
+    background-size:200% 100%;background-position:0% 50%;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 -14px 26px -16px rgba(3,10,20,.55),
+               0 1px 2px rgba(0,0,0,.4), 0 16px 36px -18px rgba(46,168,174,.75);
+    text-shadow:0 1px 1px rgba(3,10,20,.25)}
+  .btn-primary::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:conic-gradient(from var(--ang,0deg),transparent 0 78%,rgba(214,234,240,.15) 86%,rgba(246,255,255,.95) 92%,rgba(214,234,240,.2) 95%,transparent 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:.85;animation:ang 5.5s linear infinite}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+    background:radial-gradient(120% 140% at 50% 120%,rgba(46,168,174,.55),transparent 62%);transition:opacity .5s var(--ease)}
+  .btn-primary:hover,.btn-primary.is-hover{background-position:100% 50%;transform:translateY(-2px);filter:saturate(1.12) brightness(1.05);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(3,10,20,.4),
+               0 2px 4px rgba(0,0,0,.35), 0 26px 48px -20px rgba(46,168,174,.95)}
+  .btn-primary:hover::after,.btn-primary.is-hover::after{opacity:1}
+
+  /* secondary &mdash;ice-outline + pointer border glow */
+  .btn-secondary{color:var(--ice);background:rgba(214,234,240,.04);border-color:rgba(214,234,240,.22)}
+  .btn-secondary::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+    background:radial-gradient(150px 90px at var(--mx,50%) var(--my,50%),rgba(46,168,174,.95),rgba(33,99,175,.5) 45%,transparent 72%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:0;transition:opacity .4s var(--ease)}
+  .btn-secondary:hover,.btn-secondary.is-hover{border-color:rgba(214,234,240,.4);background:rgba(214,234,240,.07);transform:translateY(-1px)}
+  .btn-secondary:hover::before,.btn-secondary.is-hover::before{opacity:1}
+
+  /* ghost &mdash;border trace (SVG) */
+  .btn-ghost{color:var(--ice);background:transparent;border-color:rgba(214,234,240,.18);overflow:visible}
+  .btn-ghost svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;border-radius:inherit}
+  .btn-ghost rect{fill:none;stroke:var(--aqua);stroke-width:1;vector-effect:non-scaling-stroke;
+    stroke-dasharray:var(--len,300) var(--len,300);stroke-dashoffset:var(--len,300);transition:stroke-dashoffset .9s var(--ease)}
+  .btn-ghost:hover rect,.btn-ghost.is-hover rect{stroke-dashoffset:0}
+  .btn-ghost:hover,.btn-ghost.is-hover{color:#eef7f9;transform:translateY(-1px)}
+
+  /* small shimmer pill */
+  .btn-small{height:38px;padding:0 18px;font-size:10.5px;letter-spacing:.14em;border-radius:9px;color:#f2fafc;
+    background-image:linear-gradient(105deg,#2163af,#2ea8ae 60%,#291c53);background-size:180% 100%;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 10px 24px -14px rgba(33,99,175,.9)}
+  .btn-small::after{content:"";position:absolute;top:-40%;bottom:-40%;left:-70%;width:46%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-18deg);
+    transition:left .85s var(--ease);mix-blend-mode:screen;pointer-events:none}
+  .btn-small:hover::after,.btn-small.is-hover::after{left:140%}
+  .btn-small:hover,.btn-small.is-hover{transform:translateY(-1px)}
+
+  /* on paper &mdash;solid ink fill + gloss */
+  .btn-paper{color:var(--paper);background:#111418;border-color:rgba(11,13,16,.25);
+    box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 10px 24px -16px rgba(0,0,0,.55)}
+  .btn-paper::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.5) 50%,transparent 80%);
+    transition:left .85s var(--ease);mix-blend-mode:overlay;pointer-events:none}
+  .btn-paper:hover::after,.btn-paper.is-hover::after{left:150%}
+  .btn-paper:hover,.btn-paper.is-hover{transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 18px 34px -18px rgba(0,0,0,.6)}
+
+  /* navs in real header context */
+  .navstage{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:22px;background:#0b0c0e}
+  .navstage .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 26px;background:rgba(0,29,42,.55)}
+  .navstage .bar .mark{font-size:15px;letter-spacing:.16em}
+  .navstage .bar .cta{height:34px;padding:0 16px;font-size:9.5px}
+  .navstage .foot{padding:10px 26px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center}
+  .navstage .foot .lab{font:500 10px/1 "Pulse Body";letter-spacing:.16em;text-transform:uppercase;color:var(--ice)}
+  .navstage .foot .src{font-size:10.5px;color:rgba(214,234,240,.36)}
+  .mock{height:78px;display:flex;align-items:center;justify-content:center}
+
+  .nav{position:relative;display:inline-flex;align-items:center;gap:2px;padding:4px;border-radius:10px;
+    background:rgba(17,17,19,.9);border:1px solid var(--line);backdrop-filter:blur(12px)}
+  .nav a{position:relative;display:inline-flex;align-items:center;height:34px;padding:0 15px;border-radius:8px;
+    font:500 11.5px/1 "Pulse Body",Inter,sans-serif;letter-spacing:.05em;color:var(--ice-dim);text-decoration:none;transition:color .35s var(--ease)}
+  .nav a:hover{color:var(--ice)}
+  .nav a.is-active{color:#08090a}
+  .nav .pill{position:absolute;top:4px;bottom:4px;border-radius:8px;background:var(--ice);transition:left .5s var(--ease),width .5s var(--ease);pointer-events:none;z-index:0}
+  .nav a span{position:relative;z-index:1}
+
+  /* N1 notch */
+  .nav-notch .pill::after{content:"";position:absolute;left:50%;bottom:-5px;width:7px;height:7px;border-radius:1.5px;
+    background:inherit;transform:translateX(-50%) rotate(45deg)}
+  /* N5 gradient indicator */
+  .nav-grad .pill{background:linear-gradient(100deg,#2163af,#2ea8ae 55%,#291c53);box-shadow:0 0 0 1px rgba(214,234,240,.2) inset}
+  .nav-grad a.is-active{color:#f2fafc}
+  /* N6 underline trace */
+  .nav-underline .pill{display:none}
+  .nav-underline a::after{content:"";position:absolute;left:15px;right:15px;bottom:7px;height:1px;background:var(--ice);
+    transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+  .nav-underline a:hover::after{transform:scaleX(1)}
+  .nav-underline a.is-active{color:var(--ice)}
+  .nav-underline a.is-active::after{transform:scaleX(1);background:var(--aqua)}
+
+  footer{padding:44px 0 70px;color:rgba(214,234,240,.34);font-size:11.5px}
+  @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+  @keyframes ang{to{--ang:360deg}}
+  @media(max-width:1024px){.grid{grid-template-columns:1fr 1fr}.wrap{padding:0 24px}.hero-band{padding:38px 26px}.paper-band{padding:30px 26px}}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark">PULSE</div><div class="meta">Components &middot; v1</div></div>
+    <h1>Two systems, one language.<br><span style="color:rgba(214,234,240,.4)">Buttons and a navbar.</span></h1>
+    <p class="lead">Built on the template's geometry (46 px pills, 10 px radius, Inter tracked uppercase) with the Pulse gradient and deeper ice. Each component is shown in context first, then as a spec. Hover anything.</p>
+  </header>
+
+  <section>
+    <div class="sec-head"><h2>01 &mdash;In context</h2><p>Hero band and paper band, as they would appear on the site</p></div>
+    <div class="showcase">
+      <div class="hero-band">
+        <div>
+          <div class="eyebrow">Independent creative studio</div>
+          <h3>Creative thinking.<br><span>Digital craft.</span></h3>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="#" data-btn="primary"><span class="dot"></span>View our work</a>
+          <a class="btn btn-secondary" href="#" data-btn="secondary"><span class="dot"></span>Start a project</a>
+        </div>
+      </div>
+      <div class="paper-band">
+        <h3>Have a project in mind?<br>Tell us what you are building.</h3>
+        <div class="row">
+          <a class="btn btn-paper" href="#" data-btn="paper"><span class="dot"></span>Contact the studio</a>
+          <a class="btn btn-ghost" href="#" data-btn="ghost" style="color:#0b0d10;border-color:rgba(11,13,16,.22)"><svg><rect x=".5" y=".5" rx="9.5" width="calc(100% - 1px)" height="calc(100% - 1px)"></rect></svg><span class="dot"></span>See the archive</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>02 &mdash;Button spec</h2><p>Rest state shown; hover is live in the panel</p></div>
+    <div class="showcase">
+      <div class="grid">
+        <div class="cell"><div class="name">Primary<small>Gradient fill &middot; beam &middot; bloom</small></div>
+          <div class="stage"><a class="btn btn-primary" href="#" data-btn="primary2"><span class="dot"></span>Start a project</a></div></div>
+        <div class="cell"><div class="name">Secondary<small>Ice outline &middot; pointer glow</small></div>
+          <div class="stage"><a class="btn btn-secondary" href="#" data-btn="secondary2"><span class="dot"></span>Free AI audit</a></div></div>
+        <div class="cell"><div class="name">Ghost<small>Hairline &middot; border trace</small></div>
+          <div class="stage"><a class="btn btn-ghost" href="#" data-btn="ghost2"><svg><rect x=".5" y=".5" rx="9.5" width="calc(100% - 1px)" height="calc(100% - 1px)"></rect></svg><span class="dot"></span>View our work</a></div></div>
+        <div class="cell"><div class="name">Small / nav<small>Gradient &middot; shimmer sweep</small></div>
+          <div class="stage"><a class="btn btn-small" href="#" data-btn="small"><span class="dot"></span>Contact</a></div></div>
+        <div class="cell"><div class="name">On paper<small>Ink fill &middot; gloss</small></div>
+          <div class="stage" style="background:var(--paper);border-radius:10px;padding:18px"><a class="btn btn-paper" href="#" data-btn="paper2"><span class="dot"></span>Subscribe</a></div></div>
+        <div class="cell"><div class="name">Text action<small>Underline grow &middot; aqua</small></div>
+          <div class="stage"><a class="textlink" href="#">More about the studio &rarr;/a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>03 &mdash;Navbar</h2><p>In the real header: mark left, links centre, CTA right</p></div>
+
+    <div class="navstage">
+      <div class="bar"><div class="mark">PULSE</div><nav class="nav nav-notch" data-items="Home,About,Services,Work,Insights,Contact" data-active="Services"><div class="pill"></div></nav><a class="btn btn-small cta" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="foot"><div class="lab">N1 &middot; Notch indicator</div><div class="src">active page marker, colour-free chrome</div></div>
+    </div>
+
+    <div class="navstage">
+      <div class="bar"><div class="mark">PULSE</div><nav class="nav nav-grad" data-items="Home,About,Services,Work,Insights,Contact" data-active="Services"><div class="pill"></div></nav><a class="btn btn-small cta" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="foot"><div class="lab">N5 &middot; Gradient indicator</div><div class="src">the gradient lives in the chrome</div></div>
+    </div>
+
+    <div class="navstage">
+      <div class="bar"><div class="mark">PULSE</div><nav class="nav nav-underline" data-items="Home,About,Services,Work,Insights,Contact" data-active="Services"><div class="pill"></div></nav><a class="btn btn-small cta" href="#"><span class="dot"></span>Start a project</a></div>
+      <div class="foot"><div class="lab">N6 &middot; Underline trace</div><div class="src">quietest: hairline only</div></div>
+    </div>
+  </section>
+
+  <footer>Pulse components &middot; template geometry &middot; gradient #2163af &rarr;#2ea8ae &rarr;#291c53 &middot; ice #d6eaf0 &middot; hover states are live, not screenshots</footer>
+</div>
+
+<script>
+(function(){
+  // text link style injected here to keep the section light
+  var st = document.createElement('style');
+  st.textContent = '.textlink{position:relative;color:var(--ice);text-decoration:none;font:500 13px/1 "Pulse Body";letter-spacing:.02em;padding-bottom:4px}' +
+    '.textlink::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--aqua);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}' +
+    '.textlink:hover::after,.textlink.is-hover::after{transform:scaleX(1)}';
+  document.head.appendChild(st);
+
+  // navs: build links + sliding indicator
+  document.querySelectorAll('.nav').forEach(function(nav){
+    var items = (nav.dataset.items||'').split(',');
+    var active = nav.dataset.active || items[0];
+    var pill = nav.querySelector('.pill');
+    items.forEach(function(label, i){
+      var a = document.createElement('a');
+      a.href = '#'; a.innerHTML = '<span>' + label + '</span>';
+      if (label === active) a.classList.add('is-active');
+      a.addEventListener('click', function(e){ e.preventDefault(); nav.querySelectorAll('a').forEach(function(x){x.classList.remove('is-active');}); a.classList.add('is-active'); place(); });
+      nav.appendChild(a);
+    });
+    function place(){
+      var act = nav.querySelector('a.is-active') || nav.querySelector('a');
+      if (!pill || !act) return;
+      var nr = nav.getBoundingClientRect(), ar = act.getBoundingClientRect();
+      pill.style.left = Math.round(ar.left - nr.left) + 'px';
+      pill.style.width = Math.round(ar.width) + 'px';
+    }
+    place();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+    window.addEventListener('resize', place);
+  });
+
+  // pointer glow for secondary buttons + border trace length for ghosts
+  document.querySelectorAll('.btn-secondary').forEach(function(btn){
+    btn.addEventListener('pointermove', function(e){
+      var r = btn.getBoundingClientRect();
+      btn.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100) + '%');
+      btn.style.setProperty('--my', ((e.clientY-r.top)/r.height*100) + '%');
+    });
+  });
+  document.querySelectorAll('.btn-ghost').forEach(function(btn){
+    var rect = btn.querySelector('rect'); if (!rect) return;
+    var len = 2*(btn.offsetWidth + btn.offsetHeight);
+    btn.style.setProperty('--len', len);
+    rect.setAttribute('stroke-dasharray', len);
+    rect.setAttribute('stroke-dashoffset', len);
+  });
+})();
+</script>
+</body>
+</html>
+

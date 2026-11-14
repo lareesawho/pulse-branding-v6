@@ -1,0 +1,167 @@
+/* ============================================================================
+   SERVICE MODULE — BRAND STRATEGY
+   Concept: DIAGNOSIS. Noise → evidence → diagnosis → direction.
+   Loaded only by brand-strategy.html.
+   ========================================================================= */
+
+/* 1 — hero: evidence field, not an illustration ---------------------------- */
+.st-hero{
+  position:relative;
+  padding-block:clamp(88px,9vw,132px) 0;
+  min-height:min(760px,86vh);
+  display:flex;align-items:flex-start;
+  overflow:visible;
+  z-index:2;
+}
+.st-hero__grid{align-items:stretch}
+.st-hero__left{display:flex;flex-direction:column;min-height:100%}
+.st-hero__eyebrow{padding-top:8px}
+.st-hero h1{margin-top:22px;max-width:11ch}
+.st-hero .svc-lead{margin-top:30px;max-width:30ch}
+.st-hero .svc-act{margin-top:34px}
+.st-hero__meta{margin-top:auto;padding-top:44px;display:flex;flex-wrap:wrap;gap:10px 18px}
+.st-hero__meta span{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:#7a848c}
+.st-hero__meta span+span:before{content:"·";margin-right:18px;color:rgba(10,25,49,.3)}
+
+/* The evidence wall: an aligned column of real fragments and one marked
+   contradiction. It deliberately crosses the hero's lower boundary, so the next
+   section begins underneath it. */
+.st-wall{
+  position:relative;
+  display:flex;flex-direction:column;gap:16px;
+  margin-bottom:-118px;
+  z-index:4;
+}
+.st-wall__stamp{
+  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;line-height:1.7;
+  padding-bottom:6px;border-bottom:1px solid rgba(10,25,49,.14);
+}
+.st-frag{background:#fff;border:1px solid rgba(10,25,49,.1);box-shadow:0 22px 44px -34px rgba(10,25,49,.5)}
+.st-frag--shot img{display:block;width:100%;height:auto}
+.st-frag--note{padding:16px 18px;font-size:14px;line-height:1.5;color:#3d4750}
+.st-frag--note em{font-family:var(--font-serif);font-style:italic;font-size:17px;color:var(--ink-navy)}
+.st-frag--label{
+  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pulse-cyan);
+  font-weight:600;margin-bottom:9px
+}
+.st-frag--marked{
+  position:relative;padding:18px 20px;font-size:15px;line-height:1.5;color:var(--ink-navy);
+  border-color:rgba(33,99,175,.45);
+}
+.st-frag--marked:before{
+  content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:3px;background:var(--pulse-blue);
+}
+.st-frag--wide{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0}
+@media (min-width:901px){ .st-wall{width:100%} }
+
+/* 2 — the false brief: four observations collapsing to one diagnosis ------ */
+.st-noise{
+  position:relative;overflow:hidden;
+  /* extra top padding: the evidence wall from the hero finishes inside it */
+  padding-block:clamp(150px,16vw,236px) clamp(104px,11vw,152px);
+}
+.st-noise__grid{position:relative;row-gap:clamp(14px,1.6vw,26px)}
+.st-say{
+  font-family:var(--font-display);font-weight:400;color:rgba(225,238,240,.45);
+  line-height:1.1;letter-spacing:-.03em;text-wrap:pretty;
+}
+.st-say--1{grid-column:1/span 5;font-size:clamp(24px,2.5vw,36px);color:rgba(225,238,240,.62)}
+.st-say--2{grid-column:7/span 5;font-size:clamp(19px,1.8vw,28px);text-align:right}
+.st-say--3{grid-column:2/span 4;font-size:clamp(17px,1.6vw,24px);color:rgba(225,238,240,.36)}
+.st-say--4{grid-column:7/span 5;font-size:clamp(21px,2.1vw,32px);color:rgba(225,238,240,.52)}
+.st-noise__verdict{
+  position:relative;
+  margin-top:clamp(38px,4.2vw,60px);
+  padding-top:clamp(24px,2.6vw,36px);
+  border-top:1px solid rgba(225,238,240,.3);
+  color:var(--ice);
+}
+.st-noise__verdict:before{
+  content:"";position:absolute;left:0;top:-1px;width:76px;height:2px;background:var(--pulse-cyan);
+}
+.st-noise__verdict .svc-statement{font-size:clamp(38px,5.6vw,68px);letter-spacing:-.042em;max-width:20ch}
+.st-noise__verdict .svc-body{margin-top:24px;max-width:50ch}
+
+/* 3 — the diagnosis: one long editorial column, focus follows the reader --- */
+.st-diag{position:relative}
+.st-diag__head{position:sticky;top:120px}
+.st-diag__head h2{margin-top:18px;max-width:14ch}
+.st-diag__head .svc-note{margin-top:22px}
+.st-rows{display:flex;flex-direction:column}
+.st-row{
+  display:grid;grid-template-columns:64px 1fr;gap:22px;
+  padding-block:clamp(22px,2.4vw,34px);
+  border-top:1px solid rgba(10,25,49,.14);
+  transition:opacity .5s var(--sys-ease),border-color .5s var(--sys-ease);
+}
+.st-row:last-child{border-bottom:1px solid rgba(10,25,49,.14)}
+.st-row__n{font-size:11.5px;letter-spacing:.14em;color:var(--pulse-cyan);font-weight:600;padding-top:10px}
+.st-row__label{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:#7a848c;font-weight:600}
+.st-row__q{
+  margin-top:8px;
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(24px,2.5vw,34px);line-height:1.15;letter-spacing:-.024em;
+}
+.st-rows[data-focus="on"] .st-row{opacity:.34}
+.st-rows[data-focus="on"] .st-row.is-now{opacity:1}
+.st-rows[data-focus="on"] .st-row.is-now .st-row__q{color:var(--ink-navy)}
+.st-diag__close{
+  margin-top:clamp(32px,4vw,56px);
+  font-family:var(--font-serif);font-style:italic;
+  font-size:clamp(18px,1.7vw,24px);line-height:1.4;max-width:44ch;color:var(--ink-navy);
+}
+
+/* 4 — evidence, not opinion: three artifacts at three scales -------------- */
+.st-ev{position:relative}
+.st-ev__big{grid-column:1/span 8}
+.st-ev__sm{grid-column:11/span 2;align-self:end}
+.st-ev__mid{grid-column:5/span 6;margin-top:clamp(28px,4vw,64px)}
+.st-annot{
+  border-left:1px solid rgba(225,238,240,.28);padding-left:16px;
+}
+.st-annot__k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pulse-cyan);font-weight:600}
+.st-annot__v{margin-top:8px;font-size:14px;line-height:1.5;color:rgba(225,238,240,.82)}
+.st-annots{display:grid;gap:26px}
+.st-ev__aside{grid-column:9/span 4;display:flex;flex-direction:column;gap:26px;align-self:start}
+.st-ev__side{grid-column:1/span 4;display:flex;flex-direction:column;gap:22px;align-self:end}
+
+/* 5 — one case, end to end: image + a vertical transformation chain ------- */
+.st-case{position:relative}
+.st-case__img{grid-column:1/span 7}
+.st-case__img .svc-media{min-height:min(58vh,540px)}
+.st-chain{grid-column:8/span 5;padding-left:clamp(0px,2vw,34px)}
+.st-chain__step{padding-block:clamp(18px,2vw,26px);border-top:1px solid rgba(10,25,49,.14)}
+.st-chain__step:first-child{border-top:0;padding-top:0}
+.st-chain__k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#7a848c;font-weight:600}
+.st-chain__v{margin-top:10px;font-family:var(--font-display);font-size:clamp(20px,1.9vw,27px);line-height:1.18;letter-spacing:-.02em}
+.st-chain__arrow{margin-top:6px;font-size:13px;color:var(--pulse-cyan);letter-spacing:.2em}
+
+/* 6 — what the client leaves with: statement + a narrow typographic column - */
+.st-out{grid-column:1/span 6}
+.st-out h2{max-width:13ch}
+.st-out__note{margin-top:clamp(32px,4vw,60px);max-width:40ch}
+.st-list{grid-column:8/span 5;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);align-self:end}
+.st-list__row{border-top:1px solid rgba(10,25,49,.14);padding-top:14px}
+.st-list__k{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--ink-navy)}
+.st-list__v{margin-top:8px;font-size:15.5px;line-height:1.55;color:#4b555d}
+
+/* 7 — CTA: the calm one ---------------------------------------------------- */
+.st-cta__grid{align-items:end}
+.st-cta h2{grid-column:1/span 7;font-size:clamp(38px,5vw,66px);line-height:1;letter-spacing:-.04em}
+.st-cta__side{grid-column:9/span 4;display:flex;flex-direction:column;gap:26px}
+
+@media (max-width:900px){
+  .st-hero{min-height:0;padding-block:88px 0}
+  .st-wall{margin-top:40px;margin-bottom:-72px}
+  .st-noise{padding-block:120px clamp(80px,12vw,96px)}
+  .st-say--1,.st-say--2,.st-say--3,.st-say--4{grid-column:1 / -1;font-size:clamp(21px,5.8vw,27px);text-align:left;color:rgba(225,238,240,.52)}
+  .st-say--1{color:rgba(225,238,240,.7)}
+  .st-diag__head{position:static;margin-bottom:36px}
+  .st-ev__big,.st-ev__mid,.st-ev__sm,.st-ev__aside,.st-ev__side{grid-column:1 / -1}
+  .st-case__img,.st-chain{grid-column:1 / -1}
+  .st-chain{padding-left:0;margin-top:28px}
+  .st-out,.st-list{grid-column:1 / -1}
+  .st-list{margin-top:36px}
+  .st-cta h2,.st-cta__side{grid-column:1 / -1}
+  .st-cta__side{margin-top:32px}
+}

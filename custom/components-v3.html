@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse &mdash; Components v3 &middot; verbatim ports</title>
+<link rel="stylesheet" href="/custom/vendor/borderglow/BorderGlow.css">
+<style>
+  @font-face{font-family:"Pulse Display";src:url("/custom/brand/fonts/montserrat-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  @font-face{font-family:"Pulse Body";src:url("/custom/brand/fonts/inter-normal.woff2") format("woff2");font-weight:300 700;font-display:block}
+  :root{--ink:#09090a;--line:rgba(214,234,240,.12);--line-soft:rgba(214,234,240,.07);--ice:#d6eaf0;--ice-dim:rgba(214,234,240,.55);--blue:#2163af;--aqua:#2ea8ae;--violet:#291c53;--ease:cubic-bezier(.16,1,.3,1)}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--ink);color:var(--ice);font-family:"Pulse Body",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 40px}
+  header.top{padding:28px 0 24px;border-bottom:1px solid var(--line-soft)}
+  .brand{display:flex;justify-content:space-between;align-items:center}
+  .mark{font:500 20px/1 "Pulse Display";letter-spacing:.16em}
+  .meta{font:500 10px/1 "Pulse Body";letter-spacing:.18em;text-transform:uppercase;color:var(--ice-dim)}
+  h1{margin:30px 0 10px;font:500 clamp(30px,4vw,50px)/1.04 "Pulse Display";letter-spacing:-.035em}
+  .lead{margin:0;max-width:700px;font-size:14.5px;line-height:1.65;color:var(--ice-dim)}
+  section{padding:50px 0 56px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:26px}
+  .sec-head h2{margin:0;font:500 12.5px/1 "Pulse Body";letter-spacing:.2em;text-transform:uppercase}
+  .sec-head p{margin:0;font-size:12.5px;color:rgba(214,234,240,.42)}
+  footer{padding:38px 0 60px;font-size:11.5px;color:rgba(214,234,240,.32)}
+  code{font-size:11px;color:rgba(214,234,240,.72);background:rgba(214,234,240,.06);padding:1px 5px;border-radius:4px}
+
+  /* ---------------------------------------------------------- genuine liquid dock */
+  .header-bar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(0,29,42,.5)}
+  x-liquid-dock{
+    position:relative!important;top:auto!important;left:auto!important;transform:none!important;z-index:auto!important;
+    --x-liquid-dock-color:#1d5563!important;
+    --x-color-primary:#1d5563;
+    --x-liquid-dock-gap:2px;
+    --x-liquid-dock-padding:4px;
+    --x-liquid-dock-radius:10px;
+    --x-liquid-dock-bg:rgba(11,14,17,.92);
+    --x-liquid-dock-border:rgba(214,234,240,.16);
+    --x-liquid-dock-shadow:0 18px 40px -24px rgba(0,0,0,.85);
+  }
+  x-liquid-dock > button{
+    appearance:none;background:transparent;border:0;cursor:pointer;
+    width:auto!important;height:34px!important;padding:0 15px!important;border-radius:8px!important;
+    font-size:11.5px!important;
+    color:rgba(214,234,240,.78);font-family:"Pulse Body",Inter,sans-serif;font-weight:500;letter-spacing:.05em;
+    transition:color .35s var(--ease);
+  }
+  x-liquid-dock button:hover{color:#f4fbfd}
+  .cta{display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 18px;border-radius:9px;
+    font:600 10.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#f2fafc;text-decoration:none;
+    background:linear-gradient(105deg,#2163af,#2ea8ae 60%,#291c53);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 10px 24px -14px rgba(33,99,175,.9)}
+  .cta i{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* ---------------------------------------------------------------- grid of specs */
+  .stage-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .cell{background:#0b0c0e;padding:28px 26px 24px;display:flex;flex-direction:column;gap:20px;min-height:210px}
+  .cell h3{margin:0;font:500 11px/1.2 "Pulse Body";letter-spacing:.16em;text-transform:uppercase}
+  .cell p{margin:7px 0 0;font-size:10.5px;line-height:1.65;color:rgba(214,234,240,.4);font-variant-numeric:tabular-nums}
+  .cell .stage{flex:1;display:flex;align-items:center;justify-content:flex-start}
+
+  .btnface{display:inline-flex;align-items:center;gap:9px;font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#f2fafc;white-space:nowrap}
+  .btnface i{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* 1 · ACETERNITY MOVING BORDER — full structure: outer p-1, inner path, 80px blob, blurred face */
+  .mb-outer{position:relative;height:46px;padding:1px;border-radius:10px;overflow:hidden;background:transparent}
+  .mb-inner{position:absolute;inset:0;border-radius:calc(10px * 0.96)}
+  .mb-svg{position:absolute;height:100%;width:100%}
+  .mb-spark{position:absolute;top:0;left:0;height:80px;width:80px;background:radial-gradient(#2ea8ae 40%, rgba(46,168,174,.25) 52%, transparent 60%);opacity:.8;will-change:transform;pointer-events:none}
+  .mb-face{position:relative;display:inline-flex;align-items:center;gap:9px;height:100%;padding:0 24px;border-radius:calc(10px * 0.96);
+    border:1px solid rgba(214,234,240,.16);background:rgba(11,15,18,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#eef7f9}
+  .mb-face i{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* 2 · MAGIC UI SHIMMER — all four layers from the source */
+  .sh{position:relative;z-index:0;display:flex;align-items:center;justify-content:center;height:46px;padding:0 24px;
+    border-radius:var(--radius,10px);border:1px solid rgba(255,255,255,.1);overflow:hidden;background:var(--bg,#0b0f12);
+    transform:translateZ(0);transition:transform .3s ease-in-out;cursor:pointer}
+  .sh:active{transform:translateY(1px)}
+  .sh .spark-wrap{position:absolute;inset:0;z-index:-30;filter:blur(2px);container-type:size;overflow:visible}
+  .sh .spark{position:absolute;inset:0;aspect-ratio:1;height:100cqh;
+    animation:shimmer-slide var(--speed,3s) ease-in-out infinite alternate}
+  .sh .spark-before{position:absolute;inset:-100%;width:auto;transform:translate(0,0) rotate(0);
+    background:conic-gradient(from calc(270deg - (var(--spread,90deg) * 0.5)), transparent 0, var(--shimmer-color,#d6eaf0) var(--spread,90deg), transparent var(--spread,90deg));
+    animation:spin-around calc(var(--speed,3s) * 2) infinite linear}
+  .sh .label{position:relative;z-index:1}
+  .sh .highlight{position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 -8px 10px #ffffff1f;transition:box-shadow .3s ease-in-out;pointer-events:none}
+  .sh:hover .highlight{box-shadow:inset 0 -6px 10px #ffffff3f}
+  .sh:active .highlight{box-shadow:inset 0 -10px 10px #ffffff3f}
+  .sh .backdrop-layer{position:absolute;inset:var(--cut,.05em);z-index:-20;border-radius:var(--radius,10px);background:var(--bg,#0b0f12)}
+  @keyframes shimmer-slide{to{transform:translate(calc(100cqw - 100%),0)}}
+  @keyframes spin-around{
+    0%{transform:translateZ(0) rotate(0)}
+    15%,35%{transform:translateZ(0) rotate(90deg)}
+    65%,85%{transform:translateZ(0) rotate(270deg)}
+    100%{transform:translateZ(0) rotate(360deg)}
+  }
+
+  /* 3 · REACT BITS BORDER GLOW — vendor CSS drives it; only geometry + palette here */
+  .bg-btn{display:inline-grid;place-items:center;height:46px;padding:0 26px;text-decoration:none;
+    font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;color:#eef7f9;
+    --border-radius:10px;--glow-padding:24px;--cone-spread:25;--edge-sensitivity:30;--fill-opacity:.5;
+    border-color:rgba(214,234,240,.18)}
+  .bg-btn .border-glow-inner{padding:0;align-items:center;justify-content:center;overflow:visible;height:100%}
+  .bg-btn .label{display:inline-flex;align-items:center;gap:9px}
+
+  /* 4 · MAGIC UI SHINY — spring mask, radial bg, hover shadow, tap scale */
+  .sy{position:relative;display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 26px;cursor:pointer;
+    border-radius:10px;border:1px solid rgba(214,234,240,.16);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    background:radial-gradient(circle at 50% 0%, rgba(46,168,174,.10) 0%, transparent 60%);
+    transition:box-shadow .3s ease-in-out;transform:scale(1);transform-origin:center}
+  .sy:hover{box-shadow:0 0 20px rgba(46,168,174,.12)}
+  .sy .inner{position:relative;display:block;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+  .sy .txt{position:relative;display:block;font:600 11.5px/1 "Pulse Body";letter-spacing:.13em;text-transform:uppercase;
+    color:rgba(255,255,255,.9);
+    -webkit-mask-image:linear-gradient(-75deg, #d6eaf0 calc(var(--x,100%) + 20%), transparent calc(var(--x,100%) + 30%), #d6eaf0 calc(var(--x,100%) + 100%));
+    mask-image:linear-gradient(-75deg, #d6eaf0 calc(var(--x,100%) + 20%), transparent calc(var(--x,100%) + 30%), #d6eaf0 calc(var(--x,100%) + 100%))}
+
+  table.params{width:100%;border-collapse:collapse;margin-top:6px;font-size:12px}
+  table.params th,table.params td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  table.params th{font:500 10px/1.35 "Pulse Body";letter-spacing:.14em;text-transform:uppercase;color:rgba(214,234,240,.45)}
+  table.params td:first-child{color:var(--ice)}
+  @media(max-width:900px){.stage-row{grid-template-columns:1fr}.wrap{padding:0 22px}.header-bar{flex-wrap:wrap;justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark">PULSE</div><div class="meta">Components v3 &middot; verbatim ports</div></div>
+    <h1>Nothing borrowed loosely.<br><span style="color:rgba(214,234,240,.4)">The actual components.</span></h1>
+    <p class="lead">The liquid nav is the <strong>real</strong> <code>&lt;x-liquid-dock&gt;</code> web component from <code>@vanelsas/baredom</code>, vendored and <code>init()</code>ed &mdash; not re-implemented. The four buttons were ported line-by-line from their sources, keeping every internal layer: the SVG path blob, the conic spark stack, the seven gradient border layers, the spring-masked text.</p>
+  </header>
+
+  <section>
+    <div class="sec-head"><h2>01 &mdash; Liquid nav, genuine component</h2><p>Vendored dist &middot; goo filter inside its shadow DOM &middot; themed through its own custom properties</p></div>
+    <div class="header-bar">
+      <div class="mark">PULSE</div>
+      <x-liquid-dock position="bottom" gap="2" color="#d6eaf0" blur="10" magnet-radius="150" magnet-strength="0.6" bob-intensity="1" ripple-scale="8" ripple-speed="0.03">
+        <button>Home</button><button>About</button><button>Services</button><button>Work</button><button>Insights</button><button>Contact</button>
+      </x-liquid-dock>
+      <a class="cta" href="#"><i></i>Start a project</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>02 &mdash; Buttons, line-by-line</h2><p>Each cell is the complete component: every layer, every keyframe, every constant</p></div>
+    <div class="stage-row">
+      <div class="cell">
+        <div><h3>Moving Border &middot; Aceternity</h3><p>duration 3000 &middot; rect path via getTotalLength &middot; 80&times;80 blob &middot; radial #2ea8ae 40% &rarr; transparent 60% &middot; opacity .8 &middot; rx/ry 30% &middot; backdrop-blur-24 &middot; radius 10&times;0.96</p></div>
+        <div class="stage">
+          <a class="mb-outer" id="mbBtn" href="#" style="text-decoration:none">
+            <div class="mb-inner">
+              <svg class="mb-svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="30%" ry="30%"></rect></svg>
+              <div class="mb-spark"></div>
+            </div>
+            <div class="mb-face"><i></i>Start a project</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div><h3>Shimmer &middot; Magic UI</h3><p>--spread 90deg &middot; --cut .05em &middot; --speed 3s &middot; shimmer-slide 3s alternate &middot; spin-around 6s linear &middot; spark blur 2px &middot; highlight inset shadows &middot; backdrop inset cut</p></div>
+        <div class="stage">
+          <button class="sh" style="--radius:10px;--speed:3s;--cut:.05em;--bg:#0b0f12;--spread:90deg;--shimmer-color:#d6eaf0">
+            <div class="spark-wrap"><div class="spark"><div class="spark-before"></div></div></div>
+            <span class="label btnface"><i></i>Free AI audit</span>
+            <div class="highlight"></div>
+            <div class="backdrop-layer"></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div><h3>Border Glow &middot; React Bits</h3><p>verbatim BorderGlow.css &middot; 7 mesh gradient layers &middot; conic mask @ cursor angle &middot; edge-light plus-lighter &middot; 500 / 1500 / 2250 / 1500 ms sweep phases</p></div>
+        <div class="stage">
+          <a class="border-glow-card bg-btn" id="bgBtn" href="#">
+            <span class="edge-light"></span>
+            <div class="border-glow-inner"><span class="label"><i style="width:6px;height:6px;border-radius:50%;background:currentColor"></i>View our work</span></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div><h3>Shiny &middot; Magic UI</h3><p>spring k20 c15 m2 &middot; repeatDelay 1s &middot; --x 100% &rarr; &minus;100% &middot; scale spring k200 c5 m0.5 &middot; whileTap 0.95 &middot; mask &minus;75deg +20/+30/+100%</p></div>
+        <div class="stage">
+          <button class="sy" id="syBtn"><span class="inner"><span class="txt">Contact the studio</span></span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>03 &mdash; Audit trail</h2><p>Which source file each line came from</p></div>
+    <table class="params">
+      <tr><th>Component</th><th>Source (vendored in <code>/custom/vendor</code>)</th><th>Port fidelity</th></tr>
+      <tr><td>Liquid nav</td><td><code>@vanelsas/baredom@4.18.0</code> &rarr; <code>dist/x-liquid-dock.js</code> + <code>dist/base.js</code> (372 KB), unmodified</td><td><strong>Verbatim</strong> &mdash; the original dist runs; only host CSS custom properties are set</td></tr>
+      <tr><td>Border Glow</td><td><code>react-bits</code> &rarr; <code>BorderGlow.css</code> (6168 bytes, copied byte-for-byte) + <code>BorderGlow.jsx</code> logic (parseHSL, buildGlowVars, buildGradientVars, proximity angle, 4-phase sweep)</td><td><strong>Line-level</strong> &mdash; same class names, same 7 layers, same masks, same timings</td></tr>
+      <tr><td>Moving Border</td><td><code>ui.aceternity.com/registry/moving-border.json</code></td><td><strong>Line-level</strong> &mdash; SVG rect path + 3000 ms progress + 80 px blob; React hooks replaced by rAF equivalence</td></tr>
+      <tr><td>Shimmer</td><td><code>magicui.design/r/shimmer-button.json</code> + <code>globals.css</code> keyframes</td><td><strong>Line-level</strong> &mdash; all 4 layers, exact keyframes and durations</td></tr>
+      <tr><td>Shiny</td><td><code>magicui.design/r/shiny-button.json</code></td><td><strong>Line-level</strong> &mdash; same spring constants, mask stops, hover shadow, tap scale</td></tr>
+    </table>
+  </section>
+
+  <footer>If a detail is missing, it&rsquo;s a bug, not a shortcut &mdash; the sources are in <code>ref/sources/</code> and the vendored copies carry a SHA-256 manifest.</footer>
+</div>
+
+<script type="module">
+  import { init } from '/custom/vendor/baredom/x-liquid-dock.js';
+  init();
+</script>
+<script>
+(function(){
+  /* ---------------- ACETERNITY MOVING BORDER (verbatim logic, vanilla rAF) ---------------- */
+  var mb = document.getElementById('mbBtn');
+  var rect = mb.querySelector('rect');
+  var spark = mb.querySelector('.mb-spark');
+  var pathRef = rect, progress = 0, duration = 3000, lastTime = 0, pathLength = 0;
+
+  function measure(){ try { pathLength = pathRef.getTotalLength(); } catch(e){ pathLength = 0; } }
+  measure();
+  window.addEventListener('resize', measure);
+
+  function frame(time){
+    if (pathLength) {
+      var pxPerMillisecond = pathLength / duration;
+      progress = (time * pxPerMillisecond) % pathLength;
+      var pt = pathRef.getPointAtLength(progress);
+      spark.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ---------------- REACT BITS BORDER GLOW (verbatim logic) ---------------- */
+  function parseHSL(hslStr){
+    var match = hslStr.match(/([\d.]+)\s*([\d.]+)%?\s*([\d.]+)%?/);
+    if (!match) return { h: 40, s: 80, l: 80 };
+    return { h: parseFloat(match[1]), s: parseFloat(match[2]), l: parseFloat(match[3]) };
+  }
+  function buildGlowVars(glowColor, intensity){
+    var p = parseHSL(glowColor), base = p.h + 'deg ' + p.s + '% ' + p.l + '%';
+    var opacities = [100, 60, 50, 40, 30, 20, 10], keys = ['', '-60', '-50', '-40', '-30', '-20', '-10'], vars = {};
+    for (var i = 0; i < opacities.length; i++) {
+      vars['--glow-color' + keys[i]] = 'hsl(' + base + ' / ' + Math.min(opacities[i] * intensity, 100) + '%)';
+    }
+    return vars;
+  }
+  var GRADIENT_POSITIONS = ['80% 55%', '69% 34%', '8% 6%', '41% 38%', '86% 85%', '82% 18%', '51% 4%'];
+  var GRADIENT_KEYS = ['--gradient-one','--gradient-two','--gradient-three','--gradient-four','--gradient-five','--gradient-six','--gradient-seven'];
+  var COLOR_MAP = [0, 1, 2, 0, 1, 2, 1];
+  function buildGradientVars(colors){
+    var vars = {};
+    for (var i = 0; i < 7; i++) {
+      var c = colors[Math.min(COLOR_MAP[i], colors.length - 1)];
+      vars[GRADIENT_KEYS[i]] = 'radial-gradient(at ' + GRADIENT_POSITIONS[i] + ', ' + c + ' 0px, transparent 50%)';
+    }
+    vars['--gradient-base'] = 'linear-gradient(' + colors[0] + ' 0 100%)';
+    return vars;
+  }
+  function isLightColor(color){
+    var value = color.trim().replace('#', '');
+    if (!/^[\da-f]{3}([\da-f]{3})?$/i.test(value)) return false;
+    var hex = value.length === 3 ? value.split('').map(function(c){ return c + c; }).join('') : value;
+    var r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+    return r*0.2126 + g*0.7152 + b*0.0722 > 180;
+  }
+  function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+  function easeInCubic(x){ return x * x * x; }
+  function animateValue(o){
+    var start = o.start == null ? 0 : o.start, end = o.end == null ? 100 : o.end;
+    var dur = o.duration == null ? 1000 : o.duration, delay = o.delay || 0, ease = o.ease || easeOutCubic;
+    var t0 = performance.now() + delay;
+    function tick(){
+      var elapsed = performance.now() - t0;
+      var t = Math.min(elapsed / dur, 1);
+      o.onUpdate(start + (end - start) * ease(t));
+      if (t < 1) requestAnimationFrame(tick);
+      else if (o.onEnd) o.onEnd();
+    }
+    setTimeout(function(){ requestAnimationFrame(tick); }, delay);
+  }
+
+  var bg = document.getElementById('bgBtn');
+  var bgColors = ['#2163af', '#2ea8ae', '#291c53'];
+  var glowVars = buildGlowVars('188 45 70', 1.0);
+  var gradVars = buildGradientVars(bgColors);
+  bg.style.setProperty('--card-bg', '#0b0f12');
+  bg.style.setProperty('--edge-sensitivity', 30);
+  bg.style.setProperty('--border-radius', '10px');
+  bg.style.setProperty('--glow-padding', '24px');
+  bg.style.setProperty('--cone-spread', 25);
+  bg.style.setProperty('--fill-opacity', 0.5);
+  Object.keys(glowVars).forEach(function(k){ bg.style.setProperty(k, glowVars[k]); });
+  Object.keys(gradVars).forEach(function(k){ bg.style.setProperty(k, gradVars[k]); });
+  if (isLightColor('#0b0f12')) bg.classList.add('border-glow-card--light');
+
+  function center(el){ var r = el.getBoundingClientRect(); return [r.width/2, r.height/2]; }
+  function edgeProximity(el, x, y){
+    var c = center(el), dx = x - c[0], dy = y - c[1];
+    var kx = Infinity, ky = Infinity;
+    if (dx !== 0) kx = c[0] / Math.abs(dx);
+    if (dy !== 0) ky = c[1] / Math.abs(dy);
+    return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+  }
+  function cursorAngle(el, x, y){
+    var c = center(el), dx = x - c[0], dy = y - c[1];
+    if (dx === 0 && dy === 0) return 0;
+    var deg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+    if (deg < 0) deg += 360;
+    return deg;
+  }
+  bg.addEventListener('pointermove', function(e){
+    var r = bg.getBoundingClientRect();
+    var x = e.clientX - r.left, y = e.clientY - r.top;
+    bg.style.setProperty('--edge-proximity', (edgeProximity(bg, x, y) * 100).toFixed(3));
+    bg.style.setProperty('--cursor-angle', cursorAngle(bg, x, y).toFixed(3) + 'deg');
+  });
+
+  /* sweep phases: 500ms edge-in, 1500ms easeInCubic to 50, delay 1500 + 2250ms easeOutCubic to 100, then 1500ms exit */
+  var swept = false;
+  bg.addEventListener('pointerenter', function(){
+    if (swept) return;
+    swept = true;
+    var angleStart = 110, angleEnd = 465;
+    bg.classList.add('sweep-active');
+    bg.style.setProperty('--cursor-angle', angleStart + 'deg');
+    animateValue({ duration: 500, onUpdate: function(v){ bg.style.setProperty('--edge-proximity', v); } });
+    animateValue({ ease: easeInCubic, duration: 1500, end: 50, onUpdate: function(v){
+      bg.style.setProperty('--cursor-angle', (angleEnd - angleStart) * (v / 100) + angleStart + 'deg');
+    }});
+    animateValue({ ease: easeOutCubic, delay: 1500, duration: 2250, start: 50, end: 100, onUpdate: function(v){
+      bg.style.setProperty('--cursor-angle', (angleEnd - angleStart) * (v / 100) + angleStart + 'deg');
+    }});
+    animateValue({ ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
+      onUpdate: function(v){ bg.style.setProperty('--edge-proximity', v); },
+      onEnd: function(){ bg.classList.remove('sweep-active'); }
+    });
+  });
+  bg.addEventListener('pointerleave', function(){ swept = false; });
+
+  /* ---------------- MAGIC UI SHINY (motion spring -> same integration) ---------------- */
+  var sy = document.getElementById('syBtn');
+  var springs = [
+    { x: 100, v: 0, k: 20, c: 15, m: 2, target: -100, rest: 0, phase: 'run' },
+    { x: 0.8, v: 0, k: 200, c: 5, m: 0.5, target: 1, rest: 0, phase: 'run' }
+  ];
+  var repeatDelay = 1000, last = performance.now();
+  function springStep(s, dt){
+    var a = (-s.k * (s.x - s.target) - s.c * s.v) / s.m;
+    s.v += a * dt; s.x += s.v * dt;
+    return s;
+  }
+  (function loop(now){
+    var dt = Math.min(0.032, (now - last) / 1000); last = now;
+    var s0 = springs[0], s1 = springs[1];
+    if (s0.phase === 'run') {
+      springStep(s0, dt);
+      if (s0.x <= -100) { s0.x = -100; s0.v = 0; s0.phase = 'rest'; s0.rest = now + repeatDelay; }
+    } else if (now > s0.rest) { s0.x = 100; s0.v = 0; s0.phase = 'run'; }
+    if (s1.phase === 'run') {
+      springStep(s1, dt);
+      if (Math.abs(s1.x - 1) < 0.002 && Math.abs(s1.v) < 0.002) { s1.x = 1; s1.v = 0; s1.phase = 'done'; }
+    }
+    sy.querySelector('.txt').style.setProperty('--x', s0.x + '%');
+    sy.style.transform = 'scale(' + s1.x.toFixed(4) + ')';
+    requestAnimationFrame(loop);
+  })(last);
+
+  sy.addEventListener('pointerdown', function(){
+    sy.style.transform = 'scale(0.95)';
+    springs[1].x = 0.95; springs[1].v = 0; springs[1].phase = 'idle';
+  });
+  sy.addEventListener('pointerup', function(){
+    springs[1].x = 0.95; springs[1].v = 0; springs[1].target = 1; springs[1].phase = 'run';
+  });
+})();
+</script>
+</body>
+</html>

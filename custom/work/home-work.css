@@ -1,0 +1,3 @@
+/* home page: hide the four demo collaborations; the clones keep the template card's
+   reveal + pointer-chip behaviour (driven by home-work.js). */
+[data-framer-name="Work List"] [data-framer-name="Work Card"].pulse-home-card-orig { display: none !important; }

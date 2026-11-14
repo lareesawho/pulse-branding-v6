@@ -1,0 +1,35 @@
+/* ChromaWaves island — React Bits Pro component (paid), used inside Lareesa's private
+   project at her direction. Scoped under .rb-island so it never leaks into the page.
+
+   Placement rule from REACT_BITS_MAP.md: one dominant motion idea per viewport. The page
+   hero already carries the GlowingRidges field, so ChromaWaves lives in a different
+   section — the navy "What we build" band — and reads as ambient depth, not a second
+   competing effect. Markup: <section class="section dark has-waves"> + the island. */
+
+.section.has-waves{position:relative;isolation:isolate}
+
+/* content always paints above the field */
+.section.has-waves .shell{position:relative;z-index:1}
+
+.rb-island--waves{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.rb-island--waves .chroma-waves{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+
+.rb-island--waves canvas{display:block;width:100%;height:100%}
+
+/* soften the top and bottom edges so the field does not end on a hard line */
+.rb-island--waves{
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 12%,#000 88%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,#000 12%,#000 88%,transparent 100%);
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* the island renders a single static frame in this mode; keep it faint */
+  .rb-island--waves{opacity:.8}
+}

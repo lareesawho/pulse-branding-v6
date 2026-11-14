@@ -1,0 +1,163 @@
+﻿/* ============================================================================
+   PULSE type + logo layer for the ORENZA clone.
+
+   Scope, exactly: the typefaces and the mark. No colours 鈥?the template's own
+   black, white and greys are left untouched. No copy, no layout, no sizes beyond
+   what Montserrat needs to stay on the template's measure.
+
+   Type    Montserrat 500 display 路 Inter 400 body 路 Noto Serif Display italic
+   Mark    the minimal wordmark: PULSE only, never re-lettered
+   ========================================================================== */
+
+@font-face {
+  font-family: "Pulse Display";
+  src: url("/custom/brand/fonts/montserrat-normal.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pulse Display";
+  src: url("/custom/brand/fonts/montserrat-italic.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pulse Body";
+  src: url("/custom/brand/fonts/inter-normal.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pulse Serif";
+  src: url("/custom/brand/fonts/notoserifdisplay-italic.woff2") format("woff2");
+  font-weight: 300 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Body: Inter. */
+p.framer-text,
+.framer-text,
+.framer-text p,
+.framer-text span,
+a, button {
+  font-family: "Pulse Body", "Inter", "Geist Placeholder", sans-serif !important;
+}
+
+/* Display: Montserrat 500 鈥?headings, statements, numerals, panel titles.
+   Weight only: the template's case, colour and alignment stay as they are. */
+h1, h2, h3, h4, h5,
+h1 *, h2 *, h3 *, h4 *,
+[data-framer-name="Headline"] *,
+[data-framer-name="Page Title"] *,
+[data-framer-name="Article Title"] *,
+[data-framer-name="Next Title"] *,
+[data-framer-name="Title"] *,
+[data-framer-name="Number"] *,
+[data-framer-name="Value"] *,
+[data-framer-name="Intro Main"] *,
+[data-framer-name="Deliverables Row"] *,
+[data-framer-name="Creed"] *,
+[data-framer-name="About Text"] *,
+[data-framer-name="Stats Card"] *,
+[data-framer-name="Closing"] *,
+[data-framer-name="Ticker"] *,
+[data-framer-name="Name"] *,
+[data-framer-name="Page Intro"] *,
+[data-framer-name="Intro"] *,
+[data-framer-name="Body"] *,
+[data-framer-name="Direct"] *,
+[data-framer-name="Contact Form"] * {
+  font-family: "Pulse Display", "Montserrat", "Geist Placeholder", sans-serif !important;
+  font-weight: 500 !important;
+}
+
+/* The brand's accent face, for pull quotes only. */
+[data-framer-name="Quote"] p,
+[data-framer-name="Quote"] * {
+  font-family: "Pulse Serif", "Noto Serif Display", Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Montserrat is wider than Geist. The template's display sizes are pulled back by
+   the measured amount so the same lockup still fits the same measure:
+   148 鈫?130 desktop, 92 鈫?84 tablet, 50 鈫?46 phone. */
+[data-framer-name="Headline"] h1, [data-framer-name="Headline"] h1 *,
+[data-framer-name="Headline"] p, [data-framer-name="Headline"] p *,
+[data-framer-name="Page Title"] h1, [data-framer-name="Page Title"] h1 *,
+[data-framer-name="Page Title"] p, [data-framer-name="Page Title"] p * {
+  font-size: 130px !important;
+  letter-spacing: -0.055em !important;
+}
+@media (max-width: 1199.98px) {
+  [data-framer-name="Headline"] h1, [data-framer-name="Headline"] h1 *,
+  [data-framer-name="Headline"] p, [data-framer-name="Headline"] p *,
+  [data-framer-name="Page Title"] h1, [data-framer-name="Page Title"] h1 *,
+  [data-framer-name="Page Title"] p, [data-framer-name="Page Title"] p * {
+    font-size: 84px !important;
+  }
+}
+@media (max-width: 809.98px) {
+  [data-framer-name="Headline"] h1, [data-framer-name="Headline"] h1 *,
+  [data-framer-name="Headline"] p, [data-framer-name="Headline"] p *,
+  [data-framer-name="Page Title"] h1, [data-framer-name="Page Title"] h1 *,
+  [data-framer-name="Page Title"] p, [data-framer-name="Page Title"] p * {
+    font-size: 46px !important;
+  }
+}
+
+/* ===================================================================== logo = */
+/* The template's logo is a bordered circle plus the typed word ORENZA. Pulse has
+   one mark 鈥?the wordmark itself 鈥?so the circle is hidden, the typed word is made
+   transparent to keep the layout box, and the brand's own 2025 vector is painted
+   over it. The box widens because the minimal mark is 6.6:1, not 3.9:1. */
+[data-framer-name="Logo"] [data-framer-name="Mark"],
+[data-framer-name="Brand"] [data-framer-name="Mark"],
+[data-framer-name="Footer Card"] [data-framer-name="Mark"] { display: none !important; }
+
+[data-framer-name="Logo"],
+[data-framer-name="Brand"] { width: auto !important; }
+
+[data-framer-name="Logo"] [data-framer-name="Wordmark"],
+[data-framer-name="Brand"] [data-framer-name="Wordmark"],
+[data-framer-name="Footer Card"] [data-framer-name="Wordmark"] { position: relative; }
+
+[data-framer-name="Logo"] [data-framer-name="Wordmark"] { width: 126px !important; }
+[data-framer-name="Brand"] [data-framer-name="Wordmark"] { width: 108px !important; }
+
+[data-framer-name="Logo"] [data-framer-name="Wordmark"] p,
+[data-framer-name="Brand"] [data-framer-name="Wordmark"] p,
+[data-framer-name="Footer Card"] [data-framer-name="Wordmark"] p { color: transparent !important; }
+
+[data-framer-name="Logo"] [data-framer-name="Wordmark"]::after,
+[data-framer-name="Brand"] [data-framer-name="Wordmark"]::after,
+[data-framer-name="Footer Card"] [data-framer-name="Wordmark"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/custom/brand/marks/pulse-mark-min-ice.svg") left center / contain no-repeat;
+}
+
+[data-framer-name="Footer Card"] [data-framer-name="Wordmark"]::after {
+  opacity: 0.1;
+}
+
+@media (max-width: 809.98px) {
+  [data-framer-name="Logo"] [data-framer-name="Wordmark"] { width: 104px !important; }
+  [data-framer-name="Brand"] [data-framer-name="Wordmark"] { width: 92px !important; }
+}
+
+/* ===================================================================== ice = */
+/* The one colour the site is allowed: Pulse Ice (#E1EEF0) instead of pure white.
+   Most usages come from the ink-900 token; the remaining literal whites in the
+   inlined component CSS are rewritten by tools/brand/apply-ice.js. */
+:root,
+body {
+  --token-fb852d29-a018-4942-a239-47fb64fca14e: #d6eaf0;
+  --pulse-ice: #d6eaf0;
+}

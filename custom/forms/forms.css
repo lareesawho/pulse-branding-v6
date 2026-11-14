@@ -1,0 +1,24 @@
+/* Focus has to be visible on the fields, not only on the buttons.
+   The captured Framer form sets outline-style:none on every input, select and
+   textarea and does not change border, background or shadow on focus, so a person
+   tabbing through the form sees nothing move (WCAG 2.4.7). The buttons already get
+   a 2px cyan outline from the capture; the fields get the same treatment here. */
+
+form[data-framer-name="Contact Form"] input:focus-visible,
+form[data-framer-name="Contact Form"] select:focus-visible,
+form[data-framer-name="Contact Form"] textarea:focus-visible,
+form[data-framer-name="Newsletter Form"] input:focus-visible,
+form[data-framer-name="Newsletter Form"] select:focus-visible,
+form[data-framer-name="Newsletter Form"] textarea:focus-visible,
+.form-field:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
+}
+
+/* the status line carries a link; it needs a ring too */
+.pulse-form-status a:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 3px;
+}

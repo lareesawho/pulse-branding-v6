@@ -1,0 +1,74 @@
+/* Home refresh — 2026-11-03
+   Applied to the test build from the section-by-section review:
+   client marks from the original site, a clearer Soul/Body/Brain, a tighter why-now,
+   an audit band in the V5 shape, and a plainer "what Pulse is" block. */
+
+/* ---------- 1. client marks, as the original site shows them ---------- */
+.marks-band{background:#0a1931;color:#e1eef0;padding:34px 0 38px;overflow:hidden}
+.marks-band .eyebrow{color:rgba(225,238,240,.62);margin:0 0 22px}
+.marks-marquee{position:relative;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marks-track{display:flex;align-items:center;gap:72px;width:max-content;
+  animation:marks-slide 46s linear infinite}
+.marks-marquee:hover .marks-track{animation-play-state:paused}
+.marks-track img{height:26px;width:auto;max-width:150px;object-fit:contain;
+  filter:brightness(0) invert(1);opacity:.72;transition:opacity .25s}
+.marks-track img:hover{opacity:1}
+.marks-track img.tall{height:30px}
+.marks-track img.wide{height:14px;max-width:180px}
+@keyframes marks-slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marks-track{animation:none;flex-wrap:wrap;justify-content:center;gap:40px;width:auto}}
+
+/* ---------- 2. Soul / Body / Brain ---------- */
+.sbb{padding:96px 0}
+.sbb__head{max-width:760px}
+.sbb__head h2{font-size:clamp(30px,3.4vw,46px);line-height:1.08}
+.sbb__head p{margin-top:18px;color:var(--ink-soft,#4a5b66);max-width:60ch}
+.sbb__rail{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:44px 0 0}
+.sbb__node{position:relative;padding:22px 22px 20px;border:1px solid rgba(10,25,49,.12);border-radius:14px;background:#fff}
+.sbb__node:not(:last-child)::after{content:"";position:absolute;top:34px;right:-14px;width:14px;height:1px;background:rgba(10,25,49,.35)}
+.sbb__node:not(:last-child)::before{content:"";position:absolute;top:30px;right:-14px;width:7px;height:7px;border-top:1px solid rgba(10,25,49,.55);border-right:1px solid rgba(10,25,49,.55);transform:rotate(45deg)}
+.sbb__num{font:600 11px/1 Inter,sans-serif;letter-spacing:.14em;color:#2ea8ae}
+.sbb__name{font-size:23px;margin:10px 0 4px;letter-spacing:-.01em}
+.sbb__rep{font-size:14px;color:#5a6b76;margin:0 0 16px}
+.sbb__label{font:600 10.5px/1.4 Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#6b7d88;display:block;margin-bottom:5px}
+.sbb__body{font-size:14.5px;line-height:1.55;margin:0 0 14px}
+.sbb__answers{border-top:1px solid rgba(10,25,49,.1);padding-top:13px;font-size:13.5px;color:#3f4f59}
+.sbb__answers b{font-weight:600;color:#0a1931}
+.sbb__pkg{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;font-weight:600;color:#0a1931;
+  border-bottom:1px solid rgba(10,25,49,.35);text-decoration:none;padding-bottom:2px}
+.sbb__pkg:hover{border-color:#2ea8ae;color:#2ea8ae}
+.sbb__return{margin-top:34px;display:flex;align-items:center;gap:14px;font-size:14.5px;color:#243542;
+  padding:18px 24px;border:1px solid rgba(46,168,174,.4);border-radius:12px;background:rgba(46,168,174,.05);width:100%;margin-bottom:28px}
+.sbb__return svg{flex:0 0 auto;color:#2ea8ae}
+@media (max-width:900px){
+  .sbb{padding:64px 0}
+  .sbb__rail{grid-template-columns:1fr;gap:26px}
+  .sbb__node:not(:last-child)::after,.sbb__node:not(:last-child)::before{display:none}
+}
+
+/* ---------- 3. audit band, V5 shape ---------- */
+.audit-band{padding:92px 0;background:#0a1931;color:#e1eef0}
+.audit-band .shell{display:grid;grid-template-columns:0.95fr 1.05fr;gap:20px 64px;align-items:start}
+.audit-band .shell > .eyebrow{grid-area:1/1}
+.audit-band .shell > h2{grid-area:2/1;margin-top:0}
+.audit-band .shell > .lede{grid-area:1/2;margin:0}
+.audit-band .shell > .audit-points{grid-area:2/2;margin:14px 0 30px}
+.audit-band .shell > .audit-cta{grid-area:3/1/4/3;margin-top:6px}
+.audit-band .eyebrow{color:rgba(225,238,240,.72)}
+.audit-band h2{font-size:clamp(32px,3.8vw,52px);line-height:1.03}
+.audit-band .lede{margin:6px 0 0;max-width:54ch;color:rgba(225,238,240,.82);font-size:16.5px;line-height:1.6}
+.audit-points{display:grid;grid-template-columns:1fr;gap:0;margin:30px 0 36px;border-top:1px solid rgba(225,238,240,.18)}
+.audit-point{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:baseline;
+  padding:15px 0;border-bottom:1px solid rgba(225,238,240,.14)}
+.audit-point b{font-size:14px;letter-spacing:.01em;margin:0}
+.audit-point span{font-size:14px;line-height:1.55;color:rgba(225,238,240,.74)}
+.audit-cta{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+@media (max-width:900px){
+  .audit-band{padding:64px 0}
+  .audit-band .shell{grid-template-columns:1fr;gap:16px}
+  .audit-band .shell > .eyebrow,.audit-band .shell > h2,.audit-band .shell > .lede,
+  .audit-band .shell > .audit-points,.audit-band .shell > .audit-cta{grid-area:auto}
+  .audit-point{grid-template-columns:1fr;gap:5px}
+}

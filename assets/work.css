@@ -1,0 +1,206 @@
+/* /work.html — contract 4.2 only. Loaded by work.html alone, so nothing else on the site
+   inherits these rules. Tokens come from assets/styles.css and assets/pulse-system.css:
+   no new colours and no new neutral palette are introduced.
+
+   Layout: filter (3) above the collection -> flagship PixelCards (2) -> seven editorial
+   rows (4) -> proof strip (5) -> `Earlier studio work` (6) -> CTA (7).                */
+
+/* ------------------------------------------------------------------ 1. hero lead */
+.work-hero__lead{max-width:46ch}
+
+/* --------------------------------------------------- 2. flagship PixelCards (real) */
+/* The ReactBits PixelCard port frames the cover and overlays the copy on it. On Work the
+   card has to carry five pieces of information, so the cover moves into normal flow and the
+   copy sits under it. The canvas still covers the whole card and the shimmer still runs; the
+   copy block is opaque and sits above it, so nothing is lost and no component code changes. */
+.work-flagship{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* [hidden] must win: the base PixelCard/row display rules are author styles and would
+   otherwise keep a filtered-out item on screen. */
+.work-flagship .pixel-card[hidden],
+.work-rows .work-row-item[hidden]{display:none!important}
+.work-flagship .pixel-card{aspect-ratio:auto;display:flex;flex-direction:column;
+  border-radius:14px;background:#0d1729}
+.work-flagship .pixel-screen{position:relative;inset:auto;aspect-ratio:1440/900;
+  overflow:hidden;border-radius:14px 14px 0 0;flex:0 0 auto}
+.work-flagship .pixel-copy{position:relative;left:auto;right:auto;bottom:auto;
+  background:#0d1729;padding:22px 24px 0;flex:1 1 auto}
+/* The card copy is owned here, not by the PixelCard module sheet. That sheet loads after this
+   file and its `.pixel-copy h3` / `.pixel-copy p` rules (its own type scale, `max-width:38ch`,
+   `opacity:.82`) outrank a bare `.work-flagship-*` class, so they were half-applying the Work
+   design: the detail rows were capped at 38ch inside a 598px block and "Read the case study"
+   rendered as body copy. Scoping every rule through `.work-flagship-copy` (0,2,0) puts the Work
+   page back in charge of its own card. */
+.work-flagship-copy h3{font-size:clamp(21px,1.7vw,27px);line-height:1.15}
+.work-flagship-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(46,168,174,.95);margin-bottom:10px}
+/* The three detail rows are one grid: a label column of fixed width (PULSE INTERVENTION is the
+   widest label at 127px) and a body column with a reading measure. Every card therefore places
+   BUSINESS TENSION / PULSE INTERVENTION / WHAT CHANGED on the same axis, and the hairline spans
+   the card's full measure instead of stopping at the text. The body is a bare text node, so the
+   grid wraps it in an anonymous item and the markup stays untouched. */
+.work-flagship-copy .work-flagship-line,
+.work-flagship-copy .work-flagship-changed{margin:16px 0 0;position:relative;z-index:5;
+  padding-top:14px;border-top:1px solid rgba(225,238,240,.14);
+  display:grid;grid-template-columns:140px minmax(0,430px);gap:4px 24px;
+  align-items:baseline;max-width:none;opacity:1}
+.work-flagship-copy .work-flagship-line span,
+.work-flagship-copy .work-flagship-changed span{display:block;margin:0;padding-top:2px;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(225,238,240,.72)}
+.work-flagship-copy .work-flagship-line{font-size:14px;line-height:1.6;
+  color:rgba(225,238,240,.86)}
+.work-flagship-copy .work-flagship-changed{font-size:15px;line-height:1.55;color:#fff}
+.work-flagship-scope{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;
+  position:relative;z-index:5}
+.work-flagship-scope li{font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(225,238,240,.78);border:1px solid rgba(225,238,240,.22);padding:6px 10px;border-radius:999px}
+.work-flagship-copy .work-flagship-more{margin:18px 0 0;padding-bottom:24px;font-size:11.5px;letter-spacing:.10em;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--aqua);max-width:none;opacity:1;
+  position:relative;z-index:5}
+.work-flagship .pixel-card:hover .work-flagship-more,
+.work-flagship .pixel-card:focus-visible .work-flagship-more{color:#fff}
+
+/* ----------------------------------------------------------------- 3. case filter */
+.work-filter{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:26px 0}
+.work-filter__heading{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 16px}
+.work-filter__row{display:flex;flex-wrap:wrap;gap:10px}
+.work-filter__btn{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 18px;
+  border:1px solid var(--line);border-radius:999px;background:none;color:var(--ink);cursor:pointer;
+  font:inherit;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.work-filter__btn:hover{border-color:var(--blue);color:var(--blue)}
+.work-filter__btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.work-filter__btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--ice)}
+.work-filter__status{margin:14px 0 0;font-size:12.5px;color:var(--muted);min-height:1.2em}
+.work-filter__status:empty{margin:0}
+.work-flagship-section,.work-rows-section{padding-bottom:0}
+
+/* --------------------------------------------------- 4. seven editorial rows */
+.work-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.work-row-item{border-bottom:1px solid var(--line)}
+.work-row{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);
+  gap:clamp(20px,3.4vw,52px);padding:34px 0;align-items:start;
+  text-decoration:none;color:inherit;transition:background-color .35s var(--ease)}
+.work-row:hover,.work-row:focus-visible{background:rgba(33,99,175,.045)}
+.work-row:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+.work-row__media{position:relative;margin:0;aspect-ratio:1440/900;overflow:hidden;
+  border-radius:10px;background:var(--paper-2);border:1px solid var(--line)}
+.work-row__media img,.work-row__clip{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;display:block}
+.work-row__clip{opacity:0;transition:opacity .5s ease}
+.work-row:hover .work-row__clip.on,.work-row:focus-visible .work-row__clip.on{opacity:1}
+.work-row__top{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.work-row__sector{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.work-row__name{font-size:clamp(19px,1.5vw,24px);line-height:1.18;margin:0 0 6px}
+.work-row__scope{font-size:12px;letter-spacing:.02em;color:var(--muted);margin:0}
+.work-row__line,.work-row__changed{margin:14px 0 0;padding-top:12px;
+  border-top:1px solid var(--line);max-width:68ch}
+.work-row__line span,.work-row__changed span{display:block;margin-bottom:4px;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.work-row__line{font-size:14px;line-height:1.65;color:var(--ink)}
+.work-row__changed{font-size:14px;line-height:1.65;color:var(--ink)}
+.work-row__caveat{margin:14px 0 0;font-size:12px;line-height:1.6;color:var(--muted);
+  border-left:2px solid var(--line);padding-left:12px;max-width:68ch}
+
+/* ------------------------------------------------------------------ 5. proof strip */
+.work-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(22px,2.6vw,44px)}
+.work-proof__item{margin:0;display:flex;flex-direction:column;
+  border-top:1px solid rgba(225,238,240,.2);padding-top:22px}
+.work-proof__quote{margin:0;font-size:15px;line-height:1.72;color:rgba(225,238,240,.94)}
+.work-proof__who{display:flex;align-items:center;gap:12px;margin:20px 0 0}
+.work-proof__who img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:0 0 auto}
+.work-proof__who span{display:flex;flex-direction:column;gap:3px}
+.work-proof__who b{font-size:13.5px;font-weight:600;color:#fff}
+.work-proof__who em{font-style:normal;font-size:11.5px;letter-spacing:.02em;
+  color:rgba(225,238,240,.7)}
+.work-proof__case{margin:16px 0 0;font-size:11.5px;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--aqua);display:inline-flex;min-height:44px;align-items:center}
+.work-proof__case:hover{color:#fff}
+
+/* ------------------------------------------------------- 6. Earlier studio work */
+.work-archive-section{background:var(--paper-2)}
+.work-archive-section .archive-media img{filter:saturate(.72)}
+.work-archive-section .archive-client{font-weight:500}
+
+/* --------------------------------------------------------------------- 7. CTA band */
+.work-cta{max-width:760px;text-align:center}
+.work-cta .copy{margin:18px auto 0;max-width:56ch}
+.work-cta__actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:30px}
+.work-cta__actions .rb-island--btn{display:inline-flex}
+.work-cta__actions .btn{min-height:46px;padding:0 22px;min-width:232px;justify-content:center}
+
+/* FB cmuw56i2tdvsa7 (2026-10-07 review): the two buttons in this CTA row were content-sized
+   (207px vs 178px at 1440), so a row shown together rendered at two different widths. The
+   buttons now share a 232px minimum, which is wider than both labels, so they render equal.
+   Below 600px the row already stacks and stretches to full width (equal by construction).
+   Scoped to this sheet, which only work.html loads. */
+
+/* FB cmuw59x6l7yrss (2026-10-07 review): the mobile menu panel was painted with the old
+   teal-black --deep-navy (#001d2a), which reads as a different surface from the rest of the
+   site. It now carries the accepted nav treatment used by the scrolled bar: the lit 7% ice
+   top edge over ink navy. Scoped to `.nav .mobile-panel` (0,2,0) so it outranks
+   assets/styles.css `.mobile-panel` (0,1,0); work.css is loaded by work.html alone. */
+.nav .mobile-panel{background:linear-gradient(to bottom,rgba(var(--ice-rgb),.07),rgba(var(--ice-rgb),0) 72%),var(--ink-navy)}
+/* FB cmuw59x6l7yrss (2026-10-07 review) — the panel opened to a 57px sliver, i.e. only the "Work"
+   link, which is what the note describes. Measured cause on work.html and index.html alike:
+   `.nav.scrolled` carries `backdrop-filter`, which makes the nav the containing block for its
+   `position:fixed` descendant, so the panel's `top:68px; bottom:0` resolved against the 69px nav
+   bar instead of the viewport (panel height 57px when scrolled, 776px when not). An explicit
+   viewport-relative height removes that dependency, so the open panel always fills the screen.
+   100dvh, not 100vh: a full-screen menu should not sit under collapsing mobile browser chrome. */
+.nav .mobile-panel{height:calc(100dvh - 68px)}
+
+/* ------------------------------------------------------------- responsive steps */
+@media (max-width:1100px){
+  /* No `.work-flagship{grid-template-columns:1fr}` here. The flagship cards carry the shared
+     `.pixel-grid` class, and PixelCard.css is loaded after this sheet, so a column declaration
+     in this block never applied — the row stayed two-up to 900px. Measured live at 1100, 1050
+     and 950: still `repeat(2, …)`, identical to the PixelCard value. The stacked step belongs
+     to `.pixel-grid`. */
+  .work-proof{grid-template-columns:1fr;gap:0}
+  .work-proof__item{margin-bottom:30px}
+}
+/* The two-column detail rows need a card wide enough to carry both columns: the label column
+   alone is 140px, so a card under ~512px leaves the body a 170-280px measure — four cramped
+   lines. The card is only that narrow in one place: 901px to 1160px, where `.pixel-grid` (the
+   shared PixelCard sheet) is still two-up. Below 901px it is one-up and wide again; phones are
+   already stacked by the 600px rule above. */
+@media (min-width:901px) and (max-width:1160px){
+  .work-flagship-copy .work-flagship-line,
+  .work-flagship-copy .work-flagship-changed{grid-template-columns:1fr;gap:6px;align-items:start}
+}
+@media (max-width:900px){
+  .work-row{grid-template-columns:1fr;gap:18px;padding:26px 0}
+  .work-row__media{max-width:520px}
+}
+@media (max-width:600px){
+  .work-hero__lead{max-width:none}
+  .work-filter{padding:22px 0}
+  .work-filter__btn{padding:0 14px;font-size:11px}
+  .work-flagship .pixel-copy{padding:18px 18px 0}
+  /* the two-column detail rows collapse to label-over-body, keeping the same order and the
+     same full-measure hairline */
+  .work-flagship-copy .work-flagship-line,
+  .work-flagship-copy .work-flagship-changed{grid-template-columns:1fr;gap:6px;align-items:start}
+  .work-flagship-copy .work-flagship-more{padding-bottom:20px}
+  /* FB cmuw56i2tdvsa7 (2026-10-07 review). Full width on a phone, but inset 8px: BorderGlow
+     paints its edge light --glow-padding (26px) beyond the button, so a full-bleed glow island
+     inside the 20px mobile gutter pushed the document 6px wide (measured scrollWidth 396 vs
+     clientWidth 390). The inset absorbs the bleed with room to spare at any gutter >= 18px. */
+  .work-cta__actions{flex-direction:column;align-items:stretch;padding:0 8px}
+  .work-cta__actions .btn,.work-cta__actions .rb-island--btn{width:100%}
+  /* FB cmuw56i2tdvsa7 (2026-10-07 review). BorderGlow re-parents its child into
+     `.border-glow-card > .rb-children` the first time it initialises, and those wrappers are
+     content-sized, so the stretched island's button collapsed back to its own content width —
+     measured 232px inside a 350px row while its plain sibling filled 350px. Measured after:
+     350px each. */
+  .work-cta__actions .rb-island--btn > .border-glow-card,
+  .work-cta__actions .rb-island--btn .border-glow-card > .rb-children{width:100%}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .work-row,.work-row__clip,.work-flagship .pixel-card{transition:none}
+  .work-row__clip{display:none}
+  .work-row:hover,.work-row:focus-visible{background:none}
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>liquid dock smoke test</title>
+<style>body{margin:0;background:#08090a;color:#d6eaf0;font-family:Inter,sans-serif;height:200vh;padding:40px}</style>
+</head>
+<body>
+  <h1>smoke</h1>
+  <x-liquid-dock position="top" gap="4" color="#d6eaf0" blur="10" magnet-radius="150" magnet-strength="0.6" bob-intensity="1">
+    <button>Home</button><button>About</button><button>Services</button><button>Work</button><button>Insights</button><button>Contact</button>
+  </x-liquid-dock>
+  <script type="module">
+    import { init } from '/custom/vendor/baredom/x-liquid-dock.js';
+    init();
+    window.__ready = customElements.whenDefined('x-liquid-dock');
+  </script>
+</body>
+</html>

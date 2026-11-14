@@ -1,0 +1,512 @@
+/* Pulse review — click anywhere, leave a comment, keep it pinned to the spot.
+ *
+ * Loaded site-wide but dormant unless the host is the test host, a preview host,
+ * localhost, file://, or the URL carries ?annotate=1 (which then sticks for the
+ * visitor, so a production page can be annotated on purpose without ever
+ * showing the control to a stranger).
+ *
+ * No dependencies, no fonts, no CDN. Everything inherits the site's own tokens
+ * so the tool never looks like a second design language bolted on.
+ */
+
+#pa-root,
+#pa-root * {
+  box-sizing: border-box;
+}
+
+#pa-root {
+  --pa-accent: #2163af;
+  --pa-ink: #0a1931;
+  --pa-line: rgba(10, 25, 49, 0.13);
+  --pa-paper: #fff;
+  --pa-muted: #5b666c;
+  font-family: var(--font-body, "Inter", system-ui, -apple-system, "Segoe UI", sans-serif);
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  color: var(--pa-ink);
+}
+
+/* ---------- launcher ---------- */
+
+.pa-launch {
+  position: fixed;
+  left: 8px;
+  bottom: 16px;
+  z-index: 92;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px 9px 12px;
+  border: 1px solid var(--pa-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  color: var(--pa-ink);
+  font: 500 12.5px/1 inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(10, 25, 49, 0.1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+.pa-launch:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(10, 25, 49, 0.14);
+}
+
+.pa-launch svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.pa-launch .pa-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--pa-accent);
+  color: #fff;
+  font: 600 10.5px/18px inherit;
+  text-align: center;
+}
+
+.pa-launch.pa-armed {
+  background: var(--pa-ink);
+  color: #fff;
+  border-color: var(--pa-ink);
+}
+
+.pa-launch.pa-armed .pa-count {
+  background: #fff;
+  color: var(--pa-ink);
+}
+
+/* ---------- pick mode ---------- */
+
+#pa-root.pa-armed,
+#pa-root.pa-armed * {
+  cursor: crosshair;
+}
+
+#pa-root.pa-armed .pa-pop,
+#pa-root.pa-armed .pa-pop *,
+#pa-root.pa-armed .pa-launch,
+#pa-root.pa-armed .pa-panel,
+#pa-root.pa-armed .pa-panel * {
+  cursor: auto;
+}
+
+#pa-root.pa-armed .pa-pop textarea {
+  cursor: text;
+}
+
+.pa-target {
+  position: fixed;
+  pointer-events: none;
+  border: 1px solid var(--pa-accent);
+  background: rgba(33, 99, 175, 0.07);
+  border-radius: 2px;
+  z-index: 61;
+  transition: all 0.08s linear;
+}
+
+.pa-target-name {
+  position: fixed;
+  z-index: 63;
+  pointer-events: none;
+  max-width: 60vw;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: var(--pa-ink);
+  color: #fff;
+  font: 500 11px/1.35 inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- the form ---------- */
+
+.pa-pop {
+  position: fixed;
+  z-index: 95;
+  pointer-events: auto;
+  width: min(340px, calc(100vw - 24px));
+  padding: 14px;
+  border: 1px solid var(--pa-line);
+  border-radius: 6px;
+  background: var(--pa-paper);
+  box-shadow: 0 18px 50px rgba(10, 25, 49, 0.18);
+}
+
+.pa-pop-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font: 600 11px/1.3 inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pa-muted);
+}
+
+.pa-pop-where {
+  margin: 0 0 10px;
+  padding-left: 9px;
+  border-left: 2px solid var(--pa-accent);
+  font: 400 12px/1.45 inherit;
+  color: var(--pa-ink);
+  word-break: break-word;
+}
+
+.pa-pop-where span {
+  display: block;
+  color: var(--pa-muted);
+  font-size: 11px;
+}
+
+.pa-pop textarea {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  max-height: 40vh;
+  padding: 10px;
+  border: 1px solid var(--pa-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--pa-ink);
+  font: 400 13px/1.5 inherit;
+  resize: vertical;
+}
+
+.pa-pop textarea:focus {
+  outline: 2px solid rgba(33, 99, 175, 0.35);
+  outline-offset: 1px;
+}
+
+.pa-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pa-hint {
+  flex: 1;
+  font: 400 11px/1.3 inherit;
+  color: var(--pa-muted);
+}
+
+.pa-btn {
+  padding: 8px 13px;
+  border: 1px solid var(--pa-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--pa-ink);
+  font: 500 12.5px/1 inherit;
+  cursor: pointer;
+}
+
+.pa-btn:hover {
+  border-color: rgba(10, 25, 49, 0.3);
+}
+
+.pa-btn-primary {
+  background: var(--pa-ink);
+  border-color: var(--pa-ink);
+  color: #fff;
+}
+
+.pa-btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--pa-muted);
+}
+
+/* ---------- pins ---------- */
+
+.pa-pin {
+  position: absolute;
+  z-index: 70;
+  pointer-events: auto;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 2px solid #fff;
+  border-radius: 50% 50% 50% 2px;
+  background: var(--pa-accent);
+  color: #fff;
+  font: 600 11px/20px inherit;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(4, 12, 22, 0.5), 0 3px 12px rgba(4, 12, 22, 0.45);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pa-pin:hover {
+  transform: scale(1.12);
+}
+
+.pa-pin.pa-pin-here {
+  background: var(--pa-ink);
+}
+
+.pa-flash {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid var(--pa-accent);
+  border-radius: 3px;
+  background: rgba(33, 99, 175, 0.12);
+  z-index: 69;
+  transition: opacity 0.4s ease;
+}
+
+/* ---------- log panel ---------- */
+
+.pa-panel {
+  position: fixed;
+  right: 8px;
+  bottom: 62px;
+  z-index: 94;
+  pointer-events: auto;
+  display: none;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 16px));
+  max-height: min(70vh, 620px);
+  border: 1px solid var(--pa-line);
+  border-radius: 6px;
+  background: var(--pa-paper);
+  box-shadow: 0 20px 60px rgba(10, 25, 49, 0.2);
+  overflow: hidden;
+}
+
+.pa-panel.pa-open {
+  display: flex;
+}
+
+.pa-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--pa-line);
+}
+
+.pa-panel-head strong {
+  flex: 1;
+  font: 600 12.5px/1.2 inherit;
+  white-space: nowrap;
+}
+
+.pa-tab {
+  padding: 5px 9px;
+  border: 1px solid var(--pa-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--pa-muted);
+  font: 500 11px/1 inherit;
+  cursor: pointer;
+}
+
+.pa-tab.pa-on {
+  background: var(--pa-ink);
+  border-color: var(--pa-ink);
+  color: #fff;
+}
+
+.pa-list {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.pa-item {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--pa-line);
+}
+
+.pa-item:last-child {
+  border-bottom: 0;
+}
+
+.pa-item-where {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 5px;
+  font: 500 11px/1.35 inherit;
+  color: var(--pa-muted);
+}
+
+.pa-item-n {
+  flex: none;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--pa-accent);
+  color: #fff;
+  font: 600 10px/17px inherit;
+  text-align: center;
+}
+
+.pa-item-where em {
+  flex: 1;
+  overflow: hidden;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pa-item-body {
+  margin: 0 0 8px;
+  font: 400 13px/1.5 inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pa-item-acts {
+  display: flex;
+  gap: 6px;
+}
+
+.pa-mini {
+  padding: 4px 8px;
+  border: 1px solid var(--pa-line);
+  border-radius: 3px;
+  background: #fff;
+  color: var(--pa-muted);
+  font: 500 11px/1 inherit;
+  cursor: pointer;
+}
+
+.pa-mini:hover {
+  color: var(--pa-ink);
+  border-color: rgba(10, 25, 49, 0.3);
+}
+
+.pa-empty {
+  padding: 26px 16px;
+  text-align: center;
+  font: 400 12.5px/1.55 inherit;
+  color: var(--pa-muted);
+}
+
+.pa-panel-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--pa-line);
+}
+
+.pa-panel-foot .pa-btn {
+  flex: 1 1 auto;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pa-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+}
+
+.pa-list[hidden],
+.pa-text[hidden] {
+  display: none;
+}
+
+.pa-text textarea {
+  width: 100%;
+  min-height: 280px;
+  max-height: 52vh;
+  padding: 10px;
+  border: 1px solid var(--pa-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--pa-ink);
+  font: 400 11.5px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  resize: none;
+}
+
+/* ---------- feedback ---------- */
+
+.pa-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 96;
+  transform: translate(-50%, 12px);
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--pa-line);
+  color: var(--pa-ink);
+  font: 500 12px/1 inherit;
+  box-shadow: 0 10px 30px rgba(4, 12, 22, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.pa-toast.pa-show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 720px) {
+  .pa-launch {
+    right: 8px;
+    bottom: 74px;
+    left: auto;
+    top: auto;
+    padding: 8px 12px;
+  }
+
+  .pa-panel {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-height: 62vh;
+  }
+
+  .pa-pin {
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px;
+    font-size: 12px;
+    line-height: 26px;
+  }
+}
+
+@media print {
+  #pa-root {
+    display: none !important;
+  }
+}
+
+/* The sync line: the log is posted to the review service as well as kept in
+   this browser, so it has to say which of the two it is in. */
+.pa-sync {
+  padding: 2px 12px 10px;
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pa-muted);
+  opacity: 0.72;
+  cursor: pointer;
+}
+.pa-sync:empty { display: none; }
+.pa-sync[data-state="sending"] { opacity: 0.9; }
+.pa-sync[data-state="off"] { color: #b23c17; opacity: 1; }
