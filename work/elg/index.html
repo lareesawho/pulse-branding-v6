@@ -269,12 +269,158 @@ body{background:#07090c;margin:0}
 <link rel="stylesheet" href="/custom/a11y/skip.css?v=a1dbff25">
 <script src="/custom/a11y/document.js?v=e8a187ac" defer></script>
 <!-- /pulse document -->
+
+<!-- pulse loader -->
+<style id="pulse-loader-style">
+/* Pulse page loader — a faithful port of Framer's "AnimatedLoaderFX" component
+   (AnimatedLoader: rotating gradient orb + staggered letter pulse), themed to the Pulse palette.
+   Source: framerusercontent.com/modules/.../AnimatedLoaderFX.js
+   - orb: 2s linear infinite, rotate 90° → 270° → 450°, six inset box-shadow layers
+   - letters: 2s infinite, stagger 0.1s, opacity .4 → 1@scale1.15 → .7            */
+
+html.pl-lock, html.pl-lock body { overflow: hidden !important; }
+
+#pulse-loader {
+  --pl-light: #f2fdff;
+  --pl-mid: #5fd0cf;
+  --pl-dark: #2f7fd0;
+  --pl-mid-alt: #8fd8e0;
+  --pl-dark-alt: #3a2b6e;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: #09090a;
+  opacity: 1;
+  transition: opacity .45s cubic-bezier(.16, 1, .3, 1);
+  will-change: opacity;
+}
+#pulse-loader.is-done { opacity: 0; pointer-events: none; }
+
+#pulse-loader .pl-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: transparent;
+  color: #f4fbfd;
+  font-family: "Pulse Body", Inter, sans-serif;
+  font-size: 19px;
+  font-weight: 300;
+  letter-spacing: .01em;
+  user-select: none;
+}
+
+#pulse-loader .pl-wordmark {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: auto;
+  display: block;
+  opacity: 1;
+  animation: pl-breathe 2.4s cubic-bezier(.22, 1, .36, 1) infinite;
+  filter: drop-shadow(0 1px 8px rgba(9, 9, 10, .45));
+}
+
+@keyframes pl-breathe {
+  0%, 100% { opacity: .82; transform: scale(.994); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+#pulse-loader .pl-orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: transparent;
+  animation: pl-rotate 2s linear infinite;
+  z-index: 0;
+}
+
+#pulse-loader .pl-letter {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  opacity: .4;
+  transform: translateY(0);
+  animation: pl-letter 2s infinite;
+  border-radius: 50ch;
+}
+
+@keyframes pl-rotate {
+  0% {
+    transform: rotate(90deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 30px 0 var(--pl-mid) inset,
+      0 60px 60px 0 var(--pl-dark) inset;
+  }
+  50% {
+    transform: rotate(270deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 10px 0 var(--pl-mid-alt) inset,
+      0 40px 60px 0 var(--pl-dark-alt) inset;
+  }
+  100% {
+    transform: rotate(450deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 30px 0 var(--pl-mid) inset,
+      0 60px 60px 0 var(--pl-dark) inset;
+  }
+}
+
+@keyframes pl-letter {
+  0%, 100% { opacity: .4; transform: translateY(0); }
+  20% { opacity: 1; transform: scale(1.15); }
+  40% { opacity: .7; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pulse-loader .pl-orb,
+  #pulse-loader .pl-letter { animation: none; }
+}
+
+/* The overlay is markup now, painted before any script runs. If the runtime
+   never executes (a blocked script, a broken bundle, a browser that cannot
+   parse it), the page must still appear, so the overlay gives up on its own.
+   The runtime's 12 s failsafe normally wins long before this. */
+#pulse-loader {
+  animation: pl-giveup .7s cubic-bezier(.16, 1, .3, 1) 13s forwards;
+}
+
+@keyframes pl-giveup {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pulse-loader { animation: none; }
+}
+</style>
+<noscript><style>#pulse-loader{display:none!important}</style></noscript>
+<script src="/custom/loader/loader.js?v=0af2c22d" data-text="Pulse" data-min="800" data-max="12000" defer></script>
+<!-- /pulse loader -->
 <!-- pulse socials -->
 <script src="/custom/socials/socials.js?v=5c7260f2" defer></script>
 <!-- /pulse socials -->
 </head>
 <body data-project="elg">
 <a class="pulse-skip" href="#case">Skip to the case study</a>
+<!-- pulse loader markup -->
+<div id="pulse-loader" role="status" aria-live="polite" aria-label="Pulse">
+  <div class="pl-wrap">
+    <img class="pl-wordmark" src="/custom/brand/marks/pulse-mark-min-white.svg" alt="Pulse" decoding="async">
+    <div class="pl-orb"></div>
+  </div>
+</div>
+<!-- /pulse loader markup -->
 <div data-component="navigation" data-theme="light"><div class="framer-WCw6x framer-JYHaL framer-7AIgD framer-73jpA framer-g79zb framer-8CIrr framer-1ymqnlh"><div data-framer-name="Navigation"><nav name="Navigation" class="framer-jw0Kc framer-G2hvU framer-uXDfl framer-73jpA framer-g79zb framer-8CIrr framer-593lss framer-v-593lss" data-framer-name="Desktop" style="backdrop-filter: blur(18px); background-color: rgba(9, 9, 10, 0.7); width: 1440px; opacity: 1; display: flex; position: relative; inset: 0px; height: 90px; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: column; align-items: center; justify-content: flex-start; border-radius: 0px; overflow: clip; box-sizing: border-box;" aria-label="Main"><div class="framer-psl3hh" data-framer-name="Bar" style="opacity: 1; display: flex; position: relative; inset: 0px; width: 1408px; height: 62px; max-width: 1776px; padding: 0px 22px; margin: 14px 16px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 16px; flex-flow: row; align-items: center; justify-content: flex-start; border-radius: 999px; overflow: visible; box-sizing: border-box;"><div class="framer-8vrs10" data-framer-name="Logo Wrap" style="opacity: 1; display: flex; position: relative; inset: 0px; width: 431.734px; height: 17px; padding: 0px; margin: 0px 0px 0px 14px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-18lt4nf framer-1kx7nw5" href="/" style="opacity: 1; display: flex; position: relative; inset: 0px; width: 112px; height: 17px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><div class="framer-xt72d8-container" data-framer-name="Logo" name="Logo" style="opacity: 1; position: relative; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><div name="Logo" class="framer-vdPY3 framer-11c0iab framer-v-11c0iab" data-framer-name="Light" style="opacity: 1; display: flex; position: relative; width: min-content; height: min-content; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; gap: 10px; flex-flow: row; align-items: center; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><div class="framer-11ysb78" data-border="true" data-framer-name="Mark" style="--border-bottom-width: 5px; --border-color: var(--token-fb852d29-a018-4942-a239-47fb64fca14e); --border-left-width: 5px; --border-right-width: 5px; --border-style: solid; --border-top-width: 5px; border-radius: 50%; opacity: 1; position: relative; width: 22px; height: 22px; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; flex-flow: row; overflow: visible; box-sizing: border-box;"></div><div class="framer-40ieye" data-framer-name="Wordmark" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-fb852d29-a018-4942-a239-47fb64fca14e); transform: none; opacity: 1; display: flex; position: relative; width: 126px; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNjAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 21px; --framer-font-weight: 600; --framer-letter-spacing: -0.05em; --framer-line-height: 1em; --framer-text-color: var(--extracted-r6o4lv, var(--token-fb852d29-a018-4942-a239-47fb64fca14e)); display: block; position: static; min-width: 0px; min-height: 0px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 21px; font-weight: 600; line-height: 21px; letter-spacing: -1.05px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;">PULSE</p></div></div></div></a></div><div class="framer-ahpvvw" data-border="true" data-framer-name="Links" style="--border-bottom-width: 1px; --border-color: var(--token-2f34eb38-5ec1-47d3-a7d8-7f60d2f4b615); --border-left-width: 1px; --border-right-width: 1px; --border-style: solid; --border-top-width: 1px; background-color: rgb(0, 0, 0); border-radius: 11px; opacity: 1; display: flex; position: relative; inset: 0px; width: 454.531px; height: 66px; padding: 3px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 3px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-joj49t" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 64.7969px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-scih43" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 64.7969px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 64.7969px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/" style="display: inline-flex; position: relative; inset: 0px; width: 64.7969px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">Home</a></p></div></div><div class="framer-1l5fzx2" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 65.9531px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-1cwqcv9" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 65.9531px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 65.9375px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/about" style="display: inline-flex; position: relative; inset: 0px; width: 65.9531px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">About</a></p></div></div><div class="framer-w196mv" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 84.3125px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-1rtsidp" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 84.3125px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 84.3125px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/services" style="display: inline-flex; position: relative; inset: 0px; width: 84.3125px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">Services</a></p></div></div><div class="framer-j3ymgb" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 60.8281px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-1g8x5ox" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 60.8281px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 60.8125px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/work" data-framer-page-link-current="true" style="display: inline-flex; position: relative; inset: 0px; width: 60.8281px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">Work</a></p></div></div><div class="framer-1sx5khv" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 78.9844px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-1axd45k" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 78.9844px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 78.9844px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/insights" style="display: inline-flex; position: relative; inset: 0px; width: 78.9844px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">Insights</a></p></div></div><div class="framer-y2sfq2" data-framer-name="Tab" style="background-color: var(--token-9768a697-3ca8-4dbb-b3c4-a936c0c89a8c); border-radius: 8px; opacity: 1; display: flex; position: relative; inset: 0px; width: 78.6562px; height: 60px; padding: 11px 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 0px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-40stls" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 78.6562px; height: 38px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNTAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 15px; --framer-font-weight: 500; --framer-letter-spacing: -0.01em; --framer-line-height: 18px; --framer-text-color: var(--extracted-r6o4lv, var(--token-2f2328cd-9ace-4e5f-b34e-8dd21f02209e)); display: block; position: static; width: 78.6406px; height: 38px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 15px; font-weight: 500; line-height: 18px; letter-spacing: -0.15px; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a class="framer-text framer-styles-preset-71embc" data-styles-preset="H0ZEXoUE9" href="/contact" style="display: inline-flex; position: relative; inset: 0px; width: 78.6562px; height: 38px; min-width: 0px; min-height: 0px; padding: 0px 13px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 500; line-height: 18px; letter-spacing: 0.52px; flex-flow: row; align-items: center; border-radius: 9px; overflow: visible; box-sizing: border-box;">Contact</a></p></div></div></div><div class="framer-17i12na" data-framer-name="Right" style="opacity: 1; display: flex; position: relative; inset: 0px; width: 431.75px; height: 40px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; gap: 12px; flex-flow: row; align-items: center; justify-content: flex-end; border-radius: 0px; overflow: visible; box-sizing: border-box;"><div class="framer-1ghusft-container" data-framer-name="CTA" name="CTA" style="opacity: 1; display: block; position: relative; inset: 0px; width: 174.828px; height: 40px; padding: 0px; margin: 0px; font-family: sans-serif; font-size: 12px; font-weight: 400; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;"><a name="CTA" class="framer-FAEwB framer-m0l5wv framer-v-m0l5wv framer-vlp6g8" data-framer-name="Default" href="/contact" style="background-color: var(--token-fb852d29-a018-4942-a239-47fb64fca14e); border-radius: 999px; opacity: 1; display: flex; position: relative; inset: 0px; width: 174.828px; height: 40px; min-width: 0px; min-height: 0px; padding: 0px 20px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; gap: 10px; flex-flow: row; align-items: center; justify-content: flex-start; overflow: visible; box-sizing: border-box;"><div class="framer-144pjtk" data-framer-name="Dot" style="background-color: var(--token-bc1e312b-771a-4049-b120-2cf702d89fae); border-radius: 50%; opacity: 1; display: block; position: relative; inset: 0px; width: 8px; height: 8px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; flex-flow: row; overflow: visible; box-sizing: border-box;"></div><div class="framer-1cqut4d" data-framer-name="Label" data-framer-component-type="RichTextContainer" style="--extracted-r6o4lv: var(--token-bc1e312b-771a-4049-b120-2cf702d89fae); transform: none; opacity: 1; display: flex; position: relative; inset: 0px; width: 116.828px; height: 16px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 12px; font-weight: 400; flex-flow: column; justify-content: flex-start; border-radius: 0px; overflow: visible; box-sizing: border-box;"><p dir="auto" class="framer-text" style="--font-selector: R0Y7R2Vpc3QtNjAw; --framer-font-family: &quot;Geist&quot;, &quot;Geist Placeholder&quot;, sans-serif; --framer-font-size: 13px; --framer-font-weight: 600; --framer-letter-spacing: -0.01em; --framer-line-height: 16px; --framer-text-color: var(--extracted-r6o4lv, var(--token-bc1e312b-771a-4049-b120-2cf702d89fae)); --framer-text-transform: uppercase; display: block; position: static; width: 116.812px; height: 16px; padding: 0px; margin: 0px; font-family: &quot;Pulse Body&quot;, Inter, &quot;Geist Placeholder&quot;, sans-serif; font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: -0.13px; text-transform: uppercase; flex-flow: row; border-radius: 0px; overflow: visible; box-sizing: border-box;">Start a Project</p></div></a></div></div></div></nav>
 </div></div></div><div class="mbar"><a href="/" aria-label="Pulse Branding"><img src="/custom/brand/marks/pulse-mark-min-white.svg" alt="Pulse"></a><div class="l"><a class="on" href="/work">Work</a><a href="/contact">Contact</a></div><a class="cta" href="/contact">Start a project</a></div>
 
