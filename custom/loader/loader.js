@@ -98,13 +98,45 @@
     el.classList.add('is-done');
     /* The fade is the reveal: the page is already laid out and settled under
        the overlay, so showing it now means the content never moves in front of
-       the visitor 鈥?or in front of the layout-shift API. */
+       the visitor - or in front of the layout-shift API. */
     root.classList.add('pl-reveal');
+    window.setTimeout(rescueStalledHero, 2500);
     window.setTimeout(function () {
       if (el && el.parentNode) el.parentNode.removeChild(el);
       root.classList.remove('pl-lock');
       document.dispatchEvent(new CustomEvent('pulse-loader:done'));
     }, 450);
+  }
+
+  /* Framer draws the hero in after it hydrates - letters one by one, the tag
+     and the booking line fading in - and on a 4x-CPU phone that is 8.7 s after
+     the reveal. Until then the hero is an art panel with two floating buttons.
+     Give the entrance a deadline instead: 2.5 s after the reveal (a fast load
+     starts it ~1.7 s after the reveal, so this does not catch that), the words
+     above the buttons that still have no opacity get shown as they are, and
+     this one load loses the animation; the next one keeps it.
+
+     Hero Bottom is left out on purpose. It holds the paragraph and the two
+     pills, and the pills are absolutely placed from geometry Framer only
+     settles after hydration: showing the paragraph there first put its last
+     line under "VIEW OUR WORK" (seen 2026-11-16, 390 px), so that block waits
+     for the runtime, as it did before. */
+  function rescueStalledHero() {
+    var hero = document.querySelector('[data-framer-name="Hero"]') || document.querySelector('main');
+    if (!hero) return;
+    var bottom = hero.querySelector('[data-framer-name="Hero Bottom"]');
+    var all = hero.querySelectorAll('*');
+    var stalled = [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (!el.textContent || !el.textContent.trim()) continue;
+      if (bottom && (el === bottom || bottom.contains(el))) continue;
+      if (parseFloat(window.getComputedStyle(el).opacity) > 0.05) continue;
+      stalled.push(el);
+    }
+    if (!stalled.length) return;
+    for (var j = 0; j < stalled.length; j++) stalled[j].classList.add('pl-hero-stalled');
+    root.classList.add('pl-hero-static');
   }
 
   /* The first screen, not the whole document: an image 4 screens down is not

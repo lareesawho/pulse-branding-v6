@@ -144,3 +144,22 @@ html.pl-lock:not(.pl-reveal) body > *:not(#pulse-loader) {
 @media (prefers-reduced-motion: reduce) {
   #pulse-loader { animation: none; }
 }
+
+/* The hero rescue. Framer writes the entrance onto each piece as an inline
+   style (letters: opacity .001, blur 14px, translateY 60px; the tag and the
+   booking line: opacity 0) and only swaps it for the animation once it has
+   hydrated - measured 8.3 s into a cold load and 15.2 s at 4x CPU, against a
+   reveal at 6.0 s (desktop) / 6.5 s (4x CPU). 2.5 s after the reveal the
+   runtime marks whatever is still invisible with `pl-hero-stalled`; a fast load
+   starts the entrance ~1.7 s after the reveal, so nothing here fires there.
+   These rules must outrank the inline styles, hence !important. The transform
+   is only reset on the letters: a container's transform is often its layout,
+   while a letter's is only its entrance offset. */
+.pl-hero-stalled {
+  opacity: 1 !important;
+  filter: none !important;
+  animation: none !important;
+}
+span.pl-hero-stalled {
+  transform: none !important;
+}

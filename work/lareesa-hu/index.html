@@ -281,9 +281,28 @@ html.pl-lock:not(.pl-reveal) body > *:not(#pulse-loader) {
 @media (prefers-reduced-motion: reduce) {
   #pulse-loader { animation: none; }
 }
+
+/* The hero rescue. Framer writes the entrance onto each piece as an inline
+   style (letters: opacity .001, blur 14px, translateY 60px; the tag and the
+   booking line: opacity 0) and only swaps it for the animation once it has
+   hydrated - measured 8.3 s into a cold load and 15.2 s at 4x CPU, against a
+   reveal at 6.0 s (desktop) / 6.5 s (4x CPU). 2.5 s after the reveal the
+   runtime marks whatever is still invisible with `pl-hero-stalled`; a fast load
+   starts the entrance ~1.7 s after the reveal, so nothing here fires there.
+   These rules must outrank the inline styles, hence !important. The transform
+   is only reset on the letters: a container's transform is often its layout,
+   while a letter's is only its entrance offset. */
+.pl-hero-stalled {
+  opacity: 1 !important;
+  filter: none !important;
+  animation: none !important;
+}
+span.pl-hero-stalled {
+  transform: none !important;
+}
 </style>
 <noscript><style>#pulse-loader{display:none!important}html.pl-lock body > *:not(#pulse-loader){visibility:visible!important}</style></noscript>
-<script src="/custom/loader/loader.js?v=218a8a36" data-text="Pulse" data-min="800" data-max="12000" defer></script>
+<script src="/custom/loader/loader.js?v=bda371a1" data-text="Pulse" data-min="800" data-max="12000" defer></script>
 <!-- /pulse loader -->
 <style data-pulse-case>[data-framer-name="Gallery"] img{filter:grayscale(1)}</style>
 <script>window.__PULSE_CASE__={"slug":"lareesa-hu","name":"lareesa.hu","tagline":"Bridging Science and Creativity","year":"2025","sector":"Brand Platform","services":"Brand Identity, Website Development","client":"lareesa.hu","overview":"lareesa.hu is the freelance brand for our founder Lareesa Hu before the company had to be scaled up and rebranded. The focus of the VI and website is to reflect Lareesa's personality�?uplifting, fun and creative, throughout the whole brand experience.","challenge":"To develop a brand identity that reflects a blend of creativity and scientific insight","approach":"Created a sharp, modern brand identity, a user-friendly website, and engaging video content","result":"The refreshed brand identity enhanced Lareesa.hu's online presence, drawing in a broader, more engaged audience","cover":"/images/work-covers/lareesa-hu.webp","shotA":"/images/cases/lareesa-hu/shot-0.jpg","shotB":"/images/cases/lareesa-hu/shot-1.jpg","nextSlug":"wekwikgene","nextName":"WeKwikGene","coverFile":"lareesa-hu.webp","source":"v4"};</script>
