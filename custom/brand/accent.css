@@ -198,4 +198,35 @@ footer,
    palette is untouched. Measured across the sweep's frames, not on one. */
 [data-framer-name="Liquid Background"] {
   filter: brightness(.74) saturate(.94);
+  /* and the ground under the shader. The canvas is 300x150 (transparent, nothing
+     drawn) until Framer hydrates and measures the layer - 8.3 s into a cold load
+     on this machine, 15.2 s at 4x CPU - and it never paints at all when WebGL is
+     off, which left the hero as an empty black card with two floating buttons.
+     The container is transparent and the canvas is opaque once it draws (tested
+     by painting the container red: nothing showed through), so a still of the
+     shader is visible only in that gap and is then covered by it. The stills are
+     frames of this same art, captured with the copy hidden, so the hand-over
+     changes the motion, not the picture. The gradients under them keep the card
+     from going flat if the image is slow or missing: #111113 -> #09090a and two
+     soft brand greys, dimmed by the filter above exactly like the canvas is. */
+  background-image:
+    url("/images/hero-liquid-748.webp"),
+    radial-gradient(120% 80% at 8% -12%, rgba(233, 234, 236, .12), rgba(233, 234, 236, 0) 62%),
+    radial-gradient(80% 60% at 72% 58%, rgba(166, 169, 176, .06), rgba(166, 169, 176, 0) 70%),
+    linear-gradient(160deg, #111113 0%, #09090a 60%, #09090a 100%);
+  background-size: cover, cover, cover, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* the same hand-over for a wide card, where the portrait still would be cropped
+   to a band: a frame of the desktop shader instead. */
+@media (min-width: 900px) {
+  [data-framer-name="Liquid Background"] {
+    background-image:
+      url("/images/hero-liquid-1408.webp"),
+      radial-gradient(120% 80% at 8% -12%, rgba(233, 234, 236, .12), rgba(233, 234, 236, 0) 62%),
+      radial-gradient(80% 60% at 72% 58%, rgba(166, 169, 176, .06), rgba(166, 169, 176, 0) 70%),
+      linear-gradient(160deg, #111113 0%, #09090a 60%, #09090a 100%);
+  }
 }
