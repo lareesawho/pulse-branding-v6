@@ -177,7 +177,7 @@ body{background:#07090c;margin:0}
 <link rel="stylesheet" href="/custom/nav/nav.css?v=fda6c11c">
 <link rel="stylesheet" href="/custom/brand/palette.css?v=336d3250">
 <link rel="stylesheet" href="/custom/brand/cta.css?v=1c514c68">
-<link rel="stylesheet" href="/custom/brand/accent.css?v=65ddfa88">
+<link rel="stylesheet" href="/custom/brand/accent.css?v=06afb841">
 </noscript>
 <!-- /pulse first paint -->
 <!-- pulse forms -->
@@ -289,6 +289,7 @@ body{background:#07090c;margin:0}
 <!-- /pulse document -->
 
 <!-- pulse loader -->
+<script>document.documentElement.classList.add('pl-lock')</script>
 <style id="pulse-loader-style">
 /* Pulse page loader — a faithful port of Framer's "AnimatedLoaderFX" component
    (AnimatedLoader: rotating gradient orb + staggered letter pulse), themed to the Pulse palette.
@@ -297,6 +298,21 @@ body{background:#07090c;margin:0}
    - letters: 2s infinite, stagger 0.1s, opacity .4 → 1@scale1.15 → .7            */
 
 html.pl-lock, html.pl-lock body { overflow: hidden !important; }
+
+/* The overlay covers the page while the webfonts land and the first-screen
+   images decode. That reflow is invisible to the visitor, but the layout-shift
+   API counts it anyway (home measured CLS .154, a case page .38) because a
+   covered box is still a laid-out box. So the content is not painted at all
+   until the overlay starts its fade: a hidden box cannot shift. The runtime
+   sets `pl-reveal` at the same moment `is-done` starts the fade, so the page
+   is already in place under an overlay that is on its way out. The 13 s rule
+   is the same give-up as the overlay's, for a script that never runs. */
+html.pl-lock:not(.pl-reveal) body > *:not(#pulse-loader) {
+  visibility: hidden;
+  animation: pl-rescue .01s 13s forwards;
+}
+
+@keyframes pl-rescue { to { visibility: visible; } }
 
 #pulse-loader {
   --pl-light: #f2fdff;
@@ -422,8 +438,8 @@ html.pl-lock, html.pl-lock body { overflow: hidden !important; }
   #pulse-loader { animation: none; }
 }
 </style>
-<noscript><style>#pulse-loader{display:none!important}</style></noscript>
-<script src="/custom/loader/loader.js?v=05ba6a2b" data-text="Pulse" data-min="800" data-max="12000" defer></script>
+<noscript><style>#pulse-loader{display:none!important}html.pl-lock body > *:not(#pulse-loader){visibility:visible!important}</style></noscript>
+<script src="/custom/loader/loader.js?v=218a8a36" data-text="Pulse" data-min="800" data-max="12000" defer></script>
 <!-- /pulse loader -->
 
     <meta property="og:image:type" content="image/jpeg">

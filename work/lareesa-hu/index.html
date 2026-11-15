@@ -133,6 +133,7 @@
 <script src="/custom/brand/services-ai.js?v=2" defer></script>
 <!-- /pulse ai service -->
 <!-- pulse loader -->
+<script>document.documentElement.classList.add('pl-lock')</script>
 <style id="pulse-loader-style">
 /* Pulse page loader — a faithful port of Framer's "AnimatedLoaderFX" component
    (AnimatedLoader: rotating gradient orb + staggered letter pulse), themed to the Pulse palette.
@@ -141,6 +142,21 @@
    - letters: 2s infinite, stagger 0.1s, opacity .4 → 1@scale1.15 → .7            */
 
 html.pl-lock, html.pl-lock body { overflow: hidden !important; }
+
+/* The overlay covers the page while the webfonts land and the first-screen
+   images decode. That reflow is invisible to the visitor, but the layout-shift
+   API counts it anyway (home measured CLS .154, a case page .38) because a
+   covered box is still a laid-out box. So the content is not painted at all
+   until the overlay starts its fade: a hidden box cannot shift. The runtime
+   sets `pl-reveal` at the same moment `is-done` starts the fade, so the page
+   is already in place under an overlay that is on its way out. The 13 s rule
+   is the same give-up as the overlay's, for a script that never runs. */
+html.pl-lock:not(.pl-reveal) body > *:not(#pulse-loader) {
+  visibility: hidden;
+  animation: pl-rescue .01s 13s forwards;
+}
+
+@keyframes pl-rescue { to { visibility: visible; } }
 
 #pulse-loader {
   --pl-light: #f2fdff;
@@ -266,8 +282,8 @@ html.pl-lock, html.pl-lock body { overflow: hidden !important; }
   #pulse-loader { animation: none; }
 }
 </style>
-<noscript><style>#pulse-loader{display:none!important}</style></noscript>
-<script src="/custom/loader/loader.js?v=05ba6a2b" data-text="Pulse" data-min="800" data-max="12000" defer></script>
+<noscript><style>#pulse-loader{display:none!important}html.pl-lock body > *:not(#pulse-loader){visibility:visible!important}</style></noscript>
+<script src="/custom/loader/loader.js?v=218a8a36" data-text="Pulse" data-min="800" data-max="12000" defer></script>
 <!-- /pulse loader -->
 <style data-pulse-case>[data-framer-name="Gallery"] img{filter:grayscale(1)}</style>
 <script>window.__PULSE_CASE__={"slug":"lareesa-hu","name":"lareesa.hu","tagline":"Bridging Science and Creativity","year":"2025","sector":"Brand Platform","services":"Brand Identity, Website Development","client":"lareesa.hu","overview":"lareesa.hu is the freelance brand for our founder Lareesa Hu before the company had to be scaled up and rebranded. The focus of the VI and website is to reflect Lareesa's personality�?uplifting, fun and creative, throughout the whole brand experience.","challenge":"To develop a brand identity that reflects a blend of creativity and scientific insight","approach":"Created a sharp, modern brand identity, a user-friendly website, and engaging video content","result":"The refreshed brand identity enhanced Lareesa.hu's online presence, drawing in a broader, more engaged audience","cover":"/images/work-covers/lareesa-hu.webp","shotA":"/images/cases/lareesa-hu/shot-0.jpg","shotB":"/images/cases/lareesa-hu/shot-1.jpg","nextSlug":"wekwikgene","nextName":"WeKwikGene","coverFile":"lareesa-hu.webp","source":"v4"};</script>

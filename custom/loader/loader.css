@@ -6,6 +6,21 @@
 
 html.pl-lock, html.pl-lock body { overflow: hidden !important; }
 
+/* The overlay covers the page while the webfonts land and the first-screen
+   images decode. That reflow is invisible to the visitor, but the layout-shift
+   API counts it anyway (home measured CLS .154, a case page .38) because a
+   covered box is still a laid-out box. So the content is not painted at all
+   until the overlay starts its fade: a hidden box cannot shift. The runtime
+   sets `pl-reveal` at the same moment `is-done` starts the fade, so the page
+   is already in place under an overlay that is on its way out. The 13 s rule
+   is the same give-up as the overlay's, for a script that never runs. */
+html.pl-lock:not(.pl-reveal) body > *:not(#pulse-loader) {
+  visibility: hidden;
+  animation: pl-rescue .01s 13s forwards;
+}
+
+@keyframes pl-rescue { to { visibility: visible; } }
+
 #pulse-loader {
   --pl-light: #f2fdff;
   --pl-mid: #5fd0cf;

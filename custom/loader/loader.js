@@ -96,6 +96,10 @@
     var el = document.getElementById('pulse-loader');
     if (!el) { root.classList.remove('pl-lock'); return; }
     el.classList.add('is-done');
+    /* The fade is the reveal: the page is already laid out and settled under
+       the overlay, so showing it now means the content never moves in front of
+       the visitor 鈥?or in front of the layout-shift API. */
+    root.classList.add('pl-reveal');
     window.setTimeout(function () {
       if (el && el.parentNode) el.parentNode.removeChild(el);
       root.classList.remove('pl-lock');
