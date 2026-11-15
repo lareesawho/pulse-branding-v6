@@ -139,10 +139,26 @@
   var settled = { dcl: false, fonts: false, load: false };
   var dclAt = 0;
 
+  /* A case page's stylesheets are loaded with media="print" and promoted to
+     "all" when they arrive, so the overlay can paint before the captured site's
+     CSS does. That would let the overlay leave while the page is still unstyled,
+     so the reveal also waits for every deferred sheet to have a rule list. */
+  function stylesReady() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var media = link.getAttribute('media') || '';
+      if (media !== 'print') continue;
+      if (!link.sheet) return false;
+    }
+    return true;
+  }
+
   function note() {
     if (finished) return;
     if (!settled.dcl || !settled.fonts) return;
     if (!settled.load && !(dclAt && performance.now() - dclAt > LOAD_GRACE)) return;
+    if (!stylesReady()) return;
     if (!imagesReady()) return;
     var elapsed = performance.now() - start;
     var wait = Math.max(0, MIN - elapsed);
