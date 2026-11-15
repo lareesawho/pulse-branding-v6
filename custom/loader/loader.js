@@ -142,14 +142,16 @@
   /* A case page's stylesheets are loaded with media="print" and promoted to
      "all" when they arrive, so the overlay can paint before the captured site's
      CSS does. That would let the overlay leave while the page is still unstyled,
-     so the reveal also waits for every deferred sheet to have a rule list. */
+     so the reveal also waits for every deferred sheet to have a rule list.
+
+     A real print sheet is also `media="print"`; waiting for it would hold the
+     overlay until `load` (a `load` event waits for print sheets too, so the
+     grace period never applies). Only the promoted links carry the inline
+     `onload` that promotes them, so only those are waited for. */
   function stylesReady() {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    var links = document.querySelectorAll('link[rel="stylesheet"][media="print"][onload]');
     for (var i = 0; i < links.length; i++) {
-      var link = links[i];
-      var media = link.getAttribute('media') || '';
-      if (media !== 'print') continue;
-      if (!link.sheet) return false;
+      if (!links[i].sheet) return false;
     }
     return true;
   }

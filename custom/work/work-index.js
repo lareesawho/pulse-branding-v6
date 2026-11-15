@@ -115,11 +115,35 @@
 
     var img = wrap.querySelector('img');
     if (img) {
-      img.removeAttribute('sizes');
-      img.setAttribute('srcset', coverSrcset(item.cover));
-      img.setAttribute('sizes', COVER_SIZES);
-      img.src = item.cover + COVER_V;
+      /* 25 covers at ~17 KB each were all fetched before `load`, on a phone
+         showing one card, so they competed with the font and hero for the
+         connection. The first two stay eager (one is in view, one is the next
+         scroll); everything below asks for its art when it approaches the
+         viewport.
+
+         The browser's own `loading="lazy"` was not enough here: the cards are
+         appended together after hydration, and Chrome treats that insertion as
+         its moment to start fetching, so the covers were requested anyway. The
+         source is therefore held back in data attributes and assigned by an
+         IntersectionObserver — a request that was never made cannot be
+         re-prioritised. */
       img.alt = item.name + ' project cover';
+      img.removeAttribute('sizes');
+      if (i < 2) {
+        img.setAttribute('sizes', COVER_SIZES);
+        img.setAttribute('srcset', coverSrcset(item.cover));
+        img.src = item.cover + COVER_V;
+        img.loading = 'eager';
+      } else {
+        img.loading = 'lazy';
+        /* the clone still carries the template's demo cover in src/srcset;
+           leaving it would fetch that art and show the wrong card */
+        img.removeAttribute('srcset');
+        img.removeAttribute('src');
+        img.setAttribute('data-cover', item.cover);
+        img.classList.add('pulse-card-cover-pending');
+      }
+      img.decoding = 'async';
     }
 
     setText(wrap.querySelector('[data-framer-name="Number"] p'), item.n);
@@ -170,6 +194,49 @@
     });
   }
 
+  /* The cover of a below-the-fold card is assigned when the card approaches the
+     viewport (see buildCard); a request that was never made is the only fetch a
+     page can reliably avoid on a phone that will not scroll far. */
+  function hydrateCover(img) {
+    var cover = img.getAttribute('data-cover');
+    if (!cover) return;
+    img.removeAttribute('data-cover');
+    img.classList.remove('pulse-card-cover-pending');
+    img.setAttribute('sizes', COVER_SIZES);
+    img.setAttribute('srcset', coverSrcset(cover));
+    img.src = cover + COVER_V;
+  }
+
+  var coverObserver = null;
+
+  function watchCovers() {
+    var pending = document.querySelectorAll('img.pulse-card-cover-pending');
+    if (!pending.length) return;
+    if (!('IntersectionObserver' in window)) {
+      pending.forEach(hydrateCover);
+      return;
+    }
+    if (!coverObserver) {
+      /* Observe the card, not the image: an image with no source has no
+         intrinsic size, so a viewport-intersection test on it would never say
+         "visible". The card is laid out by its grid slot regardless. */
+      coverObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var img = entry.target.querySelector('img.pulse-card-cover-pending') || (entry.target.classList.contains('pulse-card-cover-pending') ? entry.target : null);
+          if (img) hydrateCover(img);
+          coverObserver.unobserve(entry.target);
+        });
+      }, { rootMargin: '600px 0px' });
+    }
+    pending.forEach(function (img) {
+      var target = img.closest('.pulse-card') || img;
+      if (target.__coverWatched) return;
+      target.__coverWatched = true;
+      coverObserver.observe(target);
+    });
+  }
+
   function apply() {
     var list = find('Project List');
     var proto = firstCard();
@@ -184,6 +251,7 @@
 
     markOriginals(list);
     filter(currentLabel);
+    watchCovers();
 
     // count in the page header ("06 Projects — 2018/2026") — React may restore it, so keep checking
     document.querySelectorAll('[data-framer-name="Header Card"] p').forEach(function (el) {
