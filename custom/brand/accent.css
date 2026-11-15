@@ -189,3 +189,13 @@ footer,
     padding-bottom: 40px !important;
   }
 }
+
+/* 12. the hero's liquid background is the one large light area a reader has to
+   read across: the paragraph measured 4.14-4.20:1 and the booking line 4.41:1
+   at 1440, against 4.5:1 for body text (tools/pages/check-site.py samples the
+   rendered pixels, not the tokens). The copy is already the template's ice, so
+   the ground moves instead of the text: the animated layer is dimmed and the
+   palette is untouched. Measured across the sweep's frames, not on one. */
+[data-framer-name="Liquid Background"] {
+  filter: brightness(.74) saturate(.94);
+}
