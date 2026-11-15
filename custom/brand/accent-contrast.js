@@ -80,12 +80,17 @@
   function start() {
     mark();
     [0, 150, 400, 900, 1600, 2600, 4000, 6000].forEach(function (t) { setTimeout(mark, t); });
+    /* Framer rebuilds the blocks after load; the ladder above can miss the frame in
+       which a rebuilt eyebrow stands unmarked on paper (2.4:1 instead of 5.6:1).
+       Mark on every frame while the page settles as well, so the window is a frame,
+       not a timeout. */
+    var until = Date.now() + 3000;
+    (function frame() {
+      mark();
+      if (Date.now() < until) requestAnimationFrame(frame);
+    })();
     if (!window.MutationObserver) return;
-    var timer = 0;
-    var observer = new MutationObserver(function () {
-      if (timer) return;
-      timer = setTimeout(function () { timer = 0; mark(); }, 150);
-    });
+    var observer = new MutationObserver(mark);
     observer.observe(document.documentElement, { childList: true, subtree: true });
     setTimeout(function () { observer.disconnect(); }, 8000);
   }
