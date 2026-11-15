@@ -37,11 +37,21 @@
   var MAX = parseInt(opt('data-max', '12000'), 10);
   var LOAD_GRACE = 1400; // how long after DCL a held `load` event may delay us
 
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (/[?&]nopreload=1/.test(location.search)) return;
+  var root = document.documentElement;
+
+  // The overlay is markup now, inlined styles and all, so that the first paint
+  // is the brand instead of the shell. When this runtime is asked not to run,
+  // it must take that markup away rather than leave it covering the page.
+  function drop() {
+    var el = document.getElementById('pulse-loader');
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+    root.classList.remove('pl-lock');
+  }
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { drop(); return; }
+  if (/[?&]nopreload=1/.test(location.search)) { drop(); return; }
   var HOLD = /[?&]loader=hold/.test(location.search);
 
-  var root = document.documentElement;
   var start = performance.now();
   var mounted = false;
   var finished = false;
@@ -75,7 +85,8 @@
   function mount() {
     if (mounted) return;
     mounted = true;
-    document.body.appendChild(build());
+    // adopt the static overlay; build one only for pages that predate it
+    if (!document.getElementById('pulse-loader')) document.body.appendChild(build());
     root.classList.add('pl-lock');
   }
 

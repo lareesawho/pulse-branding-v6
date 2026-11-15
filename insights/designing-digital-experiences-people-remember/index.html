@@ -118,8 +118,141 @@
 <script src="/custom/brand/services-ai.js?v=2" defer></script>
 <!-- /pulse ai service -->
 <!-- pulse loader -->
-<link rel="stylesheet" href="/custom/loader/loader.css?v=1b30e6a4">
-<script src="/custom/loader/loader.js?v=a43d251f" data-text="Pulse" data-min="800" data-max="12000" defer></script>
+<style id="pulse-loader-style">
+/* Pulse page loader — a faithful port of Framer's "AnimatedLoaderFX" component
+   (AnimatedLoader: rotating gradient orb + staggered letter pulse), themed to the Pulse palette.
+   Source: framerusercontent.com/modules/.../AnimatedLoaderFX.js
+   - orb: 2s linear infinite, rotate 90° → 270° → 450°, six inset box-shadow layers
+   - letters: 2s infinite, stagger 0.1s, opacity .4 → 1@scale1.15 → .7            */
+
+html.pl-lock, html.pl-lock body { overflow: hidden !important; }
+
+#pulse-loader {
+  --pl-light: #f2fdff;
+  --pl-mid: #5fd0cf;
+  --pl-dark: #2f7fd0;
+  --pl-mid-alt: #8fd8e0;
+  --pl-dark-alt: #3a2b6e;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: #09090a;
+  opacity: 1;
+  transition: opacity .45s cubic-bezier(.16, 1, .3, 1);
+  will-change: opacity;
+}
+#pulse-loader.is-done { opacity: 0; pointer-events: none; }
+
+#pulse-loader .pl-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: transparent;
+  color: #f4fbfd;
+  font-family: "Pulse Body", Inter, sans-serif;
+  font-size: 19px;
+  font-weight: 300;
+  letter-spacing: .01em;
+  user-select: none;
+}
+
+#pulse-loader .pl-wordmark {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: auto;
+  display: block;
+  opacity: 1;
+  animation: pl-breathe 2.4s cubic-bezier(.22, 1, .36, 1) infinite;
+  filter: drop-shadow(0 1px 8px rgba(9, 9, 10, .45));
+}
+
+@keyframes pl-breathe {
+  0%, 100% { opacity: .82; transform: scale(.994); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+#pulse-loader .pl-orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: transparent;
+  animation: pl-rotate 2s linear infinite;
+  z-index: 0;
+}
+
+#pulse-loader .pl-letter {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  opacity: .4;
+  transform: translateY(0);
+  animation: pl-letter 2s infinite;
+  border-radius: 50ch;
+}
+
+@keyframes pl-rotate {
+  0% {
+    transform: rotate(90deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 30px 0 var(--pl-mid) inset,
+      0 60px 60px 0 var(--pl-dark) inset;
+  }
+  50% {
+    transform: rotate(270deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 10px 0 var(--pl-mid-alt) inset,
+      0 40px 60px 0 var(--pl-dark-alt) inset;
+  }
+  100% {
+    transform: rotate(450deg);
+    box-shadow:
+      0 10px 20px 0 var(--pl-light) inset,
+      0 20px 30px 0 var(--pl-mid) inset,
+      0 60px 60px 0 var(--pl-dark) inset;
+  }
+}
+
+@keyframes pl-letter {
+  0%, 100% { opacity: .4; transform: translateY(0); }
+  20% { opacity: 1; transform: scale(1.15); }
+  40% { opacity: .7; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pulse-loader .pl-orb,
+  #pulse-loader .pl-letter { animation: none; }
+}
+
+/* The overlay is markup now, painted before any script runs. If the runtime
+   never executes (a blocked script, a broken bundle, a browser that cannot
+   parse it), the page must still appear, so the overlay gives up on its own.
+   The runtime's 12 s failsafe normally wins long before this. */
+#pulse-loader {
+  animation: pl-giveup .7s cubic-bezier(.16, 1, .3, 1) 13s forwards;
+}
+
+@keyframes pl-giveup {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pulse-loader { animation: none; }
+}
+</style>
+<noscript><style>#pulse-loader{display:none!important}</style></noscript>
+<script src="/custom/loader/loader.js?v=0af2c22d" data-text="Pulse" data-min="800" data-max="12000" defer></script>
 <!-- /pulse loader -->
 <!-- pulse font preload -->
 <link rel="preload" href="/custom/brand/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -266,6 +399,14 @@
 </head>
 <body>
 <a class="pulse-skip" href="#main">Skip to content</a>
+<!-- pulse loader markup -->
+<div id="pulse-loader" role="status" aria-live="polite" aria-label="Pulse">
+  <div class="pl-wrap">
+    <img class="pl-wordmark" src="/custom/brand/marks/pulse-mark-min-white.svg" alt="Pulse" decoding="async">
+    <div class="pl-orb"></div>
+  </div>
+</div>
+<!-- /pulse loader markup -->
 	
 	<!-- Start of bodyStart -->
     
