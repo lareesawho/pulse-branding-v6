@@ -230,3 +230,18 @@ footer,
       linear-gradient(160deg, #111113 0%, #09090a 60%, #09090a 100%);
   }
 }
+
+/* 13. the About card image is pushed 552 px below its own frame.
+   [data-framer-name="About Image"] sits inside "About Media" (608x640, overflow
+   clip, dark #1a1b1e) and the runtime writes an inline translateY that grows
+   with scroll: 456/480/504/528/552/576/600/624/648 px at scrollY
+   3800/4000/4200/4400/4600/4800/5000/5200/5400, so the 608x740 picture lands
+   almost entirely outside its 640 px frame and the card reads as a black
+   rectangle with a strip of photo along the bottom (home at 1440 and 390,
+   measured 2026-11-16). The offset is scroll-linked, not an entrance animation,
+   and it never reaches 0. Pin the frame: the image then fills it and keeps its
+   crop. An author !important rule beats the inline style the runtime rewrites
+   every frame (setting inline !important from script is overwritten). */
+[data-framer-name="About Image"] {
+  transform: none !important;
+}
