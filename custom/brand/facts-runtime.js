@@ -34,9 +34,22 @@
     }
   }
 
+  // the team section's intro paragraph is repainted from the same chunks, which drop the
+  // studio's own sentence; keep the full sentence in place
+  var INTRO = 'A small, senior team. The people you meet are the people who do the work. The studio was founded by Lareesa Hu in 2019 and still works with the same core partners, including database engineer Djordje Bajic.';
+
+  function fixIntro() {
+    var ps = document.querySelectorAll('p');
+    for (var i = 0; i < ps.length; i++) {
+      if (ps[i].textContent.indexOf('A small, senior team.') === -1) continue;
+      if (ps[i].textContent.trim() !== INTRO) ps[i].textContent = INTRO;
+    }
+  }
+
   function pass() {
     fixStats();
     fixEst();
+    fixIntro();
   }
 
   var ticks = 0;
