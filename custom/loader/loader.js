@@ -100,7 +100,12 @@
        the overlay, so showing it now means the content never moves in front of
        the visitor - or in front of the layout-shift API. */
     root.classList.add('pl-reveal');
-    window.setTimeout(rescueStalledHero, 2500);
+    /* One pass at 2.5 s catches a home hero that never starts; the later passes
+       catch a headline whose hydration landed after that (an article page on a
+       cold connection hydrates at ~8 s, and the runtime writes its entrance back
+       over an earlier pass). Adding the class twice is harmless. */
+    var deadline = [2500, 6000, 10000, 14000];
+    for (var d = 0; d < deadline.length; d++) window.setTimeout(rescueStalledHero, deadline[d]);
     window.setTimeout(function () {
       if (el && el.parentNode) el.parentNode.removeChild(el);
       root.classList.remove('pl-lock');
@@ -120,12 +125,22 @@
      pills, and the pills are absolutely placed from geometry Framer only
      settles after hydration: showing the paragraph there first put its last
      line under "VIEW OUR WORK" (seen 2026-11-16, 390 px), so that block waits
-     for the runtime, as it did before. */
-  function rescueStalledHero() {
-    var hero = document.querySelector('[data-framer-name="Hero"]') || document.querySelector('main');
-    if (!hero) return;
-    var bottom = hero.querySelector('[data-framer-name="Hero Bottom"]');
-    var all = hero.querySelectorAll('*');
+     for the runtime, as it did before.
+
+     There is no <main> element in this export (only id="main"), so the old
+     fallback matched nothing: the rescue only ever worked on the home page.
+     An article page's headline is the same per-word entrance inside
+     "Article Header", so that block is the second scope — later than the hero
+     deadline, because at 2.5 s a fast load is still animating and this must
+     not flatten an entrance that is merely in progress. */
+  function rescueStalledHero(deadline) {
+    var hero = document.querySelector('[data-framer-name="Hero"]');
+    var article = hero ? null : document.querySelector('[data-framer-name="Article Header"]');
+    if (!hero && !article) return;
+    if (article && deadline < 5000) return;
+    var scope = hero || article;
+    var bottom = scope.querySelector('[data-framer-name="Hero Bottom"]');
+    var all = scope.querySelectorAll('*');
     var stalled = [];
     for (var i = 0; i < all.length; i++) {
       var el = all[i];
