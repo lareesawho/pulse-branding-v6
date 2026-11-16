@@ -75,18 +75,21 @@
     return true;
   }
 
+  // Hydration on a live connection landed later than this watchdog's first version expected: the
+  // rows were added, the list was re-rendered over 8 s in, and the watchdog had already stopped —
+  // the live index showed six rows while the local one showed ten. So the timer now runs the full
+  // 30 s (100 ticks) with no early stop, and a MutationObserver re-adds immediately when the list
+  // itself changes, which is what the re-render looks like from the DOM.
   var ticks = 0;
-  var stable = 0;
-  var lastSignature = '';
   var timer = window.setInterval(function () {
     ticks++;
     ensure();
-    var list = document.querySelector('[data-framer-name="Article List"]');
-    var signature = list ? rowsOf(list).length + ':' + ARTICLES.filter(function (article) {
-      return !!list.querySelector('[data-pulse-ported-row="' + article.slug + '"]');
-    }).length : '0:0';
-    if (signature === lastSignature) stable++;
-    else { stable = 0; lastSignature = signature; }
-    if ((ticks > 6 && stable > 8) || ticks > 120) window.clearInterval(timer);
+    if (ticks > 100) window.clearInterval(timer);
   }, 300);
+
+  var list = document.querySelector('[data-framer-name="Article List"]');
+  if (list && window.MutationObserver) {
+    var observer = new MutationObserver(function () { ensure(); });
+    observer.observe(list, { childList: true });
+  }
 })();
