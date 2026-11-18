@@ -191,6 +191,16 @@
         a.removeAttribute('href');
         a.setAttribute('tabindex', '-1');
       });
+      /* The template's demo cards carry four stock covers (NOVA, VELA, ARCEN, LUMA).
+         They are invisible, but a src is a request: the phone downloaded 534 KB of
+         pictures for cards it can never see. Strip the source on every pass instead
+         of letting the hydrated markup keep it. */
+      card.querySelectorAll('img').forEach(function (img) {
+        if (!img.getAttribute('src') && !img.getAttribute('srcset')) return;
+        img.removeAttribute('src');
+        img.removeAttribute('srcset');
+        img.setAttribute('data-pulse-demo', '1');
+      });
     });
   }
 
