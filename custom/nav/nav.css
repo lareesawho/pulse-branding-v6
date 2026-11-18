@@ -287,3 +287,38 @@ html.pulse-nav-hidden [data-framer-name="Navigation"] [data-framer-name="Bar"]:h
 @media (prefers-reduced-motion: reduce) {
   [data-framer-name="Navigation"] [data-framer-name="Bar"] { transition: none !important; }
 }
+
+/* The nav island survives a client-side route change with its variant already back to
+   "Phone", but the drawer inside it stays laid out at 441 px and covers the page that just
+   arrived (measured: /work with the nav 517 px tall). The variant is the source of truth for
+   whether the menu is open, so whenever it does not say "open" the drawer is out of the flow. */
+/* The same route change can also leave the nav element itself mid-scale (measured after a
+   drawer-row tap: offsetHeight 64, inline transform matrix(1, 0, 0, 8.08, 0, 226.7), painted
+   517 px tall over /work). While the variant says the drawer is closed there is nothing to
+   animate, so the element is left where its own layout puts it. */
+nav[data-framer-name="Phone"] {
+  transform: none !important;
+}
+
+nav[data-framer-name="Phone"] [data-framer-name="Drawer"] {
+  display: none !important;
+}
+
+nav[data-framer-name="Phone"] {
+  transform: none !important;
+}
+
+nav[data-framer-name="Phone"] [data-framer-name="Drawer"] {
+  display: none !important;
+}
+
+/* ------------------------------------------------- a drawer that outlived its page
+   Tapping a row in the phone drawer used to land on the next page with the menu still over it
+   (measured: `/work` with the nav 517 px tall and its variant already back to "Phone"). The
+   variant is closed; the layout is not. When that happens nav-scroll.js sets this class for the
+   half-second it takes the new page to settle, so the drawer cannot cover a page the visitor
+   asked for. The drawer is removed from the flow, not animated, so the bar returns to its own
+   height immediately. */
+html.pulse-drawer-stale [data-framer-name="Navigation"] [data-framer-name="Drawer"] {
+  display: none !important;
+}
