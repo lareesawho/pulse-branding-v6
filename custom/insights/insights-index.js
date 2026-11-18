@@ -31,11 +31,15 @@
     if (num) num.textContent = number;
     var thumb = clone.querySelector('[data-framer-name="Thumb"] img');
     if (thumb) {
-      thumb.setAttribute('src', article.cover + '-1440.webp');
-      thumb.setAttribute('srcset', article.cover + '-768.webp 768w,' + article.cover + '-1440.webp 1440w');
+      thumb.setAttribute('src', article.cover + '-768.webp');
+      thumb.setAttribute('srcset', article.cover + '-384.webp 384w,' + article.cover + '-768.webp 768w');
+      thumb.setAttribute('sizes', '116px');
       thumb.setAttribute('alt', article.title);
       thumb.setAttribute('width', '1440');
       thumb.setAttribute('height', '960');
+      /* forty rows are tall; without this the browser fetches every cover at once */
+      thumb.setAttribute('loading', 'lazy');
+      thumb.setAttribute('decoding', 'async');
     }
     var title = clone.querySelector('[data-framer-name="Title"] h3');
     if (title) title.textContent = article.title;
