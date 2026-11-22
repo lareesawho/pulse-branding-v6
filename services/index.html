@@ -466,5 +466,73 @@ span.pl-hero-stalled {
   window.setTimeout(function () { if (mo) mo.disconnect(); hold(); }, 8000);
 })();</script>
 <!-- /pulse title -->
+
+
+
+<!-- pulse service links -->
+<section class="pulse-svc-links" aria-labelledby="pulse-svc-links-title">
+  <div class="pulse-svc-links__inner">
+    <h2 id="pulse-svc-links-title">Each discipline, in full</h2>
+    <p class="pulse-svc-links__lead">One page per discipline: what it includes, how it runs, and the work it has produced.</p>
+    <ul class="pulse-svc-links__list">
+        <li class="pulse-svc-link">
+          <a href="/services/brand-strategy/">
+            <span class="pulse-svc-link__title">Brand Strategy</span>
+            <span class="pulse-svc-link__note">Positioning, research, architecture and messaging</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="pulse-svc-link">
+          <a href="/services/brand-identity/">
+            <span class="pulse-svc-link__title">Visual Identity</span>
+            <span class="pulse-svc-link__note">Logo systems, typography, colour and art direction</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="pulse-svc-link">
+          <a href="/services/digital-experience/">
+            <span class="pulse-svc-link__title">Digital Design</span>
+            <span class="pulse-svc-link__note">UX strategy, interface design and design systems</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="pulse-svc-link">
+          <a href="/services/ai-consulting/">
+            <span class="pulse-svc-link__title">AI Consulting</span>
+            <span class="pulse-svc-link__note">Where AI changes the work, and where it should not</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="pulse-svc-link">
+          <a href="/services/sectors/">
+            <span class="pulse-svc-link__title">Sectors</span>
+            <span class="pulse-svc-link__note">How the same method adapts to different industries</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="pulse-svc-link">
+          <a href="/services/audit/">
+            <span class="pulse-svc-link__title">Brand Audit</span>
+            <span class="pulse-svc-link__note">What is working, what is not, and what to do first</span>
+            <span class="pulse-svc-link__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+    </ul>
+  </div>
+</section>
+<style>
+.pulse-svc-links{padding:96px 24px;background:#0c0c0e;color:#d6eaf0}
+.pulse-svc-links__inner{max-width:1200px;margin:0 auto}
+.pulse-svc-links h2{margin:0 0 12px;font-size:clamp(28px,3.4vw,44px);line-height:1.05;letter-spacing:-.03em;font-weight:500}
+.pulse-svc-links__lead{margin:0 0 40px;max-width:52ch;color:#a6a9b0;font-size:16px;line-height:1.5}
+.pulse-svc-links__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:0;padding:0;list-style:none;background:rgba(214,234,240,.12)}
+.pulse-svc-link a{display:flex;flex-direction:column;gap:8px;height:100%;padding:28px 24px;background:#0c0c0e;color:inherit;text-decoration:none;transition:background .2s}
+.pulse-svc-link a:hover,.pulse-svc-link a:focus-visible{background:#141416}
+.pulse-svc-link__title{font-size:20px;letter-spacing:-.01em}
+.pulse-svc-link__note{color:#a6a9b0;font-size:14px;line-height:1.45}
+.pulse-svc-link__arrow{margin-top:auto;padding-top:16px;color:#a6a9b0}
+@media (max-width:809px){.pulse-svc-links{padding:64px 16px}.pulse-svc-links__list{grid-template-columns:1fr}}
+</style>
+<!-- /pulse service links -->
 </body>
 </html>

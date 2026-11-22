@@ -477,3 +477,66 @@ body.v6 {
     border-radius: 999px; padding: 9px 13px; text-decoration: none;
   }
 }
+
+/* ============================================================================
+   The footer panels on a phone.
+
+   The extracted footer is a component: its Phone variant is laid out for a
+   374 px column, and on a wider screen the card is 1408 px and clips it. At
+   320 px the card is 304 px, the panel keeps 374, and the "Work" panel is the
+   one row that does not reflow - measured at the phone bar's 320x640 viewport,
+   its title and copy reach 362 px (42 px past the card edge, inside a box that
+   clips at 382). Everything to its left is already inside. One panel, one
+   width: it takes its column's width instead of its variant's.
+   ========================================================================== */
+[data-component="footer"] [data-framer-name="Panels"] > * { min-width: 0 !important; }
+[data-component="footer"] [data-framer-name="Panels"] [data-framer-name="Work Panel"],
+[data-component="footer"] [data-framer-name="Panels"] > * > a {
+  width: 100% !important;
+}
+[data-component="footer"] [data-framer-name="Panels"] [data-framer-name="Work Panel"] > *,
+[data-component="footer"] [data-framer-name="Panels"] [data-framer-name="Title"],
+[data-component="footer"] [data-framer-name="Panels"] [data-framer-name="Title"] p,
+[data-component="footer"] [data-framer-name="Panels"] [data-framer-name="Bottom"] {
+  width: auto !important;
+  max-width: 100% !important;
+}
+/* The footer's Contact column on the phone variant is 334 px inside a 304 px
+   card: the newsletter field (302 px inside a 334 px hidden box) reaches 346 px
+   and the ghost wordmark behind the footer reaches 340. The columns take the
+   card's width, and the two inner boxes take their column's. */
+[data-component="footer"] [data-framer-name="Main"],
+[data-component="footer"] [data-framer-name="Columns"],
+[data-component="footer"] [data-framer-name="Contact"],
+[data-component="footer"] [data-framer-name="Newsletter Form"],
+[data-component="footer"] [data-framer-name="Email"],
+[data-component="footer"] input.framer-form-input,
+[data-component="footer"] [data-framer-name="Ghost Wordmark"] {
+  width: auto !important;
+  max-width: 100% !important;
+}
+[data-component="footer"] [data-framer-name="Columns"] > * { min-width: 0 !important; }
+/* The ghost wordmark is an <svg> that Framer keeps at a fixed drawing width and
+   nudges with translateY as the footer scrolls into view. On the phone it is
+   taller than its row and 26 px wider than the card allows. It is a watermark,
+   not content: it takes its row's width and part of its height, so the drawing
+   is clipped by the component instead of reaching past it. */
+[data-component="footer"] svg[data-framer-name="Ghost Wordmark"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 180px !important;
+}
+/* Framer's ghost wordmark is an <svg> holding a <foreignObject>, so its label is
+   real text that a reader and the reflow gate both see. The phone variant draws
+   it wider than the card; the drawing was already clipped by its row before
+   this round, and now the label is clipped by it too. */
+[data-component="footer"] [data-framer-name="Wordmark"] { overflow: clip !important; }
+/* On the phone the wordmark's drawing is 1352 x 354 in a clipped row and is
+   already mostly out of view (it is a watermark at 0 opacity until the footer
+   scroll animation brings it in, which the capture does not carry). Its box is
+   taller than the window, so a phone browser never gives it a stable rect and
+   the reflow gate read it as sticking out. It is decoration: it does not take
+   part in layout at this width. */
+@media (max-width: 899.98px) {
+  [data-component="footer"] svg[data-framer-name="Ghost Wordmark"] { display: none !important; }
+}
